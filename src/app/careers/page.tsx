@@ -17,15 +17,14 @@ export const metadata: Metadata = {
 };
 
 async function getJobs(): Promise<PaylocityJob[]> {
-  try {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 10000); // 10 second timeout
 
+  try {
     const res = await fetch(PAYLOCITY_PAGE_URL, {
       next: { revalidate: 1800 },
       signal: controller.signal,
     });
-    clearTimeout(timeout);
 
     if (!res.ok) return [];
     const html = await res.text();
@@ -59,6 +58,9 @@ async function getJobs(): Promise<PaylocityJob[]> {
     return pageData.Jobs ?? [];
   } catch {
     return [];
+  } finally {
+    clearTimeout(timeout);
+    controller.abort();
   }
 }
 

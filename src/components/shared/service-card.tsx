@@ -53,8 +53,8 @@ export function ServiceCard({
       {/* Features list */}
       {variant === "default" && features && features.length > 0 && (
         <ul className="space-y-2">
-          {features.slice(0, 4).map((feature) => (
-            <li key={feature} className="flex items-center gap-2.5 text-sm">
+          {features.slice(0, 4).map((feature, index) => (
+            <li key={`${feature}-${index}`} className="flex items-center gap-2.5 text-sm">
               <div className="h-1.5 w-1.5 shrink-0 bg-[#d51f26]" />
               <span className="text-slate-600 dark:text-slate-300">
                 {feature}

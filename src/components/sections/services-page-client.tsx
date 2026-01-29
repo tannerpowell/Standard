@@ -55,6 +55,7 @@ export function ServicesPageClient({
           <div className="mt-10 flex flex-wrap gap-2">
             <button
               onClick={() => setActiveChip("all")}
+              aria-pressed={activeChip === "all"}
               className={`${CHIP_BASE} ${activeChip === "all" ? CHIP_ACTIVE : CHIP_INACTIVE}`}
             >
               All Services
@@ -63,6 +64,7 @@ export function ServicesPageClient({
               <button
                 key={cat.id}
                 onClick={() => setActiveChip(cat.id)}
+                aria-pressed={activeChip === cat.id}
                 className={`${CHIP_BASE} ${activeChip === cat.id ? CHIP_ACTIVE : CHIP_INACTIVE}`}
               >
                 {cat.title}

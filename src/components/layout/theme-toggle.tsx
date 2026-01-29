@@ -11,7 +11,7 @@ interface ThemeToggleProps {
 }
 
 export function ThemeToggle({ variant = "default" }: ThemeToggleProps) {
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -35,11 +35,13 @@ export function ThemeToggle({ variant = "default" }: ThemeToggleProps) {
     );
   }
 
+  const actualCurrent = theme === "system" ? resolvedTheme : theme;
+
   return (
     <Button
       variant="ghost"
       size="icon"
-      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      onClick={() => setTheme(actualCurrent === "dark" ? "light" : "dark")}
       className={cn(
         "relative h-8 w-8 transition-colors",
         variant === "default" && "hover:bg-muted",

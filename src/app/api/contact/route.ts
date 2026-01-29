@@ -7,9 +7,20 @@ import { companyInfo } from "@/data/navigation";
 const rateLimit = new Map<string, { count: number; resetAt: number }>();
 const RATE_LIMIT_WINDOW = 60_000; // 1 minute
 const RATE_LIMIT_MAX = 5; // 5 requests per window
+const GC_THRESHOLD = 100; // Run GC when map exceeds this size
 
 function isRateLimited(ip: string): boolean {
   const now = Date.now();
+
+  // Lightweight GC: remove expired entries when map grows large
+  if (rateLimit.size > GC_THRESHOLD) {
+    rateLimit.forEach((value, key) => {
+      if (now > value.resetAt) {
+        rateLimit.delete(key);
+      }
+    });
+  }
+
   const entry = rateLimit.get(ip);
 
   if (!entry || now > entry.resetAt) {
@@ -31,6 +42,11 @@ function escapeHtml(text: string): string {
     "/": "&#x2F;",
   };
   return text.replace(/[&<>"'/]/g, (char) => map[char]);
+}
+
+function sanitizeHeader(text: string): string {
+  // Remove CR and LF characters to prevent header injection
+  return text.replace(/[\r\n]/g, "");
 }
 
 export async function POST(request: NextRequest) {
@@ -78,6 +94,11 @@ export async function POST(request: NextRequest) {
     const subjectLabel =
       subjectOptions.find((opt) => opt.value === subject)?.label || subject;
 
+    // Sanitize header values to prevent CR/LF injection
+    const sanitizedEmail = sanitizeHeader(email);
+    const sanitizedName = sanitizeHeader(name);
+    const sanitizedSubjectLabel = sanitizeHeader(subjectLabel);
+
     // Escape all user inputs for the HTML email template
     const escapedName = escapeHtml(name);
     const escapedEmail = escapeHtml(email);
@@ -105,8 +126,8 @@ export async function POST(request: NextRequest) {
     const { data, error } = await resend.emails.send({
       from: `${companyInfo.name} Website <onboarding@resend.dev>`,
       to: process.env.CONTACT_EMAIL || companyInfo.email,
-      replyTo: email,
-      subject: `[Website Contact] ${subjectLabel} - ${name}`,
+      replyTo: sanitizedEmail,
+      subject: `[Website Contact] ${sanitizedSubjectLabel} - ${sanitizedName}`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #004d99; border-bottom: 2px solid #004d99; padding-bottom: 10px;">
