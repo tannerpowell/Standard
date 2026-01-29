@@ -41,3 +41,6 @@ yarn-error.log*
 next-env.d.ts
 screen grabs/
 Standard Safety & Supply/
+
+# Local Netlify folder
+.netlify

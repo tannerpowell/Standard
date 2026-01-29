@@ -35,7 +35,7 @@ export function ThemeToggle({ variant = "default" }: ThemeToggleProps) {
     );
   }
 
-  const actualCurrent = theme === "system" ? resolvedTheme : theme;
+  const actualCurrent = theme === "system" ? (resolvedTheme ?? "light") : theme;
 
   return (
     <Button

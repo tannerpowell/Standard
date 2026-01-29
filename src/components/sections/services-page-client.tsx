@@ -173,8 +173,8 @@ function DetailSection({
 
       <div className="lg:w-1/2">
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-          {detail.features.map((feature) => (
-            <div key={feature} className="flex items-start gap-3">
+          {detail.features.map((feature, featureIndex) => (
+            <div key={`${feature}-${featureIndex}`} className="flex items-start gap-3">
               <Check className="mt-0.5 h-5 w-5 shrink-0 text-[#d51f26]" />
               <span className="text-sm leading-relaxed text-slate-600 dark:text-slate-300">
                 {feature}
