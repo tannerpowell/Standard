@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check } from "lucide-react";
+import { Check, Shield } from "lucide-react";
 import type {
   ServiceCategory,
   ServiceDetail,
@@ -148,7 +148,7 @@ function DetailSection({
 }: DetailSectionProps): React.JSX.Element {
   const isReversed = index % 2 !== 0;
   const number = String(index + 1).padStart(2, "0");
-  const Icon = ICON_MAP[detail.iconName];
+  const Icon = ICON_MAP[detail.iconName] ?? Shield;
 
   return (
     <div
