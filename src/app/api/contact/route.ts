@@ -3,8 +3,49 @@ import { Resend } from "resend";
 import { contactFormSchema, subjectOptions } from "@/lib/validations";
 import { companyInfo } from "@/data/navigation";
 
+// Simple in-memory rate limiter (per-IP, resets on redeploy)
+const rateLimit = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT_WINDOW = 60_000; // 1 minute
+const RATE_LIMIT_MAX = 5; // 5 requests per window
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateLimit.get(ip);
+
+  if (!entry || now > entry.resetAt) {
+    rateLimit.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW });
+    return false;
+  }
+
+  entry.count++;
+  return entry.count > RATE_LIMIT_MAX;
+}
+
+function escapeHtml(text: string): string {
+  const map: Record<string, string> = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#x27;",
+    "/": "&#x2F;",
+  };
+  return text.replace(/[&<>"'/]/g, (char) => map[char]);
+}
+
 export async function POST(request: NextRequest) {
   try {
+    // Rate limit by IP
+    const ip =
+      request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+      "unknown";
+    if (isRateLimited(ip)) {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again later." },
+        { status: 429 }
+      );
+    }
+
     let body;
     try {
       body = await request.json();
@@ -15,67 +56,57 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate the request body
+    // Validate (includes honeypot check via the `website` field)
     const result = contactFormSchema.safeParse(body);
     if (!result.success) {
       return NextResponse.json(
-        { error: "Invalid form data", details: result.error.flatten() },
+        { error: "Invalid form data" },
         { status: 400 }
       );
     }
 
+    // Honeypot triggered — silently accept to not tip off bots
+    if (result.data.website) {
+      return NextResponse.json({
+        success: true,
+        message: "Message sent successfully",
+      });
+    }
+
     const { name, email, phone, subject, message } = result.data;
 
-    // Get readable subject label
     const subjectLabel =
       subjectOptions.find((opt) => opt.value === subject)?.label || subject;
 
-    // HTML escape function to prevent XSS in email template
-    const escapeHtml = (text: string): string => {
-      const map: Record<string, string> = {
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#x27;',
-        '/': '&#x2F;',
-      };
-      return text.replace(/[&<>"'/]/g, (char) => map[char]);
-    };
-
-    // Escape all user inputs
+    // Escape all user inputs for the HTML email template
     const escapedName = escapeHtml(name);
     const escapedEmail = escapeHtml(email);
-    const escapedPhoneDisplay = phone ? escapeHtml(phone) : '';
+    const escapedPhoneDisplay = phone ? escapeHtml(phone) : "";
     const escapedMessage = escapeHtml(message);
     const escapedSubjectLabel = escapeHtml(subjectLabel);
 
-    // Check if Resend API key is configured
     if (!process.env.RESEND_API_KEY) {
       console.log("Contact form submission (Resend not configured):", {
-        name,
-        email,
-        phone,
         subject: subjectLabel,
-        message,
+        hasName: !!name,
+        hasEmail: !!email,
+        hasPhone: !!phone,
+        messageLength: message.length,
       });
 
-      // Return success for development without Resend
       return NextResponse.json({
         success: true,
         message: "Form received (email not sent - Resend not configured)",
       });
     }
 
-    // Initialize Resend with API key
     const resend = new Resend(process.env.RESEND_API_KEY);
 
-    // Send email via Resend
     const { data, error } = await resend.emails.send({
-      from: `${companyInfo.name} Website <onboarding@resend.dev>`, // Replace with your verified domain
+      from: `${companyInfo.name} Website <onboarding@resend.dev>`,
       to: process.env.CONTACT_EMAIL || "apply@standardtx.com",
       replyTo: email,
-      subject: `[Website Contact] ${escapedSubjectLabel} - ${escapedName}`,
+      subject: `[Website Contact] ${subjectLabel} - ${name}`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #004d99; border-bottom: 2px solid #004d99; padding-bottom: 10px;">

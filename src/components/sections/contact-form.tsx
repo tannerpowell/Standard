@@ -123,6 +123,16 @@ export function ContactForm() {
       }}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
+        {/* Honeypot — hidden from humans, bots fill it in */}
+        <input
+          type="text"
+          {...register("website")}
+          autoComplete="off"
+          tabIndex={-1}
+          aria-hidden="true"
+          className="absolute left-[-9999px] h-0 w-0 overflow-hidden opacity-0"
+        />
+
         {/* Contact Information */}
         <div className="mb-8">
           <h3 className="mb-6 border-b-2 border-[#d51f26] pb-3 font-[family-name:var(--font-oswald)] text-lg font-semibold uppercase tracking-wide text-foreground">

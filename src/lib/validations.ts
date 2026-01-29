@@ -24,11 +24,17 @@ const humanize = (subject: string): string => {
 export const contactFormSchema = z.object({
   name: z
     .string()
+    .trim()
     .min(2, "Name must be at least 2 characters")
     .max(100, "Name must be less than 100 characters"),
-  email: z.string().email("Please enter a valid email address"),
+  email: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .email("Please enter a valid email address"),
   phone: z
     .string()
+    .trim()
     .optional()
     .refine(
       (val) => !val || /^[\d\s\-\(\)\+]+$/.test(val),
@@ -37,8 +43,11 @@ export const contactFormSchema = z.object({
   subject: z.enum(SUBJECTS, { message: "Please select a subject" }),
   message: z
     .string()
+    .trim()
     .min(10, "Message must be at least 10 characters")
     .max(5000, "Message must be less than 5000 characters"),
+  // Honeypot field — bots fill this in, humans never see it
+  website: z.string().max(0, "Bot detected").optional(),
 });
 
 export type ContactFormData = z.infer<typeof contactFormSchema>;
