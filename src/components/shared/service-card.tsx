@@ -1,5 +1,3 @@
-"use client";
-
 import { Shield, HardHat, Truck, Flame, Wind, Wrench } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { IconName } from "@/data/services";

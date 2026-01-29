@@ -252,7 +252,9 @@ function JobCard({
   onSelect: (job: JobWithUrls) => void;
 }) {
   return (
-    <motion.div
+    <motion.button
+      type="button"
+      aria-label={`View details for ${job.JobTitle}`}
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ delay: index * 0.03, duration: 0.2 }}
@@ -304,7 +306,7 @@ function JobCard({
           </span>
         </div>
       </div>
-    </motion.div>
+    </motion.button>
   );
 }
 

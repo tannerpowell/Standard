@@ -1,5 +1,26 @@
 import { z } from "zod";
 
+const SUBJECTS = [
+  "general",
+  "quote",
+  "training",
+  "environmental",
+  "equipment",
+  "other",
+] as const;
+
+const humanize = (subject: string): string => {
+  const labels: Record<string, string> = {
+    general: "General Inquiry",
+    quote: "Request a Quote",
+    training: "Training & Certification",
+    environmental: "Environmental Services",
+    equipment: "Equipment Sales/Rental",
+    other: "Other",
+  };
+  return labels[subject] || subject;
+};
+
 export const contactFormSchema = z.object({
   name: z
     .string()
@@ -13,17 +34,7 @@ export const contactFormSchema = z.object({
       (val) => !val || /^[\d\s\-\(\)\+]+$/.test(val),
       "Please enter a valid phone number"
     ),
-  subject: z.enum(
-    [
-      "general",
-      "quote",
-      "training",
-      "environmental",
-      "equipment",
-      "other",
-    ],
-    { message: "Please select a subject" }
-  ),
+  subject: z.enum(SUBJECTS, { message: "Please select a subject" }),
   message: z
     .string()
     .min(10, "Message must be at least 10 characters")
@@ -32,11 +43,7 @@ export const contactFormSchema = z.object({
 
 export type ContactFormData = z.infer<typeof contactFormSchema>;
 
-export const subjectOptions = [
-  { value: "general", label: "General Inquiry" },
-  { value: "quote", label: "Request a Quote" },
-  { value: "training", label: "Training & Certification" },
-  { value: "environmental", label: "Environmental Services" },
-  { value: "equipment", label: "Equipment Sales/Rental" },
-  { value: "other", label: "Other" },
-];
+export const subjectOptions = SUBJECTS.map((s) => ({
+  value: s,
+  label: humanize(s),
+}));

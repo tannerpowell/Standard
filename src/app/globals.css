@@ -110,6 +110,8 @@
   --sidebar-accent-foreground: #0f172a;
   --sidebar-border: #e2e8f0;
   --sidebar-ring: #d51f26;
+
+  --color-paragraph: #454545;
 }
 
 .dark {
@@ -157,6 +159,8 @@
   --sidebar-accent-foreground: #f8fafc;
   --sidebar-border: #334155;
   --sidebar-ring: #d51f26;
+
+  --color-paragraph-dark: #a1a1aa;
 }
 
 @layer base {
@@ -172,10 +176,10 @@
     line-height: 1.8em;
   }
   p {
-    color: #454545;
+    color: var(--color-paragraph);
   }
   .dark p {
-    color: #a1a1aa;
+    color: var(--color-paragraph-dark);
   }
   .container {
     margin-inline: auto;

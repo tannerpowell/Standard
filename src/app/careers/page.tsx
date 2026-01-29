@@ -28,9 +28,10 @@ async function getJobs(): Promise<PaylocityJob[]> {
     const start = html.indexOf(marker);
     if (start === -1) return [];
 
-    const jsonStart = start + marker.length;
+    const jsonStart = html.indexOf("{", start + marker.length);
+    if (jsonStart === -1) return [];
     let depth = 0;
-    let jsonEnd = jsonStart;
+    let jsonEnd = -1;
     for (let i = jsonStart; i < html.length; i++) {
       if (html[i] === "{") depth++;
       if (html[i] === "}") depth--;
@@ -39,7 +40,7 @@ async function getJobs(): Promise<PaylocityJob[]> {
         break;
       }
     }
-
+    if (jsonEnd === -1) return [];
     const raw = html.slice(jsonStart, jsonEnd);
     const pageData: PaylocityPageData = JSON.parse(raw);
     return pageData.Jobs ?? [];
@@ -51,12 +52,21 @@ async function getJobs(): Promise<PaylocityJob[]> {
 async function getAllJobDetails(
   jobs: PaylocityJob[],
 ): Promise<Record<number, JobDetails>> {
-  const entries = await Promise.all(
-    jobs.map(async (job) => {
-      const details = await fetchJobDetails(PAYLOCITY_BASE, job.JobId);
-      return [job.JobId, details] as const;
-    }),
-  );
+  const CONCURRENCY_LIMIT = 5;
+  const entries: Array<readonly [number, JobDetails]> = [];
+
+  // Process jobs in batches to limit concurrent requests
+  for (let i = 0; i < jobs.length; i += CONCURRENCY_LIMIT) {
+    const batch = jobs.slice(i, i + CONCURRENCY_LIMIT);
+    const batchResults = await Promise.all(
+      batch.map(async (job) => {
+        const details = await fetchJobDetails(PAYLOCITY_BASE, job.JobId);
+        return [job.JobId, details] as const;
+      }),
+    );
+    entries.push(...batchResults);
+  }
+
   return Object.fromEntries(entries);
 }
 

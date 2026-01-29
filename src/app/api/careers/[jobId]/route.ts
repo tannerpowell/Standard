@@ -14,6 +14,10 @@ export async function GET(
 
   const details = await fetchJobDetails(PAYLOCITY_BASE, Number(jobId));
 
+  if (!details.description && !details.requirements) {
+    return NextResponse.json({ error: "Job not found" }, { status: 404 });
+  }
+
   return NextResponse.json(details, {
     headers: {
       "Cache-Control": "public, s-maxage=1800, stale-while-revalidate=3600",

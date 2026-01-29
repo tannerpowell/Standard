@@ -3,7 +3,6 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
-import { ChevronDown } from "lucide-react";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -60,7 +59,7 @@ export function Hero() {
         >
           <motion.h1
             variants={itemVariants}
-            className="font-['StandardTX_Display'] text-[100px] font-normal leading-[0.8] tracking-[-0.01em] text-white/90"
+            className="font-['StandardTX_Display'] text-[60px] sm:text-[80px] lg:text-[100px] font-normal leading-[0.8] tracking-[-0.01em] text-white/90"
           >
             REPUTATION
             <br />

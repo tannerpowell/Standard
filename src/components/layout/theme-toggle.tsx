@@ -39,7 +39,7 @@ export function ThemeToggle({ variant = "default" }: ThemeToggleProps) {
       size="icon"
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
       className={cn(
-        "h-8 w-8 transition-colors",
+        "relative h-8 w-8 transition-colors",
         variant === "default" && "hover:bg-muted",
         variant === "header" && "text-white/90 hover:bg-white/10 hover:text-white"
       )}

@@ -15,8 +15,14 @@ export async function fetchJobDetails(
   baseUrl: string,
   jobId: number,
 ): Promise<JobDetails> {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
+
   try {
-    const res = await fetch(`${baseUrl}/Recruiting/Jobs/Details/${jobId}`);
+    const res = await fetch(`${baseUrl}/Recruiting/Jobs/Details/${jobId}`, {
+      signal: controller.signal,
+    });
+    clearTimeout(timeoutId);
     if (!res.ok) return { description: "", requirements: "" };
     const html = await res.text();
     return {
@@ -24,6 +30,7 @@ export async function fetchJobDetails(
       requirements: extractRequirements(html),
     };
   } catch {
+    clearTimeout(timeoutId);
     return { description: "", requirements: "" };
   }
 }
@@ -102,7 +109,14 @@ function sanitizeHtml(html: string): string {
   // Normalize <br> to newlines first
   text = text.replace(/<br\s*\/?>/gi, "\n");
 
-  // Strip all tags except p, ul, ol, li, strong, em, b, i
+  // First, remove dangerous tags and their content entirely
+  text = text.replace(/<script[^>]*>[\s\S]*?<\/script>/gi, "");
+  text = text.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "");
+  text = text.replace(/<iframe[^>]*>[\s\S]*?<\/iframe>/gi, "");
+  text = text.replace(/<object[^>]*>[\s\S]*?<\/object>/gi, "");
+  text = text.replace(/<embed[^>]*>/gi, "");
+
+  // Strip remaining disallowed tags (keep content)
   text = text.replace(/<\/?(div|span|a|table|tr|td|th|thead|tbody|h[1-6]|img|hr|section|article|header|footer|nav|figure|figcaption|blockquote|pre|code|dl|dt|dd)[^>]*>/gi, "");
 
   // Decode entities

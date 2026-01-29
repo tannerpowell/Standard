@@ -40,9 +40,9 @@ export function FocusPillars() {
           viewport={{ once: true }}
           className="mb-8 grid gap-8 md:grid-cols-2 md:items-center"
         >
-          <h1 className="font-['StandardTX_Display'] text-[100px] font-normal leading-[0.8] tracking-[-0.01em] text-[#d51f26]">
+          <h2 className="font-['StandardTX_Display'] text-[100px] font-normal leading-[0.8] tracking-[-0.01em] text-[#d51f26]">
             OUR FOCUS
-          </h1>
+          </h2>
           <p className="text-lg text-muted-foreground">
             Located in the heart of the Permian Basin, Standard Safety & Supply
             strives to provide industry-leading and cost-effective health,
@@ -69,14 +69,14 @@ export function FocusPillars() {
               viewport={{ once: true }}
             >
               {/* Number - red */}
-              <h3 className="mb-2 font-[family-name:var(--font-jost)] text-sm font-semibold tracking-widest text-[#d51f26]">
+              <span className="mb-2 block font-[family-name:var(--font-jost)] text-sm font-semibold tracking-widest text-[#d51f26]">
                 {pillar.number}
-              </h3>
+              </span>
 
               {/* Title with dash - navy blue, futura-pt style */}
-              <h2 className="mb-1 font-[family-name:var(--font-jost)] text-2xl font-bold uppercase tracking-wide text-[#2a3583] dark:text-white">
+              <h3 className="mb-1 font-[family-name:var(--font-jost)] text-2xl font-bold uppercase tracking-wide text-[#2a3583] dark:text-white">
                 {pillar.title}
-              </h2>
+              </h3>
               <div className="mb-4 h-1 w-5 bg-[#2a3583] dark:bg-white" />
 
               {/* Description */}

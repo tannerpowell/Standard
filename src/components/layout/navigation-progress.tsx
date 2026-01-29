@@ -29,18 +29,15 @@ export function NavigationProgress() {
       previousPathRef.current = pathname;
     }
 
-    // Complete the progress bar
-    NProgress.done();
-
-    // Clear the timeout if navigation completes before 150ms
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = null;
-    }
-
+    // Cleanup function runs on unmount or when dependencies change
     return () => {
+      // Complete the progress bar
+      NProgress.done();
+
+      // Clear the timeout if navigation completes before 150ms
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
       }
     };
   }, [pathname, searchParams]);

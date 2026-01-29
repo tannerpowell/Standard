@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Image from "next/image";
 import { Phone, MapPin } from "lucide-react";
 import { ContactForm } from "@/components/sections/contact-form";
+import { companyInfo } from "@/data/navigation";
 
 export const metadata: Metadata = {
   title: "Contact Us",
@@ -87,12 +88,10 @@ export default function ContactPage() {
                             Office Main
                           </p>
                           <a
-                            href="tel:4326530393"
-                            target="_blank"
-                            rel="noopener noreferrer"
+                            href={`tel:${companyInfo.phone.replace(/[^0-9]/g, "")}`}
                             className="font-[family-name:var(--font-jost)] text-[17px] font-semibold text-foreground transition-colors hover:text-[#d51f26]"
                           >
-                            (432) 653-0393
+                            {companyInfo.phone}
                           </a>
                         </div>
                       </div>

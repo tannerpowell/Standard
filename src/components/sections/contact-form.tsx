@@ -28,8 +28,6 @@ export function ContactForm() {
   const {
     register,
     handleSubmit,
-    setValue,
-    watch,
     reset,
     formState: { errors },
   } = useForm<ContactFormData>({
@@ -43,8 +41,6 @@ export function ContactForm() {
     },
   });
 
-  const selectedSubject = watch("subject");
-
   const onSubmit = async (data: ContactFormData) => {
     setStatus("submitting");
     setErrorMessage("");
@@ -56,7 +52,12 @@ export function ContactForm() {
         body: JSON.stringify(data),
       });
 
-      const result = await response.json();
+      let result;
+      try {
+        result = await response.json();
+      } catch {
+        throw new Error("Invalid response from server");
+      }
 
       if (!response.ok) {
         throw new Error(result.error || "Failed to send message");
@@ -177,14 +178,7 @@ export function ContactForm() {
               </label>
               <select
                 id="subject"
-                value={selectedSubject ?? ""}
-                onChange={(e) =>
-                  setValue(
-                    "subject",
-                    e.target.value as ContactFormData["subject"],
-                    { shouldValidate: true }
-                  )
-                }
+                {...register("subject")}
                 className={`${INPUT_BASE} ${errors.subject ? INPUT_ERROR : ""}`}
               >
                 <option value="" disabled>

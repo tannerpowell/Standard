@@ -6,6 +6,9 @@ import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
+const SERVICE_LINK_CLASS =
+  "group inline-flex items-center gap-3 border border-white/70 bg-transparent px-10 py-5 font-[family-name:var(--font-oswald)] text-xs font-medium uppercase tracking-[0.2em] text-white transition-all duration-200 hover:bg-white hover:text-[#2a3583]";
+
 export function ServicesPreview() {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -42,10 +45,7 @@ export function ServicesPreview() {
           <h2 className="mb-6 font-['StandardTX_Display'] text-[100px] font-normal leading-[0.8] tracking-[-0.01em] text-white/90">
             SERVICES
           </h2>
-          <Link
-            href="/services"
-            className="group inline-flex items-center gap-3 border border-white/70 bg-transparent px-10 py-5 font-[family-name:var(--font-oswald)] text-xs font-medium uppercase tracking-[0.2em] text-white transition-all duration-200 hover:bg-white hover:text-[#2a3583]"
-          >
+          <Link href="/services" className={SERVICE_LINK_CLASS}>
             What We Do
             <ArrowRight className="h-3 w-3" />
           </Link>
@@ -62,10 +62,7 @@ export function ServicesPreview() {
           <h2 className="mb-6 font-['StandardTX_Display'] text-[100px] font-normal leading-[0.8] tracking-[-0.01em] text-white/90">
             TRAINING
           </h2>
-          <Link
-            href="/training"
-            className="group inline-flex items-center gap-3 border border-white/70 bg-transparent px-10 py-5 font-[family-name:var(--font-oswald)] text-xs font-medium uppercase tracking-[0.2em] text-white transition-all duration-200 hover:bg-white hover:text-[#2a3583]"
-          >
+          <Link href="/training" className={SERVICE_LINK_CLASS}>
             Get Certified
             <ArrowRight className="h-3 w-3" />
           </Link>

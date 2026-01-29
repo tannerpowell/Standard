@@ -47,6 +47,7 @@ export function PhotoGallery({ images }: PhotoGalleryProps) {
       <div className="grid auto-rows-[280px] grid-cols-2 gap-2 md:auto-rows-[320px] md:grid-cols-4 md:gap-3">
         {images.map((img, i) => (
           <button
+            type="button"
             key={img.src}
             onClick={() => setLightboxIndex(i)}
             className={[
@@ -86,17 +87,17 @@ export function PhotoGallery({ images }: PhotoGalleryProps) {
               {images.length}
             </DialogPrimitive.Title>
 
-            <DialogPrimitive.Close className="absolute right-4 top-4 z-10 rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70">
+            <DialogPrimitive.Close type="button" className="absolute right-4 top-4 z-10 rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70">
               <X className="h-6 w-6" />
               <span className="sr-only">Close</span>
             </DialogPrimitive.Close>
 
-            <button onClick={() => navigate(-1)} className={`left-4 ${NAV_BUTTON}`}>
+            <button type="button" onClick={() => navigate(-1)} className={`left-4 ${NAV_BUTTON}`}>
               <ChevronLeft className="h-8 w-8" />
               <span className="sr-only">Previous image</span>
             </button>
 
-            <button onClick={() => navigate(1)} className={`right-4 ${NAV_BUTTON}`}>
+            <button type="button" onClick={() => navigate(1)} className={`right-4 ${NAV_BUTTON}`}>
               <ChevronRight className="h-8 w-8" />
               <span className="sr-only">Next image</span>
             </button>

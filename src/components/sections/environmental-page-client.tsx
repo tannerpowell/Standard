@@ -29,7 +29,6 @@ function ServiceSection({ service, index }: ServiceSectionProps): React.ReactNod
 
   return (
     <section
-      key={service.id}
       className={isEven ? "bg-[#fafafa] py-16 dark:bg-slate-800/20" : "py-16"}
     >
       <div className="container">

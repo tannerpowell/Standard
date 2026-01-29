@@ -82,6 +82,7 @@ export function TrainingPageClient({
         <div className="container">
           <div className="flex gap-2 overflow-x-auto">
             <button
+              type="button"
               onClick={() => setActiveCategory("all")}
               className={chipClass(activeCategory === "all")}
             >
@@ -90,6 +91,7 @@ export function TrainingPageClient({
             {categories.map((cat) => (
               <button
                 key={cat.id}
+                type="button"
                 onClick={() => setActiveCategory(cat.id)}
                 className={chipClass(activeCategory === cat.id)}
               >
@@ -108,6 +110,9 @@ export function TrainingPageClient({
           </h2>
           <p className="mb-10 font-['StandardTX_Display'] text-[40px] leading-[0.9] tracking-tight text-foreground sm:text-[52px]">
             SAFETY COURSES
+            <span className="ml-3 text-[28px] font-normal text-slate-400 sm:text-[32px]">
+              {totalCourses}
+            </span>
           </p>
 
           <AnimatePresence mode="wait">

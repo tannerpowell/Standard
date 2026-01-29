@@ -13,14 +13,12 @@ export function Header() {
 
   // Match original: Oswald, 15px, weight 600, letter-spacing 0.1em, uppercase
   const navLinkStyles = cn(
-    "font-[family-name:var(--font-oswald)] text-[15px] font-semibold tracking-[0.1em] uppercase text-white transition-colors duration-[170ms] hover:text-white/40"
+    "font-[family-name:var(--font-oswald)] text-[15px] font-semibold tracking-[0.1em] uppercase text-white/70 transition-colors duration-[170ms] hover:text-white/40",
   );
 
   return (
     <header className="relative z-50">
-      <div
-        className="bg-[#d51f26]"
-      >
+      <div className="bg-[#d51f26]">
         {/* Header-inner: 3-column grid like standardtx.com */}
         <div className="mx-auto max-w-[2000px] px-[75px] py-[25px] max-lg:px-[31px] max-lg:py-[15px]">
           {/* Desktop: 3-column grid — left nav | center logo | right nav */}
@@ -33,7 +31,7 @@ export function Header() {
                   href={item.href}
                   className={cn(
                     navLinkStyles,
-                    pathname === item.href && "text-white"
+                    pathname === item.href && "text-white underline",
                   )}
                 >
                   {item.name}
@@ -56,16 +54,16 @@ export function Header() {
             {/* Right side navigation + theme toggle */}
             <div className="flex items-center justify-end gap-[1.3em]">
               {secondaryNavigation.map((item) => (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className={cn(
-                      navLinkStyles,
-                      pathname === item.href && "text-white"
-                    )}
-                  >
-                    {item.name}
-                  </Link>
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={cn(
+                    navLinkStyles,
+                    pathname === item.href && "text-white underline",
+                  )}
+                >
+                  {item.name}
+                </Link>
               ))}
               <ThemeToggle variant="header" />
             </div>
