@@ -1,4 +1,24 @@
-export type IconName = "shield" | "hardHat" | "truck" | "flame" | "wind" | "wrench";
+import { Shield, HardHat, Truck, Flame, Wind, Wrench } from "lucide-react";
+
+export type IconName =
+  | "shield"
+  | "hardHat"
+  | "truck"
+  | "flame"
+  | "wind"
+  | "wrench";
+
+export const ICON_MAP: Record<
+  IconName,
+  React.ComponentType<{ className?: string }>
+> = {
+  shield: Shield,
+  hardHat: HardHat,
+  truck: Truck,
+  flame: Flame,
+  wind: Wind,
+  wrench: Wrench,
+};
 
 export interface ServiceOffering {
   id: string;
@@ -20,30 +40,86 @@ export const serviceCategories: ServiceCategory[] = [
 
 export const serviceOfferings: ServiceOffering[] = [
   // Field Safety
-  { id: "gate-guard", title: "24-Hour Gate Guard Coverage", category: "field-safety" },
-  { id: "h2s-techs", title: "H2S Safety Technicians", category: "field-safety" },
-  { id: "hse-advisors", title: "HSE Safety Advisors (D&C, Production and Construction)", category: "field-safety" },
-  { id: "site-safety", title: "Site Safety Technicians", category: "field-safety" },
-  { id: "training", title: "Safety Training Services", category: "field-safety" },
+  {
+    id: "gate-guard",
+    title: "24-Hour Gate Guard Coverage",
+    category: "field-safety",
+  },
+  {
+    id: "h2s-techs",
+    title: "H2S Safety Technicians",
+    category: "field-safety",
+  },
+  {
+    id: "hse-advisors",
+    title: "HSE Safety Advisors (D&C, Production and Construction)",
+    category: "field-safety",
+  },
+  {
+    id: "site-safety",
+    title: "Site Safety Technicians",
+    category: "field-safety",
+  },
+  {
+    id: "training",
+    title: "Safety Training Services",
+    category: "field-safety",
+  },
 
   // H2S & Gas Detection
   { id: "low-risk-h2s", title: "Low Risk H2S Package", category: "h2s-gas" },
   { id: "high-risk-h2s", title: "High Risk H2S Package", category: "h2s-gas" },
-  { id: "lel-wireless", title: "LEL Wireless System w/ Four Heads (Redline)", category: "h2s-gas" },
-  { id: "stain-tubes", title: "H2S Stain Tubes (ROE Calculation)", category: "h2s-gas" },
+  {
+    id: "lel-wireless",
+    title: "LEL Wireless System w/ Four Heads (Redline)",
+    category: "h2s-gas",
+  },
+  {
+    id: "stain-tubes",
+    title: "H2S Stain Tubes (ROE Calculation)",
+    category: "h2s-gas",
+  },
   { id: "line-locating", title: "Line Locating", category: "h2s-gas" },
 
   // Equipment Rental
-  { id: "restraint-systems", title: "High-Pressure Restraint Systems", category: "equipment-rental" },
-  { id: "breathing-air", title: "6-Bottle Breathing Air Trailer", category: "equipment-rental" },
-  { id: "shower-trailer", title: "Shower Trailer", category: "equipment-rental" },
-  { id: "combo-trailer", title: "Combo Trailer (Shower/Recovery)", category: "equipment-rental" },
-  { id: "mobile-air", title: "Mobile Air Refill", category: "equipment-rental" },
+  {
+    id: "restraint-systems",
+    title: "High-Pressure Restraint Systems",
+    category: "equipment-rental",
+  },
+  {
+    id: "breathing-air",
+    title: "6-Bottle Breathing Air Trailer",
+    category: "equipment-rental",
+  },
+  {
+    id: "shower-trailer",
+    title: "Shower Trailer",
+    category: "equipment-rental",
+  },
+  {
+    id: "combo-trailer",
+    title: "Combo Trailer (Shower/Recovery)",
+    category: "equipment-rental",
+  },
+  {
+    id: "mobile-air",
+    title: "Mobile Air Refill",
+    category: "equipment-rental",
+  },
 
   // Inspections & Support
   { id: "annual-fe", title: "Annual F.E. Inspection", category: "inspections" },
-  { id: "monthly-fe", title: "Monthly F.E. Inspection", category: "inspections" },
-  { id: "rig-up-down", title: "Equipment Rig Up & Rig Down", category: "inspections" },
+  {
+    id: "monthly-fe",
+    title: "Monthly F.E. Inspection",
+    category: "inspections",
+  },
+  {
+    id: "rig-up-down",
+    title: "Equipment Rig Up & Rig Down",
+    category: "inspections",
+  },
 ];
 
 export interface ServiceDetail {

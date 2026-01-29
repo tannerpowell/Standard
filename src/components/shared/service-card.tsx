@@ -1,15 +1,6 @@
-import { Shield, HardHat, Truck, Flame, Wind, Wrench } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { IconName } from "@/data/services";
-
-const iconMap = {
-  shield: Shield,
-  hardHat: HardHat,
-  truck: Truck,
-  flame: Flame,
-  wind: Wind,
-  wrench: Wrench,
-};
+import { ICON_MAP } from "@/data/services";
 
 interface ServiceCardProps {
   title: string;
@@ -28,7 +19,7 @@ export function ServiceCard({
   className,
   variant = "default",
 }: ServiceCardProps) {
-  const Icon = iconMap[iconName];
+  const Icon = ICON_MAP[iconName];
 
   return (
     <div
@@ -41,7 +32,7 @@ export function ServiceCard({
         // Hover state
         "transition-all duration-300",
         "hover:border-[#2a3583] hover:shadow-[0_8px_30px_-4px_rgba(42,53,131,0.2)]",
-        className
+        className,
       )}
     >
       {/* Icon */}
@@ -65,7 +56,9 @@ export function ServiceCard({
           {features.slice(0, 4).map((feature) => (
             <li key={feature} className="flex items-center gap-2.5 text-sm">
               <div className="h-1.5 w-1.5 shrink-0 bg-[#d51f26]" />
-              <span className="text-slate-600 dark:text-slate-300">{feature}</span>
+              <span className="text-slate-600 dark:text-slate-300">
+                {feature}
+              </span>
             </li>
           ))}
           {features.length > 4 && (

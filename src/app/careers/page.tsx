@@ -18,9 +18,15 @@ export const metadata: Metadata = {
 
 async function getJobs(): Promise<PaylocityJob[]> {
   try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
     const res = await fetch(PAYLOCITY_PAGE_URL, {
       next: { revalidate: 1800 },
+      signal: controller.signal,
     });
+    clearTimeout(timeout);
+
     if (!res.ok) return [];
     const html = await res.text();
 
@@ -42,7 +48,14 @@ async function getJobs(): Promise<PaylocityJob[]> {
     }
     if (jsonEnd === -1) return [];
     const raw = html.slice(jsonStart, jsonEnd);
-    const pageData: PaylocityPageData = JSON.parse(raw);
+    const parsed = JSON.parse(raw);
+
+    // Validate that the parsed object conforms to expected shape
+    if (!parsed || typeof parsed !== "object" || !Array.isArray(parsed.Jobs)) {
+      return [];
+    }
+
+    const pageData: PaylocityPageData = parsed;
     return pageData.Jobs ?? [];
   } catch {
     return [];

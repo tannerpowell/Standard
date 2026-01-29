@@ -16,13 +16,21 @@ interface PhotoGalleryProps {
 
 export function PhotoGallery({ images }: PhotoGalleryProps) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-  const isOpen = lightboxIndex !== null;
+
+  // Guard against invalid lightbox index when images change
+  const safeIndex =
+    lightboxIndex !== null && images.length > 0
+      ? Math.min(lightboxIndex, images.length - 1)
+      : lightboxIndex;
+
+  const isOpen = safeIndex !== null && images.length > 0;
 
   const navigate = useCallback(
     (dir: 1 | -1) => {
       setLightboxIndex((prev) => {
-        if (prev === null) return null;
-        return (prev + dir + images.length) % images.length;
+        if (prev === null || images.length === 0) return null;
+        const nextIndex = (prev + dir + images.length) % images.length;
+        return Math.max(0, Math.min(nextIndex, images.length - 1));
       });
     },
     [images.length],
@@ -83,7 +91,7 @@ export function PhotoGallery({ images }: PhotoGalleryProps) {
             aria-describedby={undefined}
           >
             <DialogPrimitive.Title className="sr-only">
-              Gallery image {lightboxIndex !== null ? lightboxIndex + 1 : ""} of{" "}
+              Gallery image {safeIndex !== null ? safeIndex + 1 : ""} of{" "}
               {images.length}
             </DialogPrimitive.Title>
 
@@ -103,9 +111,9 @@ export function PhotoGallery({ images }: PhotoGalleryProps) {
             </button>
 
             <AnimatePresence mode="wait">
-              {lightboxIndex !== null && (
+              {safeIndex !== null && images[safeIndex] != null && (
                 <motion.div
-                  key={lightboxIndex}
+                  key={safeIndex}
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
@@ -113,8 +121,8 @@ export function PhotoGallery({ images }: PhotoGalleryProps) {
                   className="relative h-[80vh] w-[90vw] max-w-5xl"
                 >
                   <Image
-                    src={images[lightboxIndex].src}
-                    alt={images[lightboxIndex].alt}
+                    src={images[safeIndex].src}
+                    alt={images[safeIndex].alt}
                     fill
                     sizes="90vw"
                     className="object-contain"
@@ -124,9 +132,9 @@ export function PhotoGallery({ images }: PhotoGalleryProps) {
               )}
             </AnimatePresence>
 
-            {lightboxIndex !== null && (
+            {safeIndex !== null && (
               <div className="absolute bottom-6 left-1/2 -translate-x-1/2 rounded-full bg-black/50 px-4 py-1.5 font-[family-name:var(--font-jost)] text-sm text-white/80">
-                {lightboxIndex + 1} / {images.length}
+                {safeIndex + 1} / {images.length}
               </div>
             )}
           </DialogPrimitive.Content>

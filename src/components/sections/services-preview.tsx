@@ -10,7 +10,7 @@ const SERVICE_LINK_CLASS =
   "group inline-flex items-center gap-3 border border-white/70 bg-transparent px-10 py-5 font-[family-name:var(--font-oswald)] text-xs font-medium uppercase tracking-[0.2em] text-white transition-all duration-200 hover:bg-white hover:text-[#2a3583]";
 
 export function ServicesPreview() {
-  const ref = useRef(null);
+  const ref = useRef<HTMLElement | null>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],

@@ -73,10 +73,10 @@ export default function ContactPage() {
                         <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-[#d51f26]" />
                         <div>
                           <p className="font-[family-name:var(--font-jost)] text-[15px] font-medium text-foreground">
-                            3401 S County Rd 1290
+                            {companyInfo.address.street}
                           </p>
                           <p className="font-[family-name:var(--font-jost)] text-[15px] text-slate-500 dark:text-slate-400">
-                            Odessa, TX 79765
+                            {companyInfo.address.city}, {companyInfo.address.state} {companyInfo.address.zip}
                           </p>
                         </div>
                       </div>

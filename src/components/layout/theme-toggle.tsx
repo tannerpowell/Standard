@@ -23,6 +23,8 @@ export function ThemeToggle({ variant = "default" }: ThemeToggleProps) {
       <Button
         variant="ghost"
         size="icon"
+        aria-hidden="true"
+        tabIndex={-1}
         className={cn(
           "h-8 w-8",
           variant === "header" && "text-white/90 hover:bg-white/10 hover:text-white"

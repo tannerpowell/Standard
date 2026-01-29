@@ -39,11 +39,7 @@ export function CTASection() {
             </p>
 
             <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Button
-                asChild
-                size="lg"
-                className="h-14 bg-white px-8 font-[family-name:var(--font-oswald)] text-base font-medium uppercase tracking-wide text-[#d51f26] hover:bg-white/90"
-              >
+              <Button asChild variant="cta">
                 <Link href="/contact">
                   Get Your Free Quote
                   <ArrowRight className="ml-2 h-5 w-5" />

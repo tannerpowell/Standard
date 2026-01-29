@@ -104,7 +104,7 @@ export async function POST(request: NextRequest) {
 
     const { data, error } = await resend.emails.send({
       from: `${companyInfo.name} Website <onboarding@resend.dev>`,
-      to: process.env.CONTACT_EMAIL || "apply@standardtx.com",
+      to: process.env.CONTACT_EMAIL || companyInfo.email,
       replyTo: email,
       subject: `[Website Contact] ${subjectLabel} - ${name}`,
       html: `

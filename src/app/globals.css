@@ -274,11 +274,13 @@ html {
 
 /* Full-width color blocks - the original site's signature */
 .section-red {
-  @apply bg-[#d51f26] text-white;
+  @apply text-white;
+  background-color: var(--brand-red);
 }
 
 .section-navy {
-  @apply bg-[#2a3583] text-white;
+  @apply text-white;
+  background-color: var(--brand-navy);
 }
 
 /* Uppercase headings - industrial style */
@@ -307,7 +309,8 @@ html {
 }
 .job-description li::before {
   content: "•";
-  @apply absolute left-0 text-[#d51f26];
+  @apply absolute left-0;
+  color: var(--brand-red, #d51f26);
 }
 
 /* Focus styles for accessibility */

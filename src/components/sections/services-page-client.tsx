@@ -2,32 +2,15 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Check,
-  Flame,
-  HardHat,
-  Shield,
-  Truck,
-  Wind,
-  Wrench,
-} from "lucide-react";
+import { Check } from "lucide-react";
 import type {
-  IconName,
   ServiceCategory,
   ServiceDetail,
   ServiceOffering,
 } from "@/data/services";
+import { ICON_MAP } from "@/data/services";
 import type { GalleryImage } from "@/data/gallery";
 import { PhotoGallery } from "@/components/shared/photo-gallery";
-
-const ICON_MAP: Record<IconName, React.ComponentType<{ className?: string }>> = {
-  shield: Shield,
-  hardHat: HardHat,
-  truck: Truck,
-  flame: Flame,
-  wind: Wind,
-  wrench: Wrench,
-};
 
 const CHIP_BASE =
   "rounded-full px-5 py-2 font-[family-name:var(--font-jost)] text-sm font-medium transition-all";
@@ -157,7 +140,10 @@ interface DetailSectionProps {
   index: number;
 }
 
-function DetailSection({ detail, index }: DetailSectionProps): React.JSX.Element {
+function DetailSection({
+  detail,
+  index,
+}: DetailSectionProps): React.JSX.Element {
   const isReversed = index % 2 !== 0;
   const number = String(index + 1).padStart(2, "0");
   const Icon = ICON_MAP[detail.iconName];

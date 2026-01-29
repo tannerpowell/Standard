@@ -1,9 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ExternalLink, MapPin, X } from "lucide-react";
 import Link from "next/link";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
 import type { PaylocityJob } from "@/data/careers";
 import type { JobDetails } from "@/data/careers-parse";
 
@@ -193,15 +194,12 @@ export function CareersPageClient({
       </section>
 
       {/* ─── Job Detail Modal ─── */}
-      <AnimatePresence>
-        {selectedJob && (
-          <JobDetailModal
-            job={selectedJob}
-            details={detailsMap[selectedJob.JobId]}
-            onClose={() => setSelectedJob(null)}
-          />
-        )}
-      </AnimatePresence>
+      <JobDetailModal
+        job={selectedJob}
+        details={selectedJob ? detailsMap[selectedJob.JobId] : undefined}
+        open={selectedJob !== null}
+        onClose={() => setSelectedJob(null)}
+      />
     </div>
   );
 }
@@ -315,142 +313,124 @@ function JobCard({
 function JobDetailModal({
   job,
   details,
+  open,
   onClose,
 }: {
-  job: JobWithUrls;
+  job: JobWithUrls | null;
   details: JobDetails | undefined;
+  open: boolean;
   onClose: () => void;
 }) {
-  const overlayRef = useRef<HTMLDivElement>(null);
-
-  // Lock body scroll
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, []);
-
-  // Close on Escape
-  useEffect(() => {
-    function handleKey(e: KeyboardEvent) {
-      if (e.key === "Escape") onClose();
-    }
-    window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
-  }, [onClose]);
-
-  // Close on backdrop click
-  const handleBackdropClick = useCallback(
-    (e: React.MouseEvent) => {
-      if (e.target === overlayRef.current) onClose();
-    },
-    [onClose],
-  );
-
   const hasContent = details?.description || details?.requirements;
 
+  if (!job) return null;
+
   return (
-    <motion.div
-      ref={overlayRef}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.2 }}
-      onClick={handleBackdropClick}
-      className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/50 p-4 pt-[5vh] pb-[5vh] backdrop-blur-sm sm:p-8 sm:pt-[8vh]"
-    >
-      <motion.div
-        initial={{ opacity: 0, y: 24, scale: 0.97 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: 24, scale: 0.97 }}
-        transition={{ duration: 0.25, ease: "easeOut" }}
-        className="relative w-full max-w-3xl rounded-lg bg-white shadow-2xl dark:bg-slate-900"
-      >
-        {/* Close button */}
-        <button
-          onClick={onClose}
-          className="absolute right-4 top-4 z-10 rounded-full p-2 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-300"
+    <DialogPrimitive.Root open={open} onOpenChange={(isOpen) => { if (!isOpen) onClose(); }}>
+      <DialogPrimitive.Portal>
+        <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0" />
+        <DialogPrimitive.Content
+          className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto p-4 pt-[5vh] pb-[5vh] outline-none sm:p-8 sm:pt-[8vh]"
+          aria-describedby={hasContent ? "job-description-content" : undefined}
         >
-          <X className="h-5 w-5" />
-        </button>
+          <DialogPrimitive.Title className="sr-only">
+            {job.JobTitle} - Job Details
+          </DialogPrimitive.Title>
 
-        {/* Header */}
-        <div className="border-b border-slate-200 p-6 pb-5 pr-14 dark:border-slate-700">
-          <div className="mb-3 flex flex-wrap items-center gap-3">
-            {job.LocationName && (
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-[#d51f26]/10 px-3 py-1 font-[family-name:var(--font-jost)] text-xs font-semibold text-[#d51f26]">
-                <MapPin className="h-3 w-3" />
-                {job.LocationName}
-              </span>
-            )}
-            <span className="font-[family-name:var(--font-jost)] text-xs text-slate-400">
-              Posted {relativeTime(job.PublishedDate)}
-            </span>
-          </div>
-          <h2 className="font-[family-name:var(--font-oswald)] text-2xl font-semibold uppercase leading-snug tracking-wide text-foreground sm:text-3xl">
-            {job.JobTitle}
-          </h2>
-          {job.HiringDepartment && (
-            <p className="mt-1 font-[family-name:var(--font-jost)] text-sm text-slate-500 dark:text-slate-400">
-              {job.HiringDepartment}
-            </p>
-          )}
-        </div>
+          <motion.div
+            initial={{ opacity: 0, y: 24, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 24, scale: 0.97 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="relative w-full max-w-3xl rounded-lg bg-white shadow-2xl dark:bg-slate-900"
+          >
+            {/* Close button */}
+            <DialogPrimitive.Close
+              type="button"
+              aria-label="Close dialog"
+              className="absolute right-4 top-4 z-10 rounded-full p-2 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-300"
+            >
+              <X className="h-5 w-5" />
+            </DialogPrimitive.Close>
 
-        {/* Body */}
-        <div className="max-h-[60vh] overflow-y-auto p-6">
-          {hasContent ? (
-            <div className="space-y-5">
-              {details!.description && (
-                <div
-                  className="job-description font-[family-name:var(--font-jost)] text-base leading-[1.7] text-slate-900 dark:text-slate-200"
-                  dangerouslySetInnerHTML={{
-                    __html: details!.description,
-                  }}
-                />
-              )}
-              {details!.requirements && (
-                <div>
-                  <h3 className="mb-2 font-[family-name:var(--font-oswald)] text-base font-semibold uppercase tracking-wide text-foreground">
-                    Requirements
-                  </h3>
-                  <div
-                    className="job-description font-[family-name:var(--font-jost)] text-base leading-[1.7] text-slate-900 dark:text-slate-200"
-                    dangerouslySetInnerHTML={{
-                      __html: details!.requirements,
-                    }}
-                  />
-                </div>
+            {/* Header */}
+            <div className="border-b border-slate-200 p-6 pb-5 pr-14 dark:border-slate-700">
+              <div className="mb-3 flex flex-wrap items-center gap-3">
+                {job.LocationName && (
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-[#d51f26]/10 px-3 py-1 font-[family-name:var(--font-jost)] text-xs font-semibold text-[#d51f26]">
+                    <MapPin className="h-3 w-3" />
+                    {job.LocationName}
+                  </span>
+                )}
+                <span className="font-[family-name:var(--font-jost)] text-xs text-slate-400">
+                  Posted {relativeTime(job.PublishedDate)}
+                </span>
+              </div>
+              <h2 className="font-[family-name:var(--font-oswald)] text-2xl font-semibold uppercase leading-snug tracking-wide text-foreground sm:text-3xl">
+                {job.JobTitle}
+              </h2>
+              {job.HiringDepartment && (
+                <p className="mt-1 font-[family-name:var(--font-jost)] text-sm text-slate-500 dark:text-slate-400">
+                  {job.HiringDepartment}
+                </p>
               )}
             </div>
-          ) : (
-            <p className="py-8 text-center font-[family-name:var(--font-jost)] text-sm text-slate-400">
-              No description available. View the full listing on Paylocity.
-            </p>
-          )}
-        </div>
 
-        {/* Footer — sticky apply button */}
-        <div className="sticky bottom-0 flex items-center gap-3 border-t border-slate-200 bg-white/95 p-6 backdrop-blur dark:border-slate-700 dark:bg-slate-900/95">
-          <a
-            href={job.detailsUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-full bg-[#d51f26] px-7 py-3 font-[family-name:var(--font-jost)] text-sm font-semibold text-white transition-colors hover:bg-[#b91c22]"
-          >
-            Apply Now
-            <ExternalLink className="h-3.5 w-3.5" />
-          </a>
-          <button
-            onClick={onClose}
-            className="rounded-full px-5 py-3 font-[family-name:var(--font-jost)] text-sm font-medium text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700 dark:text-slate-400 dark:hover:bg-slate-800"
-          >
-            Close
-          </button>
-        </div>
-      </motion.div>
-    </motion.div>
+            {/* Body */}
+            <div id="job-description-content" className="max-h-[60vh] overflow-y-auto p-6">
+              {hasContent ? (
+                <div className="space-y-5">
+                  {details!.description && (
+                    <div
+                      className="job-description font-[family-name:var(--font-jost)] text-base leading-[1.7] text-slate-900 dark:text-slate-200"
+                      dangerouslySetInnerHTML={{
+                        __html: details!.description,
+                      }}
+                    />
+                  )}
+                  {details!.requirements && (
+                    <div>
+                      <h3 className="mb-2 font-[family-name:var(--font-oswald)] text-base font-semibold uppercase tracking-wide text-foreground">
+                        Requirements
+                      </h3>
+                      <div
+                        className="job-description font-[family-name:var(--font-jost)] text-base leading-[1.7] text-slate-900 dark:text-slate-200"
+                        dangerouslySetInnerHTML={{
+                          __html: details!.requirements,
+                        }}
+                      />
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <p className="py-8 text-center font-[family-name:var(--font-jost)] text-sm text-slate-400">
+                  No description available. View the full listing on Paylocity.
+                </p>
+              )}
+            </div>
+
+            {/* Footer — sticky apply button */}
+            <div className="sticky bottom-0 flex items-center gap-3 border-t border-slate-200 bg-white/95 p-6 backdrop-blur dark:border-slate-700 dark:bg-slate-900/95">
+              <a
+                href={job.detailsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full bg-[#d51f26] px-7 py-3 font-[family-name:var(--font-jost)] text-sm font-semibold text-white transition-colors hover:bg-[#b91c22]"
+              >
+                Apply Now
+                <ExternalLink className="h-3.5 w-3.5" />
+              </a>
+              <DialogPrimitive.Close
+                type="button"
+                className="rounded-full px-5 py-3 font-[family-name:var(--font-jost)] text-sm font-medium text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700 dark:text-slate-400 dark:hover:bg-slate-800"
+              >
+                Close
+              </DialogPrimitive.Close>
+            </div>
+          </motion.div>
+        </DialogPrimitive.Content>
+      </DialogPrimitive.Portal>
+    </DialogPrimitive.Root>
   );
 }
 

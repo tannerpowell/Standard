@@ -102,6 +102,26 @@ function extractOuterDiv(html: string): string {
   return "";
 }
 
+/**
+ * Escape HTML-special characters, then restore an allowlist of safe inline
+ * formatting tags (<strong>, <em>, <b>, <i> — both opening and closing).
+ */
+function escapeWithAllowlist(text: string): string {
+  // 1. Escape all HTML-special characters
+  const escaped = text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+
+  // 2. Restore only permitted formatting tags
+  return escaped.replace(
+    /&lt;(\/?(?:strong|em|b|i))&gt;/gi,
+    (_, tag: string) => `<${tag}>`,
+  );
+}
+
 /** Convert raw Paylocity HTML to sanitized HTML suitable for dangerouslySetInnerHTML */
 function sanitizeHtml(html: string): string {
   let text = html;
@@ -134,6 +154,14 @@ function sanitizeHtml(html: string): string {
     .replace(/&mdash;/g, "\u2014")
     .replace(/&nbsp;/g, " ");
 
+  // Second pass: remove dangerous tags that may have been revealed by entity decoding
+  // (e.g., &lt;script&gt; decoded to <script> would bypass the first strip)
+  text = text.replace(/<script[^>]*>[\s\S]*?<\/script>/gi, "");
+  text = text.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "");
+  text = text.replace(/<iframe[^>]*>[\s\S]*?<\/iframe>/gi, "");
+  text = text.replace(/<object[^>]*>[\s\S]*?<\/object>/gi, "");
+  text = text.replace(/<embed[^>]*>/gi, "");
+
   // Clean inline whitespace
   text = text.replace(/[ \t]+/g, " ");
 
@@ -157,7 +185,7 @@ function sanitizeHtml(html: string): string {
         processed.push("<ul>");
         inList = true;
       }
-      processed.push(`<li>${itemText}</li>`);
+      processed.push(`<li>${escapeWithAllowlist(itemText)}</li>`);
     } else {
       if (inList) {
         processed.push("</ul>");
@@ -165,9 +193,9 @@ function sanitizeHtml(html: string): string {
       }
       // Check if this looks like a section heading (short, ends with ":")
       if (clean.endsWith(":") && clean.length < 80) {
-        processed.push(`<h4>${clean}</h4>`);
+        processed.push(`<h4>${escapeWithAllowlist(clean)}</h4>`);
       } else {
-        processed.push(`<p>${clean}</p>`);
+        processed.push(`<p>${escapeWithAllowlist(clean)}</p>`);
       }
     }
   }

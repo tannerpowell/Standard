@@ -19,26 +19,30 @@ export function NavigationProgress() {
   const previousPathRef = useRef(pathname);
 
   useEffect(() => {
-    // Only trigger on actual navigation (path change)
+    // Check if pathname has changed (navigation completed)
     if (previousPathRef.current !== pathname) {
-      // Delay showing progress bar by 150ms (per PERCEIVED_PERFORMANCE.md)
-      timeoutRef.current = setTimeout(() => {
-        NProgress.start();
-      }, 150);
-
-      previousPathRef.current = pathname;
-    }
-
-    // Cleanup function runs on unmount or when dependencies change
-    return () => {
-      // Complete the progress bar
-      NProgress.done();
-
-      // Clear the timeout if navigation completes before 150ms
+      // Navigation completed - finish progress bar immediately
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
         timeoutRef.current = null;
       }
+      NProgress.done();
+      previousPathRef.current = pathname;
+    }
+
+    // Cleanup function runs when navigation starts (before pathname updates)
+    return () => {
+      // Clear any pending timeout from previous navigation
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+
+      // Schedule progress bar start with 150ms delay
+      // This gives fast navigations time to complete without showing loading state
+      timeoutRef.current = setTimeout(() => {
+        NProgress.start();
+        timeoutRef.current = null;
+      }, 150);
     };
   }, [pathname, searchParams]);
 
