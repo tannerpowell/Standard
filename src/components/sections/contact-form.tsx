@@ -36,7 +36,7 @@ export function ContactForm() {
       name: "",
       email: "",
       phone: "",
-      subject: undefined,
+      subject: "" as any, // Empty string matches placeholder value=""
       message: "",
     },
   });
