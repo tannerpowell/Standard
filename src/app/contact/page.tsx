@@ -19,7 +19,7 @@ export default function ContactPage() {
           <div className="grid gap-10 lg:grid-cols-5">
             {/* Form */}
             <div className="lg:col-span-3">
-              <h2 className="mb-2 font-[family-name:var(--font-jost)] text-xs font-bold uppercase tracking-[0.2em] text-[#d51f26]">
+              <h2 className="mb-2 font-[family-name:var(--font-body)] text-xs font-bold uppercase tracking-[0.2em] text-brand-red">
                 Get in Touch
               </h2>
               <p className="mb-8 font-['StandardTX_Display'] text-[40px] leading-[0.9] tracking-tight text-foreground sm:text-[52px]">
@@ -70,26 +70,26 @@ export default function ContactPage() {
 
                     <div className="space-y-4">
                       <div className="flex items-start gap-3">
-                        <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-[#d51f26]" />
+                        <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-brand-red" />
                         <div>
-                          <p className="font-[family-name:var(--font-jost)] text-[15px] font-medium text-foreground">
+                          <p className="font-[family-name:var(--font-body)] text-[15px] font-medium text-foreground">
                             {companyInfo.address.street}
                           </p>
-                          <p className="font-[family-name:var(--font-jost)] text-[15px] text-slate-500 dark:text-slate-400">
+                          <p className="font-[family-name:var(--font-body)] text-[15px] text-slate-500 dark:text-slate-400">
                             {companyInfo.address.city}, {companyInfo.address.state} {companyInfo.address.zip}
                           </p>
                         </div>
                       </div>
 
                       <div className="flex items-center gap-3">
-                        <Phone className="h-5 w-5 shrink-0 text-[#d51f26]" />
+                        <Phone className="h-5 w-5 shrink-0 text-brand-red" />
                         <div>
-                          <p className="mb-0.5 font-[family-name:var(--font-jost)] text-xs uppercase tracking-widest text-slate-400">
+                          <p className="mb-0.5 font-[family-name:var(--font-body)] text-xs uppercase tracking-widest text-slate-400">
                             Office Main
                           </p>
                           <a
                             href={`tel:${companyInfo.phone.replace(/[^0-9]/g, "")}`}
-                            className="font-[family-name:var(--font-jost)] text-[17px] font-semibold text-foreground transition-colors hover:text-[#d51f26]"
+                            className="font-[family-name:var(--font-body)] text-[17px] font-semibold text-foreground transition-colors hover:text-brand-red"
                           >
                             {companyInfo.phone}
                           </a>

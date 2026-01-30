@@ -7,6 +7,8 @@ import Link from "next/link";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import type { PaylocityJob } from "@/data/careers";
 import type { JobDetails } from "@/data/careers-parse";
+import { FilterChips } from "@/components/shared/filter-chips";
+import { NOISE_BG } from "@/components/shared/patterns";
 
 /* ─── Types ─── */
 
@@ -39,18 +41,6 @@ function uniqueValues(
   }
   return Array.from(set).sort();
 }
-
-/* ─── Chip styles (white-on-red variant, matching /services) ─── */
-
-const CHIP_BASE =
-  "rounded-full px-5 py-2 font-[family-name:var(--font-jost)] text-sm font-medium transition-all";
-const CHIP_ACTIVE = "bg-white text-[#d51f26]";
-const CHIP_INACTIVE = "bg-white/15 text-white hover:bg-white/25";
-
-/* ─── SVG noise texture (from CertCard) ─── */
-
-const NOISE_BG =
-  'url("data:image/svg+xml,%3Csvg width=\'100\' height=\'100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.75\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23n)\' opacity=\'0.025\'/%3E%3C/svg%3E")';
 
 /* ─── Component ─── */
 
@@ -106,14 +96,14 @@ export function CareersPageClient({
   return (
     <div className="min-h-screen bg-white dark:bg-slate-900">
       {/* ─── Hero ─── */}
-      <section className="bg-[#d51f26] pt-12 pb-6">
+      <section className="bg-brand-red pt-12 pb-6">
         <div className="container">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
             <h1 className="font-['StandardTX_Display'] text-[72px] font-normal leading-[0.8] tracking-[-0.01em] text-white sm:text-[100px]">
               CAREERS
             </h1>
             <div className="sm:mb-1 sm:text-right">
-              <p className="font-[family-name:var(--font-jost)] text-xs font-bold uppercase tracking-[0.2em] text-white/60">
+              <p className="font-[family-name:var(--font-body)] text-xs font-bold uppercase tracking-[0.2em] text-white/60">
                 Open Positions
               </p>
               <p className="font-['StandardTX_Display'] text-[36px] leading-[0.9] tracking-tight text-white sm:text-[48px]">
@@ -126,16 +116,16 @@ export function CareersPageClient({
           {/* Filter chips */}
           {hasJobs && (
             <div className="mt-10 space-y-3">
-              <FilterChipRow
-                label="All Locations"
-                options={locations}
+              <FilterChips
+                allLabel="All Locations"
+                options={locations.map((l) => ({ id: l, label: l }))}
                 active={locationFilter}
                 onSelect={setLocationFilter}
               />
               {departments.length > 1 && (
-                <FilterChipRow
-                  label="All Departments"
-                  options={departments}
+                <FilterChips
+                  allLabel="All Departments"
+                  options={departments.map((d) => ({ id: d, label: d }))}
                   active={departmentFilter}
                   onSelect={setDepartmentFilter}
                 />
@@ -186,7 +176,7 @@ export function CareersPageClient({
           </p>
           <Link
             href="/contact"
-            className="inline-flex items-center gap-2 rounded-full bg-[#d51f26] px-8 py-3 font-[family-name:var(--font-jost)] text-sm font-semibold uppercase tracking-wider text-white transition-colors hover:bg-[#b91c22]"
+            className="inline-flex items-center gap-2 rounded-full bg-brand-red px-8 py-3 font-[family-name:var(--font-body)] text-sm font-semibold uppercase tracking-wider text-white transition-colors hover:bg-brand-red-dark"
           >
             Contact Us
           </Link>
@@ -200,40 +190,6 @@ export function CareersPageClient({
         open={selectedJob !== null}
         onClose={() => setSelectedJob(null)}
       />
-    </div>
-  );
-}
-
-/* ─── Filter Chip Row ─── */
-
-function FilterChipRow({
-  label,
-  options,
-  active,
-  onSelect,
-}: {
-  label: string;
-  options: string[];
-  active: string;
-  onSelect: (value: string) => void;
-}) {
-  return (
-    <div className="flex flex-wrap gap-2">
-      <button
-        onClick={() => onSelect("all")}
-        className={`${CHIP_BASE} ${active === "all" ? CHIP_ACTIVE : CHIP_INACTIVE}`}
-      >
-        {label}
-      </button>
-      {options.map((option) => (
-        <button
-          key={option}
-          onClick={() => onSelect(active === option ? "all" : option)}
-          className={`${CHIP_BASE} ${active === option ? CHIP_ACTIVE : CHIP_INACTIVE}`}
-        >
-          {option}
-        </button>
-      ))}
     </div>
   );
 }
@@ -275,12 +231,12 @@ function JobCard({
         {/* Location + Date */}
         <div className="mb-3 flex items-center justify-between gap-3">
           {job.LocationName && (
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-[#d51f26]/10 px-3 py-1 font-[family-name:var(--font-jost)] text-xs font-semibold text-[#d51f26]">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-red/10 px-3 py-1 font-[family-name:var(--font-body)] text-xs font-semibold text-brand-red">
               <MapPin className="h-3 w-3" />
               {job.LocationName}
             </span>
           )}
-          <span className="ml-auto whitespace-nowrap font-[family-name:var(--font-jost)] text-xs text-slate-400">
+          <span className="ml-auto whitespace-nowrap font-[family-name:var(--font-body)] text-xs text-slate-400">
             {relativeTime(job.PublishedDate)}
           </span>
         </div>
@@ -292,14 +248,14 @@ function JobCard({
 
         {/* Department */}
         {job.HiringDepartment && (
-          <p className="mb-4 font-[family-name:var(--font-jost)] text-sm text-slate-500 dark:text-slate-400">
+          <p className="mb-4 font-[family-name:var(--font-body)] text-sm text-slate-500 dark:text-slate-400">
             {job.HiringDepartment}
           </p>
         )}
 
         {/* View Details hint */}
         <div className="mt-auto pt-4">
-          <span className="inline-flex items-center gap-2 font-[family-name:var(--font-jost)] text-sm font-medium text-slate-400 transition-colors group-hover:text-[#d51f26]">
+          <span className="inline-flex items-center gap-2 font-[family-name:var(--font-body)] text-sm font-medium text-slate-400 transition-colors group-hover:text-brand-red">
             View Details
           </span>
         </div>
@@ -357,12 +313,12 @@ function JobDetailModal({
             <div className="border-b border-slate-200 p-6 pb-5 pr-14 dark:border-slate-700">
               <div className="mb-3 flex flex-wrap items-center gap-3">
                 {job.LocationName && (
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-[#d51f26]/10 px-3 py-1 font-[family-name:var(--font-jost)] text-xs font-semibold text-[#d51f26]">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-red/10 px-3 py-1 font-[family-name:var(--font-body)] text-xs font-semibold text-brand-red">
                     <MapPin className="h-3 w-3" />
                     {job.LocationName}
                   </span>
                 )}
-                <span className="font-[family-name:var(--font-jost)] text-xs text-slate-400">
+                <span className="font-[family-name:var(--font-body)] text-xs text-slate-400">
                   Posted {relativeTime(job.PublishedDate)}
                 </span>
               </div>
@@ -370,7 +326,7 @@ function JobDetailModal({
                 {job.JobTitle}
               </h2>
               {job.HiringDepartment && (
-                <p className="mt-1 font-[family-name:var(--font-jost)] text-sm text-slate-500 dark:text-slate-400">
+                <p className="mt-1 font-[family-name:var(--font-body)] text-sm text-slate-500 dark:text-slate-400">
                   {job.HiringDepartment}
                 </p>
               )}
@@ -382,7 +338,7 @@ function JobDetailModal({
                 <div className="space-y-5">
                   {details!.description && (
                     <div
-                      className="job-description font-[family-name:var(--font-jost)] text-base leading-[1.7] text-slate-900 dark:text-slate-200"
+                      className="job-description font-[family-name:var(--font-body)] text-base leading-[1.7] text-slate-900 dark:text-slate-200"
                       dangerouslySetInnerHTML={{
                         __html: details!.description,
                       }}
@@ -394,7 +350,7 @@ function JobDetailModal({
                         Requirements
                       </h3>
                       <div
-                        className="job-description font-[family-name:var(--font-jost)] text-base leading-[1.7] text-slate-900 dark:text-slate-200"
+                        className="job-description font-[family-name:var(--font-body)] text-base leading-[1.7] text-slate-900 dark:text-slate-200"
                         dangerouslySetInnerHTML={{
                           __html: details!.requirements,
                         }}
@@ -403,7 +359,7 @@ function JobDetailModal({
                   )}
                 </div>
               ) : (
-                <p className="py-8 text-center font-[family-name:var(--font-jost)] text-sm text-slate-400">
+                <p className="py-8 text-center font-[family-name:var(--font-body)] text-sm text-slate-400">
                   No description available. View the full listing on Paylocity.
                 </p>
               )}
@@ -415,14 +371,14 @@ function JobDetailModal({
                 href={job.detailsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full bg-[#d51f26] px-7 py-3 font-[family-name:var(--font-jost)] text-sm font-semibold text-white transition-colors hover:bg-[#b91c22]"
+                className="inline-flex items-center gap-2 rounded-full bg-brand-red px-7 py-3 font-[family-name:var(--font-body)] text-sm font-semibold text-white transition-colors hover:bg-brand-red-dark"
               >
                 Apply Now
                 <ExternalLink className="h-3.5 w-3.5" />
               </a>
               <DialogPrimitive.Close
                 type="button"
-                className="rounded-full px-5 py-3 font-[family-name:var(--font-jost)] text-sm font-medium text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700 dark:text-slate-400 dark:hover:bg-slate-800"
+                className="rounded-full px-5 py-3 font-[family-name:var(--font-body)] text-sm font-medium text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700 dark:text-slate-400 dark:hover:bg-slate-800"
               >
                 Close
               </DialogPrimitive.Close>
@@ -449,7 +405,7 @@ function EmptyState({ hasAnyJobs }: { hasAnyJobs: boolean }) {
       </p>
       <Link
         href="/contact"
-        className="inline-flex items-center gap-2 rounded-full bg-[#d51f26] px-8 py-3 font-[family-name:var(--font-jost)] text-sm font-semibold uppercase tracking-wider text-white transition-colors hover:bg-[#b91c22]"
+        className="inline-flex items-center gap-2 rounded-full bg-brand-red px-8 py-3 font-[family-name:var(--font-body)] text-sm font-semibold uppercase tracking-wider text-white transition-colors hover:bg-brand-red-dark"
       >
         Contact Us
       </Link>

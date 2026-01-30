@@ -56,7 +56,7 @@ function ServiceSection({ service, index }: ServiceSectionProps): React.ReactNod
               {number}
             </span>
             <div className="-mt-4 mb-4 flex items-center gap-3">
-              <Icon className="h-6 w-6 shrink-0 text-[#d51f26]" />
+              <Icon className="h-6 w-6 shrink-0 text-brand-red" />
               <h2 className="font-[family-name:var(--font-oswald)] text-2xl font-semibold uppercase tracking-wide text-foreground sm:text-3xl">
                 {service.title}
               </h2>
@@ -67,7 +67,7 @@ function ServiceSection({ service, index }: ServiceSectionProps): React.ReactNod
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               {service.features.map((feature) => (
                 <div key={feature} className="flex items-start gap-3">
-                  <Check className="mt-0.5 h-5 w-5 shrink-0 text-[#d51f26]" />
+                  <Check className="mt-0.5 h-5 w-5 shrink-0 text-brand-red" />
                   <span className="text-sm leading-relaxed text-slate-600 dark:text-slate-300">
                     {feature}
                   </span>

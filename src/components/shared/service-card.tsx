@@ -31,17 +31,17 @@ export function ServiceCard({
         "shadow-[0_4px_20px_-4px_rgba(0,0,0,0.12)]",
         // Hover state
         "transition-all duration-300",
-        "hover:border-[#2a3583] hover:shadow-[0_8px_30px_-4px_rgba(42,53,131,0.2)]",
+        "hover:border-brand-navy hover:shadow-[0_8px_30px_-4px_rgba(42,53,131,0.2)]",
         className,
       )}
     >
       {/* Icon */}
-      <div className="mb-5 inline-flex h-14 w-14 items-center justify-center bg-[#2a3583] text-white transition-colors duration-300 group-hover:bg-[#d51f26]">
+      <div className="mb-5 inline-flex h-14 w-14 items-center justify-center bg-brand-navy text-white transition-colors duration-300 group-hover:bg-brand-red">
         <Icon className="h-7 w-7" />
       </div>
 
       {/* Title */}
-      <h3 className="mb-3 font-[family-name:var(--font-oswald)] text-xl font-semibold uppercase tracking-wide text-[#2a3583] dark:text-white">
+      <h3 className="mb-3 font-[family-name:var(--font-oswald)] text-xl font-semibold uppercase tracking-wide text-brand-navy dark:text-white">
         {title}
       </h3>
 
@@ -55,7 +55,7 @@ export function ServiceCard({
         <ul className="space-y-2">
           {features.slice(0, 4).map((feature, index) => (
             <li key={`${feature}-${index}`} className="flex items-center gap-2.5 text-sm">
-              <div className="h-1.5 w-1.5 shrink-0 bg-[#d51f26]" />
+              <div className="h-1.5 w-1.5 shrink-0 bg-brand-red" />
               <span className="text-slate-600 dark:text-slate-300">
                 {feature}
               </span>

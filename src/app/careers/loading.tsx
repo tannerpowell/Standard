@@ -4,7 +4,7 @@ export default function CareersLoading() {
   return (
     <div className="min-h-screen bg-white dark:bg-slate-900">
       {/* Hero skeleton */}
-      <section className="bg-[#d51f26] pt-12 pb-6">
+      <section className="bg-brand-red pt-12 pb-6">
         <div className="container">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
             <Skeleton className="h-[72px] w-[320px] rounded sm:h-[100px] sm:w-[460px]" />

@@ -60,7 +60,6 @@ async function getJobs(): Promise<PaylocityJob[]> {
     return [];
   } finally {
     clearTimeout(timeout);
-    controller.abort();
   }
 }
 

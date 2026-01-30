@@ -7,7 +7,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
 const SERVICE_LINK_CLASS =
-  "group inline-flex items-center gap-3 border border-white/70 bg-transparent px-10 py-5 font-[family-name:var(--font-oswald)] text-xs font-medium uppercase tracking-[0.2em] text-white transition-all duration-200 hover:bg-white hover:text-[var(--brand-navy)]";
+  "group inline-flex items-center gap-3 border border-white/70 bg-transparent px-10 py-5 font-[family-name:var(--font-oswald)] text-xs font-medium uppercase tracking-[0.2em] text-white transition-all duration-200 hover:bg-white hover:text-brand-navy";
 
 export function ServicesPreview() {
   const ref = useRef<HTMLElement | null>(null);

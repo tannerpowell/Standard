@@ -18,7 +18,7 @@ export function CTASection() {
           fill
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-[#d51f26]/90" />
+        <div className="absolute inset-0 bg-brand-red/90" />
       </div>
 
       <div className="container relative z-10">
@@ -49,7 +49,7 @@ export function CTASection() {
                 asChild
                 variant="outline"
                 size="lg"
-                className="h-14 border-2 border-white bg-transparent px-8 font-[family-name:var(--font-oswald)] text-base font-medium uppercase tracking-wide text-white hover:bg-white hover:text-[#d51f26]"
+                className="h-14 border-2 border-white bg-transparent px-8 font-[family-name:var(--font-oswald)] text-base font-medium uppercase tracking-wide text-white hover:bg-white hover:text-brand-red"
               >
                 <a href={`tel:${companyInfo.phone.replace(/[^0-9]/g, "")}`}>
                   <Phone className="mr-2 h-5 w-5" />

@@ -40,7 +40,7 @@ export function FocusPillars() {
           viewport={{ once: true }}
           className="mb-8 grid gap-8 md:grid-cols-2 md:items-center"
         >
-          <h2 className="font-['StandardTX_Display'] text-[100px] font-normal leading-[0.8] tracking-[-0.01em] text-[#d51f26]">
+          <h2 className="font-['StandardTX_Display'] text-[100px] font-normal leading-[0.8] tracking-[-0.01em] text-brand-red">
             OUR FOCUS
           </h2>
           <p className="text-lg text-muted-foreground">
@@ -69,15 +69,15 @@ export function FocusPillars() {
               viewport={{ once: true }}
             >
               {/* Number - red */}
-              <span className="mb-2 block font-[family-name:var(--font-jost)] text-sm font-semibold tracking-widest text-[#d51f26]">
+              <span className="mb-2 block font-[family-name:var(--font-body)] text-sm font-semibold tracking-widest text-brand-red">
                 {pillar.number}
               </span>
 
               {/* Title with dash - navy blue, futura-pt style */}
-              <h3 className="mb-1 font-[family-name:var(--font-jost)] text-2xl font-bold uppercase tracking-wide text-[#2a3583] dark:text-white">
+              <h3 className="mb-1 font-[family-name:var(--font-body)] text-2xl font-bold uppercase tracking-wide text-brand-navy dark:text-white">
                 {pillar.title}
               </h3>
-              <div className="mb-4 h-1 w-5 bg-[#2a3583] dark:bg-white" />
+              <div className="mb-4 h-1 w-5 bg-brand-navy dark:bg-white" />
 
               {/* Description */}
               <p className="text-muted-foreground">{pillar.description}</p>

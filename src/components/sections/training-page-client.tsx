@@ -3,21 +3,13 @@
 import { useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { WorkforceSpecialist, CourseCategory } from "@/data/training";
+import { FilterChips } from "@/components/shared/filter-chips";
+import { NOISE_BG } from "@/components/shared/patterns";
 
 interface TrainingPageClientProps {
   specialists: WorkforceSpecialist[];
   categories: CourseCategory[];
   totalCourses: number;
-}
-
-const CHIP_BASE =
-  "rounded-full px-5 py-2 font-[family-name:var(--font-jost)] text-sm font-medium transition-all whitespace-nowrap";
-const CHIP_ACTIVE = "bg-[#d51f26] text-white";
-const CHIP_INACTIVE =
-  "bg-transparent text-slate-600 border border-slate-300 hover:border-slate-400 hover:text-slate-800 dark:text-slate-300 dark:border-slate-600 dark:hover:border-slate-500";
-
-function chipClass(isActive: boolean): string {
-  return `${CHIP_BASE} ${isActive ? CHIP_ACTIVE : CHIP_INACTIVE}`;
 }
 
 export function TrainingPageClient({
@@ -35,7 +27,7 @@ export function TrainingPageClient({
   return (
     <div className="min-h-screen bg-white dark:bg-slate-900">
       {/* Hero */}
-      <section className="bg-[#d51f26] pt-12 pb-6">
+      <section className="bg-brand-red pt-12 pb-6">
         <div className="container">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
             <h1 className="font-['StandardTX_Display'] text-[72px] font-normal leading-[0.8] tracking-[-0.01em] text-white sm:text-[100px]">
@@ -55,7 +47,7 @@ export function TrainingPageClient({
         <div className="container">
           <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
             <div>
-              <h2 className="mb-2 font-[family-name:var(--font-jost)] text-xs font-bold uppercase tracking-[0.2em] text-[#d51f26]">
+              <h2 className="mb-2 font-[family-name:var(--font-body)] text-xs font-bold uppercase tracking-[0.2em] text-brand-red">
                 Our People
               </h2>
               <p className="font-['StandardTX_Display'] text-[40px] leading-[0.9] tracking-tight text-foreground sm:text-[52px]">
@@ -80,32 +72,21 @@ export function TrainingPageClient({
       {/* Chips — between sections */}
       <section className="border-y border-slate-200 bg-white py-5 dark:border-slate-700 dark:bg-slate-900">
         <div className="container">
-          <div className="flex gap-2 overflow-x-auto">
-            <button
-              type="button"
-              onClick={() => setActiveCategory("all")}
-              className={chipClass(activeCategory === "all")}
-            >
-              All
-            </button>
-            {categories.map((cat) => (
-              <button
-                key={cat.id}
-                type="button"
-                onClick={() => setActiveCategory(cat.id)}
-                className={chipClass(activeCategory === cat.id)}
-              >
-                {cat.title}
-              </button>
-            ))}
-          </div>
+          <FilterChips
+            allLabel="All"
+            options={categories.map((c) => ({ id: c.id, label: c.title }))}
+            active={activeCategory}
+            onSelect={setActiveCategory}
+            variant="page"
+            className="overflow-x-auto"
+          />
         </div>
       </section>
 
       {/* Safety Courses */}
       <section className="bg-[#fafafa] py-14 dark:bg-slate-800/20">
         <div className="container">
-          <h2 className="mb-2 font-[family-name:var(--font-jost)] text-xs font-bold uppercase tracking-[0.2em] text-[#d51f26]">
+          <h2 className="mb-2 font-[family-name:var(--font-body)] text-xs font-bold uppercase tracking-[0.2em] text-brand-red">
             Curriculum
           </h2>
           <p className="mb-10 font-['StandardTX_Display'] text-[40px] leading-[0.9] tracking-tight text-foreground sm:text-[52px]">
@@ -139,7 +120,7 @@ export function TrainingPageClient({
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: i * 0.015, duration: 0.2 }}
-                        className="rounded-lg border border-[#e0e2e6] bg-white px-5 py-3 font-[family-name:var(--font-jost)] text-[15px] font-medium text-foreground shadow-[0_1px_3px_rgba(0,0,0,0.06)] dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200"
+                        className="rounded-lg border border-[#e0e2e6] bg-white px-5 py-3 font-[family-name:var(--font-body)] text-[15px] font-medium text-foreground shadow-[0_1px_3px_rgba(0,0,0,0.06)] dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200"
                       >
                         {course}
                       </motion.div>
@@ -202,8 +183,7 @@ function CertCard({ spec }: { spec: WorkforceSpecialist }) {
           boxShadow:
             "inset 0 1px 3px rgba(0, 0, 0, 0.04), inset 0 0 0 0.5px rgba(255,255,255,0.7)",
           transition: "background-color 0.2s ease-out",
-          backgroundImage:
-            "url(\"data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E\")",
+          backgroundImage: NOISE_BG,
           backgroundSize: "100px 100px",
         }}
       >

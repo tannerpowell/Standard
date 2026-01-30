@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -32,7 +32,7 @@ function NavLinkItem({ item, index, delayOffset, pathname, closeMenu }: NavLinkI
         className={cn(
           "block rounded px-4 py-3 text-lg font-semibold uppercase tracking-wide transition-colors",
           pathname === item.href
-            ? "bg-white text-[#d51f26]"
+            ? "bg-white text-brand-red"
             : "text-white hover:bg-white/10"
         )}
       >
@@ -48,7 +48,7 @@ export function MobileNav() {
   const panelRef = useRef<HTMLDivElement>(null);
 
   const toggleMenu = () => setIsOpen(!isOpen);
-  const closeMenu = () => setIsOpen(false);
+  const closeMenu = useCallback(() => setIsOpen(false), []);
 
   // Focus trapping and keyboard accessibility
   useEffect(() => {
@@ -109,7 +109,7 @@ export function MobileNav() {
   }, [isOpen, closeMenu]);
 
   return (
-    <div className="md:hidden">
+    <div className="lg:hidden">
       <Button
         variant="ghost"
         size="icon"
@@ -162,7 +162,7 @@ export function MobileNav() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: "100%" }}
               transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-              className="fixed right-0 top-0 z-40 h-full w-[280px] bg-[#d51f26] p-6 pt-20 shadow-xl"
+              className="fixed right-0 top-0 z-40 h-full w-[280px] bg-brand-red p-6 pt-20 shadow-xl"
               role="dialog"
               aria-modal="true"
               aria-label="Mobile navigation menu"

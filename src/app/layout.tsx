@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono, Oswald, Montserrat, Jost } from "next/font/google";
+import { Geist, Oswald, Montserrat, Jost } from "next/font/google";
 import { Suspense } from "react";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
@@ -9,11 +9,6 @@ import { NavigationProgress } from "@/components/layout/navigation-progress";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
   subsets: ["latin"],
 });
 
@@ -36,6 +31,7 @@ const jost = Jost({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://standardtx.com"),
   title: {
     default: "Standard Safety & Supply | Odessa, TX",
     template: "%s | Standard Safety & Supply",
@@ -63,6 +59,14 @@ export const metadata: Metadata = {
     title: "Standard Safety & Supply | Odessa, TX",
     description:
       "Your trusted partner for safety equipment, training, and environmental services in the Permian Basin.",
+    images: [
+      {
+        url: "/images/hero-truck.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Standard Safety & Supply — Permian Basin safety services",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -89,7 +93,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${oswald.variable} ${montserrat.variable} ${jost.variable} min-h-screen font-sans antialiased`}
+        className={`${geistSans.variable} ${oswald.variable} ${montserrat.variable} ${jost.variable} min-h-screen font-sans antialiased`}
       >
         <ThemeProvider>
           <Suspense fallback={null}>

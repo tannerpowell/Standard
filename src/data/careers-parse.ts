@@ -3,6 +3,8 @@
  * Used by both the ISR server component and the API fallback route.
  */
 
+import DOMPurify from "isomorphic-dompurify";
+
 export interface JobDetails {
   description: string;
   requirements: string;
@@ -16,7 +18,7 @@ export async function fetchJobDetails(
   jobId: number,
 ): Promise<JobDetails> {
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
+  const timeoutId = setTimeout(() => controller.abort(), 10000);
 
   try {
     const res = await fetch(`${baseUrl}/Recruiting/Jobs/Details/${jobId}`, {
@@ -49,7 +51,7 @@ function extractDescription(html: string): string {
   if (divStart === -1) return "";
 
   const content = extractOuterDiv(afterMarker.slice(divStart));
-  return sanitizeHtml(content);
+  return formatPaylocityHtml(content);
 }
 
 /**
@@ -61,10 +63,9 @@ function extractRequirements(html: string): string {
   const idx = html.indexOf(marker);
   if (idx === -1) return "";
 
-  // Use extractOuterDiv to handle nested divs properly
   const afterMarker = html.slice(idx + marker.length);
   const outerDiv = extractOuterDiv(afterMarker);
-  return sanitizeHtml(outerDiv);
+  return formatPaylocityHtml(outerDiv);
 }
 
 /** Extract the outermost <div>...</div> including nested divs */
@@ -100,101 +101,59 @@ function extractOuterDiv(html: string): string {
   return "";
 }
 
-/**
- * Escape HTML-special characters, then restore an allowlist of safe inline
- * formatting tags and list tags (<strong>, <em>, <b>, <i>, <ul>, <ol>, <li>).
- */
-function escapeWithAllowlist(text: string): string {
-  // 1. Escape all HTML-special characters
-  const escaped = text
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
+/** Sanitize raw HTML with DOMPurify, then structure into paragraphs and lists. */
+function formatPaylocityHtml(html: string): string {
+  // First pass: DOMPurify strips all dangerous content
+  const clean = DOMPurify.sanitize(html, {
+    ALLOWED_TAGS: ["p", "br", "strong", "em", "b", "i", "ul", "ol", "li"],
+    ALLOWED_ATTR: [],
+  });
 
-  // 2. Restore only permitted formatting and list tags
-  return escaped.replace(
-    /&lt;(\/?(?:strong|em|b|i|ul|ol|li))&gt;/gi,
-    (_, tag: string) => `<${tag}>`,
-  );
-}
+  // Normalize <br> to newlines
+  let text = clean.replace(/<br\s*\/?>/gi, "\n");
 
-/** Convert raw Paylocity HTML to sanitized HTML suitable for dangerouslySetInnerHTML */
-function sanitizeHtml(html: string): string {
-  let text = html;
-
-  // Normalize <br> to newlines first
-  text = text.replace(/<br\s*\/?>/gi, "\n");
-
-  // First, remove dangerous tags and their content entirely
-  text = text.replace(/<script[^>]*>[\s\S]*?<\/script>/gi, "");
-  text = text.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "");
-  text = text.replace(/<iframe[^>]*>[\s\S]*?<\/iframe>/gi, "");
-  text = text.replace(/<object[^>]*>[\s\S]*?<\/object>/gi, "");
-  text = text.replace(/<embed[^>]*>/gi, "");
-
-  // Strip remaining disallowed tags (keep content)
-  // Note: ul, ol, li are preserved for list formatting
-  text = text.replace(/<\/?(div|span|a|table|tr|td|th|thead|tbody|h[1-6]|img|hr|section|article|header|footer|nav|figure|figcaption|blockquote|pre|code|dl|dt|dd)[^>]*>/gi, "");
-
-  // Decode entities
+  // Decode common entities that DOMPurify preserves
   text = text
-    .replace(/&amp;/g, "&")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&quot;/g, '"')
-    .replace(/&#039;/g, "'")
+    .replace(/&nbsp;/g, " ")
     .replace(/&rsquo;/g, "\u2019")
     .replace(/&lsquo;/g, "\u2018")
     .replace(/&rdquo;/g, "\u201D")
     .replace(/&ldquo;/g, "\u201C")
     .replace(/&ndash;/g, "\u2013")
-    .replace(/&mdash;/g, "\u2014")
-    .replace(/&nbsp;/g, " ");
-
-  // Second pass: remove dangerous tags that may have been revealed by entity decoding
-  // (e.g., &lt;script&gt; decoded to <script> would bypass the first strip)
-  text = text.replace(/<script[^>]*>[\s\S]*?<\/script>/gi, "");
-  text = text.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "");
-  text = text.replace(/<iframe[^>]*>[\s\S]*?<\/iframe>/gi, "");
-  text = text.replace(/<object[^>]*>[\s\S]*?<\/object>/gi, "");
-  text = text.replace(/<embed[^>]*>/gi, "");
+    .replace(/&mdash;/g, "\u2014");
 
   // Clean inline whitespace
   text = text.replace(/[ \t]+/g, " ");
 
   // The Paylocity descriptions use <p> per line. Some are bullet lines starting
   // with "- " or "• ". Convert those into proper <ul><li> for tight rendering.
-  // Split on </p> boundaries to process paragraphs.
   const parts = text.split(/<\/p>/gi);
   const processed: string[] = [];
   let inList = false;
 
   for (const raw of parts) {
     // Strip opening <p> and trim
-    const clean = raw.replace(/<p[^>]*>/gi, "").replace(/\n/g, " ").trim();
-    if (!clean) continue;
+    const segment = raw.replace(/<p[^>]*>/gi, "").replace(/\n/g, " ").trim();
+    if (!segment) continue;
 
-    const isBullet = /^[-•–]\s/.test(clean);
+    const isBullet = /^[-•–]\s/.test(segment);
 
     if (isBullet) {
-      const itemText = clean.replace(/^[-•–]\s*/, "");
+      const itemText = segment.replace(/^[-•–]\s*/, "");
       if (!inList) {
         processed.push("<ul>");
         inList = true;
       }
-      processed.push(`<li>${escapeWithAllowlist(itemText)}</li>`);
+      processed.push(`<li>${itemText}</li>`);
     } else {
       if (inList) {
         processed.push("</ul>");
         inList = false;
       }
-      // Check if this looks like a section heading (short, ends with ":")
-      if (clean.endsWith(":") && clean.length < 80) {
-        processed.push(`<h4>${escapeWithAllowlist(clean)}</h4>`);
+      if (segment.endsWith(":") && segment.length < 80) {
+        processed.push(`<h4>${segment}</h4>`);
       } else {
-        processed.push(`<p>${escapeWithAllowlist(clean)}</p>`);
+        processed.push(`<p>${segment}</p>`);
       }
     }
   }

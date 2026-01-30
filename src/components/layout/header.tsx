@@ -18,7 +18,7 @@ export function Header() {
 
   return (
     <header className="relative z-50">
-      <div className="bg-[#d51f26]">
+      <div className="bg-brand-red">
         {/* Header-inner: 3-column grid like standardtx.com */}
         <div className="mx-auto max-w-[2000px] px-[75px] py-[25px] max-lg:px-[31px] max-lg:py-[15px]">
           {/* Desktop: 3-column grid — left nav | center logo | right nav */}

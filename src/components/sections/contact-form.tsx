@@ -14,12 +14,12 @@ import {
 type FormStatus = "idle" | "submitting" | "success" | "error";
 
 const INPUT_BASE =
-  "w-full rounded-lg border-[1.5px] border-slate-200 bg-white px-4 py-3.5 font-[family-name:var(--font-jost)] text-[15px] text-foreground transition-all duration-200 placeholder:text-slate-400 focus:border-[#d51f26] focus:outline-none focus:ring-[3px] focus:ring-[#d51f26]/10 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:focus:border-[#d51f26]";
+  "w-full rounded-lg border-[1.5px] border-slate-200 bg-white px-4 py-3.5 font-[family-name:var(--font-body)] text-[15px] text-foreground transition-all duration-200 placeholder:text-slate-400 focus:border-brand-red focus:outline-none focus:ring-[3px] focus:ring-brand-red/10 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:focus:border-brand-red";
 
 const INPUT_ERROR = "border-red-400 focus:border-red-500 focus:ring-red-500/10";
 
 const LABEL =
-  "mb-2 block font-[family-name:var(--font-jost)] text-[14px] font-medium tracking-wide text-foreground";
+  "mb-2 block font-[family-name:var(--font-body)] text-[14px] font-medium tracking-wide text-foreground";
 
 export function ContactForm() {
   const [status, setStatus] = useState<FormStatus>("idle");
@@ -36,7 +36,7 @@ export function ContactForm() {
       name: "",
       email: "",
       phone: "",
-      subject: "" as any, // Empty string matches placeholder value=""
+      subject: undefined,
       message: "",
     },
   });
@@ -105,7 +105,7 @@ export function ContactForm() {
           </p>
           <button
             onClick={() => setStatus("idle")}
-            className="rounded-lg border border-slate-300 px-6 py-2.5 font-[family-name:var(--font-jost)] text-sm font-medium text-foreground transition-colors hover:bg-slate-50 dark:border-slate-600 dark:hover:bg-slate-700"
+            className="rounded-lg border border-slate-300 px-6 py-2.5 font-[family-name:var(--font-body)] text-sm font-medium text-foreground transition-colors hover:bg-slate-50 dark:border-slate-600 dark:hover:bg-slate-700"
           >
             Send Another Message
           </button>
@@ -135,14 +135,14 @@ export function ContactForm() {
 
         {/* Contact Information */}
         <div className="mb-8">
-          <h3 className="mb-6 border-b-2 border-[#d51f26] pb-3 font-[family-name:var(--font-oswald)] text-lg font-semibold uppercase tracking-wide text-foreground">
+          <h3 className="mb-6 border-b-2 border-brand-red pb-3 font-[family-name:var(--font-oswald)] text-lg font-semibold uppercase tracking-wide text-foreground">
             Contact Information
           </h3>
 
           <div className="mb-5 grid gap-5 sm:grid-cols-2">
             <div>
               <label htmlFor="name" className={LABEL}>
-                Name <span className="text-[#d51f26]">*</span>
+                Name <span className="text-brand-red">*</span>
               </label>
               <input
                 id="name"
@@ -155,7 +155,7 @@ export function ContactForm() {
 
             <div>
               <label htmlFor="email" className={LABEL}>
-                Email <span className="text-[#d51f26]">*</span>
+                Email <span className="text-brand-red">*</span>
               </label>
               <input
                 id="email"
@@ -184,7 +184,7 @@ export function ContactForm() {
 
             <div>
               <label htmlFor="subject" className={LABEL}>
-                Subject <span className="text-[#d51f26]">*</span>
+                Subject <span className="text-brand-red">*</span>
               </label>
               <select
                 id="subject"
@@ -207,13 +207,13 @@ export function ContactForm() {
 
         {/* Message */}
         <div className="mb-8">
-          <h3 className="mb-6 border-b-2 border-[#d51f26] pb-3 font-[family-name:var(--font-oswald)] text-lg font-semibold uppercase tracking-wide text-foreground">
+          <h3 className="mb-6 border-b-2 border-brand-red pb-3 font-[family-name:var(--font-oswald)] text-lg font-semibold uppercase tracking-wide text-foreground">
             Your Message
           </h3>
 
           <div>
             <label htmlFor="message" className={LABEL}>
-              Message <span className="text-[#d51f26]">*</span>
+              Message <span className="text-brand-red">*</span>
             </label>
             <textarea
               id="message"
@@ -246,7 +246,7 @@ export function ContactForm() {
           <button
             type="submit"
             disabled={status === "submitting"}
-            className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#d51f26] px-8 py-4 font-[family-name:var(--font-jost)] text-[16px] font-semibold tracking-wide text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#b91c22] hover:shadow-[0_6px_16px_rgba(213,31,38,0.3)] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:shadow-none"
+            className="flex w-full items-center justify-center gap-2 rounded-lg bg-brand-red px-8 py-4 font-[family-name:var(--font-body)] text-[16px] font-semibold tracking-wide text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-brand-red-dark hover:shadow-[0_6px_16px_rgba(213,31,38,0.3)] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:shadow-none"
             style={{
               boxShadow: "0 4px 12px rgba(213, 31, 38, 0.2)",
             }}
