@@ -8,9 +8,7 @@ import {
 import { fetchJobDetails, type JobDetails } from "@/data/careers-parse";
 import { CareersPageClient } from "@/components/sections/careers-page-client";
 
-const REVALIDATE_SECONDS = 1800;
-
-export const revalidate = REVALIDATE_SECONDS;
+export const revalidate = 1800;
 
 export const metadata: Metadata = {
   title: "Careers",
@@ -24,7 +22,7 @@ async function getJobs(): Promise<PaylocityJob[]> {
 
   try {
     const res = await fetch(PAYLOCITY_PAGE_URL, {
-      next: { revalidate: REVALIDATE_SECONDS },
+      next: { revalidate: 1800 },
       signal: controller.signal,
     });
 
