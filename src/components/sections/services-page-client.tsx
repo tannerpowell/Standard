@@ -74,7 +74,7 @@ export function ServicesPageClient({
         </div>
       </section>
 
-      <section className="bg-[#fafafa] py-20 dark:bg-slate-800/20">
+      <section className="bg-[#fafafa] py-12 dark:bg-slate-800/20">
         <div className="container">
           <AnimatePresence mode="wait">
             <motion.div
