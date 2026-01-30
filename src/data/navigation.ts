@@ -1,0 +1,46 @@
+interface NavItem {
+  name: string;
+  href: string;
+}
+
+interface Address {
+  street: string;
+  city: string;
+  state: string;
+  zip: string;
+}
+
+interface CompanyInfo {
+  name: string;
+  tagline: string;
+  phone: string;
+  email: string;
+  address: Address;
+  hours: string;
+}
+
+export const navigation: NavItem[] = [
+  { name: "Home", href: "/" },
+  { name: "Services", href: "/services" },
+  { name: "Training", href: "/training" },
+  { name: "Environmental Services", href: "/environmental" },
+];
+
+export const secondaryNavigation: NavItem[] = [
+  { name: "Careers", href: "/careers" },
+  { name: "Contact Us", href: "/contact" },
+];
+
+export const companyInfo: CompanyInfo = {
+  name: "Standard Safety & Supply",
+  tagline: "Your Partner in Safety Excellence",
+  phone: "(432) 367-1515",
+  email: "info@standardtx.com",
+  address: {
+    street: "3401 S County Rd 1290",
+    city: "Odessa",
+    state: "TX",
+    zip: "79765",
+  },
+  hours: "Monday - Friday: 7:00 AM - 5:00 PM",
+};
