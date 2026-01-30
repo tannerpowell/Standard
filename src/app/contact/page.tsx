@@ -22,7 +22,7 @@ export default function ContactPage() {
               <h2 className="mb-2 font-[family-name:var(--font-body)] text-xs font-bold uppercase tracking-[0.2em] text-brand-red">
                 Get in Touch
               </h2>
-              <p className="mb-8 font-['StandardTX_Display'] text-[40px] leading-[0.9] tracking-tight text-foreground sm:text-[52px]">
+              <p className="mb-8 font-[family-name:var(--font-display)] text-[40px] leading-[0.9] tracking-tight text-foreground sm:text-[52px]">
                 ODESSA, TX
               </p>
               <ContactForm />

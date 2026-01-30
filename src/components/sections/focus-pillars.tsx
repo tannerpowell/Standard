@@ -40,7 +40,7 @@ export function FocusPillars() {
           viewport={{ once: true }}
           className="mb-8 grid gap-8 md:grid-cols-2 md:items-center"
         >
-          <h2 className="font-['StandardTX_Display'] text-[100px] font-normal leading-[0.8] tracking-[-0.01em] text-brand-red">
+          <h2 className="font-[family-name:var(--font-display)] text-[100px] font-normal leading-[0.8] tracking-[-0.01em] text-brand-red">
             OUR FOCUS
           </h2>
           <p className="text-lg text-muted-foreground">

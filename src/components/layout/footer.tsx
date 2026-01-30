@@ -1,16 +1,9 @@
 import Link from "next/link";
-import { companyInfo } from "@/data/navigation";
-
-const footerLinks = [
-  { name: "Services", href: "/services" },
-  { name: "Training", href: "/training" },
-  { name: "Environmental Services", href: "/environmental" },
-  { name: "Careers", href: "/careers" },
-  { name: "Contact Us", href: "/contact" },
-];
+import { companyInfo, navigation, secondaryNavigation } from "@/data/navigation";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
+  const footerLinks = [...navigation, ...secondaryNavigation];
 
   return (
     <footer>

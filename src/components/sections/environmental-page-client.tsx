@@ -52,7 +52,7 @@ function ServiceSection({ service, index }: ServiceSectionProps): React.ReactNod
 
           {/* Text + Features */}
           <div className="lg:w-1/2">
-            <span className="font-['StandardTX_Display'] text-[80px] leading-none text-slate-200 dark:text-slate-700">
+            <span className="font-[family-name:var(--font-display)] text-[80px] leading-none text-slate-200 dark:text-slate-700">
               {number}
             </span>
             <div className="-mt-4 mb-4 flex items-center gap-3">
@@ -82,7 +82,7 @@ function ServiceSection({ service, index }: ServiceSectionProps): React.ReactNod
 }
 
 export function EnvironmentalPageClient(): React.ReactNode {
-  const heroRef = useRef(null);
+  const heroRef = useRef<HTMLElement | null>(null);
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"],
@@ -105,7 +105,7 @@ export function EnvironmentalPageClient(): React.ReactNode {
         </motion.div>
         <div className="container relative z-10 flex min-h-[70vh] flex-col justify-center py-16">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
-            <h1 className="font-['StandardTX_Display'] text-[60px] font-normal leading-[0.8] tracking-[-0.01em] text-white sm:text-[100px]">
+            <h1 className="font-[family-name:var(--font-display)] text-[60px] font-normal leading-[0.8] tracking-[-0.01em] text-white sm:text-[100px]">
               ENVIRONMENTAL
             </h1>
             <p className="max-w-xl text-[15px] font-medium leading-relaxed text-white/75 sm:mb-1">

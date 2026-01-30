@@ -99,14 +99,14 @@ export function CareersPageClient({
       <section className="bg-brand-red pt-12 pb-6">
         <div className="container">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
-            <h1 className="font-['StandardTX_Display'] text-[72px] font-normal leading-[0.8] tracking-[-0.01em] text-white sm:text-[100px]">
+            <h1 className="font-[family-name:var(--font-display)] text-[72px] font-normal leading-[0.8] tracking-[-0.01em] text-white sm:text-[100px]">
               CAREERS
             </h1>
             <div className="sm:mb-1 sm:text-right">
               <p className="font-[family-name:var(--font-body)] text-xs font-bold uppercase tracking-[0.2em] text-white/60">
                 Open Positions
               </p>
-              <p className="font-['StandardTX_Display'] text-[36px] leading-[0.9] tracking-tight text-white sm:text-[48px]">
+              <p className="font-[family-name:var(--font-display)] text-[36px] leading-[0.9] tracking-tight text-white sm:text-[48px]">
                 {filtered.length} {filtered.length === 1 ? "ROLE" : "ROLES"}{" "}
                 AVAILABLE
               </p>
@@ -167,7 +167,7 @@ export function CareersPageClient({
       {/* ─── Bottom CTA ─── */}
       <section className="border-t border-slate-200 bg-[#fafafa] py-16 dark:border-slate-700 dark:bg-slate-800/20">
         <div className="container text-center">
-          <h2 className="mb-3 font-['StandardTX_Display'] text-[36px] leading-[0.9] tracking-tight text-foreground sm:text-[48px]">
+          <h2 className="mb-3 font-[family-name:var(--font-display)] text-[36px] leading-[0.9] tracking-tight text-foreground sm:text-[48px]">
             DON&apos;T SEE YOUR ROLE?
           </h2>
           <p className="mx-auto mb-6 max-w-lg text-[15px] leading-relaxed text-slate-600 dark:text-slate-300">
@@ -395,7 +395,7 @@ function JobDetailModal({
 function EmptyState({ hasAnyJobs }: { hasAnyJobs: boolean }) {
   return (
     <div className="py-20 text-center">
-      <p className="mb-3 font-['StandardTX_Display'] text-[36px] leading-[0.9] tracking-tight text-slate-300 sm:text-[48px] dark:text-slate-600">
+      <p className="mb-3 font-[family-name:var(--font-display)] text-[36px] leading-[0.9] tracking-tight text-slate-300 sm:text-[48px] dark:text-slate-600">
         NO POSITIONS FOUND
       </p>
       <p className="mx-auto mb-6 max-w-md text-[15px] leading-relaxed text-slate-500 dark:text-slate-400">

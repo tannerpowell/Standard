@@ -38,7 +38,7 @@ export function ServicesPageClient({
       <section className="bg-brand-red pt-12 pb-6">
         <div className="container">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
-            <h1 className="font-['StandardTX_Display'] text-[72px] font-normal leading-[0.8] tracking-[-0.01em] text-white sm:text-[100px]">
+            <h1 className="font-[family-name:var(--font-display)] text-[72px] font-normal leading-[0.8] tracking-[-0.01em] text-white sm:text-[100px]">
               SERVICES
             </h1>
             <p className="max-w-xl text-[15px] font-medium leading-relaxed text-white/75 sm:mb-1">
@@ -93,7 +93,7 @@ export function ServicesPageClient({
           <h2 className="mb-2 font-[family-name:var(--font-body)] text-xs font-bold uppercase tracking-[0.2em] text-brand-red">
             What We Offer
           </h2>
-          <p className="mb-12 font-['StandardTX_Display'] text-[48px] leading-[0.9] tracking-tight text-foreground sm:text-[64px]">
+          <p className="mb-12 font-[family-name:var(--font-display)] text-[48px] leading-[0.9] tracking-tight text-foreground sm:text-[64px]">
             THE FULL PICTURE
           </p>
           <div className="space-y-24">
@@ -109,7 +109,7 @@ export function ServicesPageClient({
           <h2 className="mb-2 font-[family-name:var(--font-body)] text-xs font-bold uppercase tracking-[0.2em] text-brand-red">
             In the Field
           </h2>
-          <p className="mb-8 font-['StandardTX_Display'] text-[48px] leading-[0.9] tracking-tight text-foreground sm:text-[64px]">
+          <p className="mb-8 font-[family-name:var(--font-display)] text-[48px] leading-[0.9] tracking-tight text-foreground sm:text-[64px]">
             OUR WORK
           </p>
           <PhotoGallery images={galleryImages} />
@@ -141,7 +141,7 @@ function DetailSection({
       }`}
     >
       <div className="lg:w-1/2">
-        <span className="font-['StandardTX_Display'] text-[80px] leading-none text-slate-200 dark:text-slate-700">
+        <span className="font-[family-name:var(--font-display)] text-[80px] leading-none text-slate-200 dark:text-slate-700">
           {number}
         </span>
         <div className="-mt-4 mb-4 flex items-center gap-3">

@@ -42,7 +42,7 @@ export function ServicesPreview() {
           viewport={{ once: true }}
           className="mb-8 text-center"
         >
-          <h2 className="mb-6 font-['StandardTX_Display'] text-[100px] font-normal leading-[0.8] tracking-[-0.01em] text-white/90">
+          <h2 className="mb-6 font-[family-name:var(--font-display)] text-[100px] font-normal leading-[0.8] tracking-[-0.01em] text-white/90">
             SERVICES
           </h2>
           <Link href="/services" className={SERVICE_LINK_CLASS}>
@@ -59,7 +59,7 @@ export function ServicesPreview() {
           viewport={{ once: true }}
           className="text-center"
         >
-          <h2 className="mb-6 font-['StandardTX_Display'] text-[100px] font-normal leading-[0.8] tracking-[-0.01em] text-white/90">
+          <h2 className="mb-6 font-[family-name:var(--font-display)] text-[100px] font-normal leading-[0.8] tracking-[-0.01em] text-white/90">
             TRAINING
           </h2>
           <Link href="/training" className={SERVICE_LINK_CLASS}>

@@ -8,7 +8,9 @@ import {
 import { fetchJobDetails, type JobDetails } from "@/data/careers-parse";
 import { CareersPageClient } from "@/components/sections/careers-page-client";
 
-export const revalidate = 1800;
+const REVALIDATE_SECONDS = 1800;
+
+export const revalidate = REVALIDATE_SECONDS;
 
 export const metadata: Metadata = {
   title: "Careers",
@@ -22,7 +24,7 @@ async function getJobs(): Promise<PaylocityJob[]> {
 
   try {
     const res = await fetch(PAYLOCITY_PAGE_URL, {
-      next: { revalidate: 1800 },
+      next: { revalidate: REVALIDATE_SECONDS },
       signal: controller.signal,
     });
 
@@ -56,7 +58,16 @@ async function getJobs(): Promise<PaylocityJob[]> {
 
     const pageData: PaylocityPageData = parsed;
     return pageData.Jobs ?? [];
-  } catch {
+  } catch (err) {
+    console.error("Failed to fetch careers/jobs during ISR revalidation", {
+      url: PAYLOCITY_PAGE_URL,
+      timeout: 10000,
+      error: {
+        name: err instanceof Error ? err.name : "Unknown",
+        message: err instanceof Error ? err.message : String(err),
+        stack: err instanceof Error ? err.stack : undefined,
+      },
+    });
     return [];
   } finally {
     clearTimeout(timeout);

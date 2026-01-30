@@ -30,7 +30,7 @@ export function TrainingPageClient({
       <section className="bg-brand-red pt-12 pb-6">
         <div className="container">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
-            <h1 className="font-['StandardTX_Display'] text-[72px] font-normal leading-[0.8] tracking-[-0.01em] text-white sm:text-[100px]">
+            <h1 className="font-[family-name:var(--font-display)] text-[72px] font-normal leading-[0.8] tracking-[-0.01em] text-white sm:text-[100px]">
               TRAINING
             </h1>
             <p className="max-w-xl text-[15px] font-medium leading-relaxed text-white/75 sm:mb-1">
@@ -50,7 +50,7 @@ export function TrainingPageClient({
               <h2 className="mb-2 font-[family-name:var(--font-body)] text-xs font-bold uppercase tracking-[0.2em] text-brand-red">
                 Our People
               </h2>
-              <p className="font-['StandardTX_Display'] text-[40px] leading-[0.9] tracking-tight text-foreground sm:text-[52px]">
+              <p className="font-[family-name:var(--font-display)] text-[40px] leading-[0.9] tracking-tight text-foreground sm:text-[52px]">
                 WORKFORCE SPECIALISTS
                 <br />& CERTIFICATIONS
               </p>
@@ -89,7 +89,7 @@ export function TrainingPageClient({
           <h2 className="mb-2 font-[family-name:var(--font-body)] text-xs font-bold uppercase tracking-[0.2em] text-brand-red">
             Curriculum
           </h2>
-          <p className="mb-10 font-['StandardTX_Display'] text-[40px] leading-[0.9] tracking-tight text-foreground sm:text-[52px]">
+          <p className="mb-10 font-[family-name:var(--font-display)] text-[40px] leading-[0.9] tracking-tight text-foreground sm:text-[52px]">
             SAFETY COURSES
             <span className="ml-3 text-[28px] font-normal text-slate-400 sm:text-[32px]">
               {totalCourses}

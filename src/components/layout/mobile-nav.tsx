@@ -21,7 +21,6 @@ interface NavLinkItemProps {
 function NavLinkItem({ item, index, delayOffset, pathname, closeMenu }: NavLinkItemProps) {
   return (
     <motion.div
-      key={item.name}
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: 0.1 + (delayOffset + index) * 0.05 }}

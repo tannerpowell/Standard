@@ -65,6 +65,7 @@
 
   /* Font aliases */
   --font-body: var(--font-jost);
+  --font-display: "StandardTX Display";
 }
 
 :root {
