@@ -61,12 +61,10 @@ function extractRequirements(html: string): string {
   const idx = html.indexOf(marker);
   if (idx === -1) return "";
 
+  // Use extractOuterDiv to handle nested divs properly
   const afterMarker = html.slice(idx + marker.length);
-  const closeDiv = afterMarker.indexOf("</div>");
-  if (closeDiv === -1) return "";
-
-  const content = afterMarker.slice(0, closeDiv);
-  return sanitizeHtml(content);
+  const outerDiv = extractOuterDiv(afterMarker);
+  return sanitizeHtml(outerDiv);
 }
 
 /** Extract the outermost <div>...</div> including nested divs */
