@@ -104,7 +104,7 @@ function extractOuterDiv(html: string): string {
 
 /**
  * Escape HTML-special characters, then restore an allowlist of safe inline
- * formatting tags (<strong>, <em>, <b>, <i> — both opening and closing).
+ * formatting tags and list tags (<strong>, <em>, <b>, <i>, <ul>, <ol>, <li>).
  */
 function escapeWithAllowlist(text: string): string {
   // 1. Escape all HTML-special characters
@@ -115,9 +115,9 @@ function escapeWithAllowlist(text: string): string {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;");
 
-  // 2. Restore only permitted formatting tags
+  // 2. Restore only permitted formatting and list tags
   return escaped.replace(
-    /&lt;(\/?(?:strong|em|b|i))&gt;/gi,
+    /&lt;(\/?(?:strong|em|b|i|ul|ol|li))&gt;/gi,
     (_, tag: string) => `<${tag}>`,
   );
 }
@@ -137,6 +137,7 @@ function sanitizeHtml(html: string): string {
   text = text.replace(/<embed[^>]*>/gi, "");
 
   // Strip remaining disallowed tags (keep content)
+  // Note: ul, ol, li are preserved for list formatting
   text = text.replace(/<\/?(div|span|a|table|tr|td|th|thead|tbody|h[1-6]|img|hr|section|article|header|footer|nav|figure|figcaption|blockquote|pre|code|dl|dt|dd)[^>]*>/gi, "");
 
   // Decode entities
