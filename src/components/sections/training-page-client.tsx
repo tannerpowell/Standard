@@ -116,7 +116,7 @@ export function TrainingPageClient({
                   <div className="flex flex-wrap gap-2.5">
                     {cat.courses.map((course, i) => (
                       <motion.div
-                        key={course}
+                        key={`${course}-${i}`}
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: i * 0.015, duration: 0.2 }}
@@ -177,9 +177,10 @@ function CertCard({ spec }: { spec: WorkforceSpecialist }) {
     >
       {/* Inner card */}
       <div
-        className="relative flex h-full flex-col items-center justify-center overflow-hidden rounded-[3px] border border-[#e2e4e8] px-4 py-5 text-center dark:border-slate-600 dark:bg-slate-800/80"
+        className={`relative flex h-full flex-col items-center justify-center overflow-hidden rounded-[3px] border border-[#e2e4e8] px-4 py-5 text-center dark:border-slate-600 dark:bg-slate-800/80 ${
+          tilt.hovering ? "bg-white" : "bg-[#fafafa]"
+        }`}
         style={{
-          backgroundColor: tilt.hovering ? "#ffffff" : "#fafafa",
           boxShadow:
             "inset 0 1px 3px rgba(0, 0, 0, 0.04), inset 0 0 0 0.5px rgba(255,255,255,0.7)",
           transition: "background-color 0.2s ease-out",

@@ -23,7 +23,7 @@ export default function ContactPage() {
                 Get in Touch
               </h2>
               <p className="mb-8 font-[family-name:var(--font-display)] text-[40px] leading-[0.9] tracking-tight text-foreground sm:text-[52px]">
-                ODESSA, TX
+                {companyInfo.address.city?.toUpperCase() || ""}, {companyInfo.address.state?.toUpperCase() || ""}
               </p>
               <ContactForm />
             </div>

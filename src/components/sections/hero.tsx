@@ -28,7 +28,7 @@ const itemVariants = {
 };
 
 export function Hero() {
-  const ref = useRef(null);
+  const ref = useRef<HTMLElement | null>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],

@@ -2,7 +2,13 @@
 
 import { motion } from "framer-motion";
 
-const pillars = [
+interface Pillar {
+  number: string;
+  title: string;
+  description: string;
+}
+
+const pillars: Pillar[] = [
   {
     number: "01",
     title: "SERVICE",
@@ -40,7 +46,7 @@ export function FocusPillars() {
           viewport={{ once: true }}
           className="mb-8 grid gap-8 md:grid-cols-2 md:items-center"
         >
-          <h2 className="font-[family-name:var(--font-display)] text-[100px] font-normal leading-[0.8] tracking-[-0.01em] text-brand-red">
+          <h2 className="font-[family-name:var(--font-display)] text-[48px] font-normal leading-[0.8] tracking-[-0.01em] text-brand-red sm:text-[64px] md:text-[80px] lg:text-[100px]">
             OUR FOCUS
           </h2>
           <p className="text-lg text-muted-foreground">
@@ -77,7 +83,7 @@ export function FocusPillars() {
               <h3 className="mb-1 font-[family-name:var(--font-body)] text-2xl font-bold uppercase tracking-wide text-brand-navy dark:text-white">
                 {pillar.title}
               </h3>
-              <div className="mb-4 h-1 w-5 bg-brand-navy dark:bg-white" />
+              <div className="mb-4 h-1 w-5 bg-brand-navy dark:bg-white" aria-hidden="true" role="presentation" />
 
               {/* Description */}
               <p className="text-muted-foreground">{pillar.description}</p>

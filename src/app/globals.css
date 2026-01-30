@@ -233,6 +233,12 @@ html {
   scroll-behavior: smooth;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+}
+
 /* Animation keyframes - simple fades only */
 @keyframes fade-up {
   from {
@@ -267,6 +273,21 @@ html {
 .stagger-2 { animation-delay: 0.2s; }
 .stagger-3 { animation-delay: 0.3s; }
 .stagger-4 { animation-delay: 0.4s; }
+
+/* Disable animations for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up,
+  .animate-fade-in {
+    animation: none !important;
+  }
+
+  .stagger-1,
+  .stagger-2,
+  .stagger-3,
+  .stagger-4 {
+    animation-delay: 0s !important;
+  }
+}
 
 /* Section backgrounds */
 .section-white {

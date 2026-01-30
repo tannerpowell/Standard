@@ -41,6 +41,12 @@ function NavLinkItem({ item, index, delayOffset, pathname, closeMenu }: NavLinkI
   );
 }
 
+function getFocusableElements(panel: HTMLElement): HTMLElement[] {
+  const focusableSelector =
+    'a[href], button, textarea, input, select, [tabindex]:not([tabindex="-1"])';
+  return Array.from(panel.querySelectorAll(focusableSelector)) as HTMLElement[];
+}
+
 export function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
@@ -54,11 +60,7 @@ export function MobileNav() {
     if (!isOpen || !panelRef.current) return;
 
     const panel = panelRef.current;
-    const focusableSelector =
-      'a[href], button, textarea, input, select, [tabindex]:not([tabindex="-1"])';
-    const focusableElements = Array.from(
-      panel.querySelectorAll(focusableSelector)
-    ) as HTMLElement[];
+    let focusableElements = getFocusableElements(panel);
 
     if (focusableElements.length === 0) {
       // If no focusable elements, focus the panel itself
@@ -78,6 +80,9 @@ export function MobileNav() {
 
       // Handle Tab key for focus trapping
       if (event.key === "Tab") {
+        // Recompute focusable elements dynamically
+        focusableElements = getFocusableElements(panel);
+
         if (focusableElements.length === 0) return;
 
         const firstElement = focusableElements[0];
@@ -115,6 +120,8 @@ export function MobileNav() {
         onClick={toggleMenu}
         className="relative z-50 text-white hover:bg-white/10"
         aria-label={isOpen ? "Close menu" : "Open menu"}
+        aria-expanded={isOpen}
+        aria-controls="mobile-nav-panel"
       >
         <AnimatePresence mode="wait">
           {isOpen ? (
@@ -157,6 +164,7 @@ export function MobileNav() {
             {/* Menu panel */}
             <motion.div
               ref={panelRef}
+              id="mobile-nav-panel"
               initial={{ opacity: 0, x: "100%" }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: "100%" }}

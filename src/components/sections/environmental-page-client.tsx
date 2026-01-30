@@ -4,6 +4,7 @@ import { useRef } from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Check, Droplets, FileCheck, Leaf, Recycle } from "lucide-react";
+import { cn } from "@/lib/utils";
 import {
   environmentalServices,
   type EnvironmentalIconName,
@@ -33,9 +34,10 @@ function ServiceSection({ service, index }: ServiceSectionProps): React.ReactNod
     >
       <div className="container">
         <div
-          className={`flex flex-col gap-10 lg:flex-row lg:items-start lg:gap-16 ${
-            isEven ? "" : "lg:flex-row-reverse"
-          }`}
+          className={cn(
+            "flex flex-col gap-10 lg:flex-row lg:items-start lg:gap-16",
+            !isEven && "lg:flex-row-reverse"
+          )}
         >
           {/* Image */}
           <div className="lg:w-1/2">
