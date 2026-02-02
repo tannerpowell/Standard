@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { motion, useAnimationControls } from "framer-motion";
+import { motion, useAnimationControls, useReducedMotion } from "framer-motion";
 import { useEffect } from "react";
 import { navigation, secondaryNavigation } from "@/data/navigation";
 
@@ -11,8 +11,14 @@ const allLinks = [...navigation, ...secondaryNavigation].filter(
 
 function GlitchText() {
   const controls = useAnimationControls();
+  const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
+    if (prefersReducedMotion) {
+      controls.set({ opacity: 1, x: 0, y: 0 });
+      return;
+    }
+
     let mounted = true;
     let timeout: ReturnType<typeof setTimeout>;
 
@@ -48,7 +54,7 @@ function GlitchText() {
       clearTimeout(timeout);
       controls.stop();
     };
-  }, [controls]);
+  }, [controls, prefersReducedMotion]);
 
   return (
     <motion.span

@@ -7,7 +7,7 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { NavigationProgress } from "@/components/layout/navigation-progress";
 import { Analytics } from "@vercel/analytics/react";
-import { companyInfo } from "@/data/navigation";
+import { companyInfo, SITE_BASE_URL } from "@/data/navigation";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -104,7 +104,7 @@ export default function RootLayout({
               name: companyInfo.name,
               description:
                 "Safety equipment, training, and environmental services for the oil & gas industry in the Permian Basin.",
-              url: "https://standardtx.com",
+              url: SITE_BASE_URL,
               telephone: companyInfo.phone,
               email: companyInfo.email,
               address: {
