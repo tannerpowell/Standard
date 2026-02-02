@@ -9,7 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_BASE_URL}/services`, lastModified: now, priority: 0.9 },
     { url: `${SITE_BASE_URL}/training`, lastModified: now, priority: 0.9 },
     {
-      url: `${SITE_BASE_URL}/environmental`,
+      url: `${SITE_BASE_URL}/environmental-services`,
       lastModified: now,
       priority: 0.8,
     },

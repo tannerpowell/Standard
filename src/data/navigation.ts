@@ -23,7 +23,7 @@ export const navigation: NavItem[] = [
   { name: "Home", href: "/" },
   { name: "Services", href: "/services" },
   { name: "Training", href: "/training" },
-  { name: "Environmental Services", href: "/environmental" },
+  { name: "Environmental Services", href: "/environmental-services" },
 ];
 
 export const secondaryNavigation: NavItem[] = [
