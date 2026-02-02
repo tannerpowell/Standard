@@ -136,7 +136,7 @@ export default function RootLayout({
                   latitude: 31.8457,
                   longitude: -102.3676,
                 },
-                geoRadius: "150mi",
+                geoRadius: "241402",
               },
             }),
           }}

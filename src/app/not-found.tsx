@@ -13,12 +13,15 @@ function GlitchText() {
   const controls = useAnimationControls();
 
   useEffect(() => {
+    let mounted = true;
     let timeout: ReturnType<typeof setTimeout>;
 
     const flicker = async () => {
+      if (!mounted) return;
       // Random glitch burst
       const glitches = 2 + Math.floor(Math.random() * 3);
       for (let i = 0; i < glitches; i++) {
+        if (!mounted) return;
         await controls.start({
           opacity: 0.15 + Math.random() * 0.3,
           x: (Math.random() - 0.5) * 6,
@@ -26,6 +29,7 @@ function GlitchText() {
           transition: { duration: 0.05 },
         });
       }
+      if (!mounted) return;
       // Settle back
       await controls.start({
         opacity: 1,
@@ -33,12 +37,17 @@ function GlitchText() {
         y: 0,
         transition: { duration: 0.1 },
       });
+      if (!mounted) return;
       // Wait 2-5s before next flicker
       timeout = setTimeout(flicker, 2000 + Math.random() * 3000);
     };
 
     timeout = setTimeout(flicker, 1500);
-    return () => clearTimeout(timeout);
+    return () => {
+      mounted = false;
+      clearTimeout(timeout);
+      controls.stop();
+    };
   }, [controls]);
 
   return (

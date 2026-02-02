@@ -44,3 +44,5 @@ export const companyInfo: CompanyInfo = {
   },
   hours: "24/7",
 };
+
+export const SITE_BASE_URL = "https://standardtx.com";

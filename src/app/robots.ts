@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { SITE_BASE_URL } from "@/data/navigation";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -6,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://standardtx.com/sitemap.xml",
+    sitemap: `${SITE_BASE_URL}/sitemap.xml`,
   };
 }

@@ -1,18 +1,19 @@
 import type { MetadataRoute } from "next";
+import { SITE_BASE_URL } from "@/data/navigation";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://standardtx.com";
+  const now = new Date();
 
   return [
-    { url: baseUrl, lastModified: new Date(), priority: 1.0 },
-    { url: `${baseUrl}/services`, lastModified: new Date(), priority: 0.9 },
-    { url: `${baseUrl}/training`, lastModified: new Date(), priority: 0.9 },
+    { url: SITE_BASE_URL, lastModified: now, priority: 1.0 },
+    { url: `${SITE_BASE_URL}/services`, lastModified: now, priority: 0.9 },
+    { url: `${SITE_BASE_URL}/training`, lastModified: now, priority: 0.9 },
     {
-      url: `${baseUrl}/environmental`,
-      lastModified: new Date(),
+      url: `${SITE_BASE_URL}/environmental`,
+      lastModified: now,
       priority: 0.8,
     },
-    { url: `${baseUrl}/careers`, lastModified: new Date(), priority: 0.7 },
-    { url: `${baseUrl}/contact`, lastModified: new Date(), priority: 0.7 },
+    { url: `${SITE_BASE_URL}/careers`, lastModified: now, priority: 0.7 },
+    { url: `${SITE_BASE_URL}/contact`, lastModified: now, priority: 0.7 },
   ];
 }
