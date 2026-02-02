@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
-import { render } from "@react-email/components";
+import { render } from "@react-email/render";
 import { contactFormSchema, subjectOptions } from "@/lib/validations";
 import { companyInfo } from "@/data/navigation";
 import { ContactFormEmail } from "@/emails/contact-form";
