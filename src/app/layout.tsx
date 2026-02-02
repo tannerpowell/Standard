@@ -6,6 +6,8 @@ import { ThemeProvider } from "@/components/providers/theme-provider";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { NavigationProgress } from "@/components/layout/navigation-progress";
+import { Analytics } from "@vercel/analytics/react";
+import { companyInfo } from "@/data/navigation";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -92,6 +94,54 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "LocalBusiness",
+              name: companyInfo.name,
+              description:
+                "Safety equipment, training, and environmental services for the oil & gas industry in the Permian Basin.",
+              url: "https://standardtx.com",
+              telephone: companyInfo.phone,
+              email: companyInfo.email,
+              address: {
+                "@type": "PostalAddress",
+                streetAddress: companyInfo.address.street,
+                addressLocality: companyInfo.address.city,
+                addressRegion: companyInfo.address.state,
+                postalCode: companyInfo.address.zip,
+                addressCountry: "US",
+              },
+              openingHoursSpecification: {
+                "@type": "OpeningHoursSpecification",
+                dayOfWeek: [
+                  "Monday",
+                  "Tuesday",
+                  "Wednesday",
+                  "Thursday",
+                  "Friday",
+                  "Saturday",
+                  "Sunday",
+                ],
+                opens: "00:00",
+                closes: "23:59",
+              },
+              areaServed: {
+                "@type": "GeoCircle",
+                geoMidpoint: {
+                  "@type": "GeoCoordinates",
+                  latitude: 31.8457,
+                  longitude: -102.3676,
+                },
+                geoRadius: "150mi",
+              },
+            }),
+          }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${oswald.variable} ${montserrat.variable} ${jost.variable} min-h-screen font-sans antialiased`}
       >
@@ -102,6 +152,7 @@ export default function RootLayout({
           <Header />
           <main className="min-h-screen">{children}</main>
           <Footer />
+          <Analytics />
         </ThemeProvider>
       </body>
     </html>

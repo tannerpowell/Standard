@@ -124,7 +124,7 @@ export async function POST(request: NextRequest) {
     const resend = new Resend(process.env.RESEND_API_KEY);
 
     const { data, error } = await resend.emails.send({
-      from: `${companyInfo.name} Website <onboarding@resend.dev>`,
+      from: `${companyInfo.name} Website <noreply@send.standardtx.com>`,
       to: process.env.CONTACT_EMAIL || companyInfo.email,
       replyTo: sanitizedEmail,
       subject: `[Website Contact] ${sanitizedSubjectLabel} - ${sanitizedName}`,

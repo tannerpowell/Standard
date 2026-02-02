@@ -42,5 +42,5 @@ export const companyInfo: CompanyInfo = {
     state: "TX",
     zip: "79761",
   },
-  hours: "Monday - Friday: 7:00 AM - 5:00 PM",
+  hours: "24/7",
 };
