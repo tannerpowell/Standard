@@ -38,7 +38,7 @@ export default function ContactPage() {
                 >
                   {/* Map */}
                   <a
-                    href="https://maps.apple.com/place?address=3401%20S%20County%20Rd%201290%2C%20Odessa%2C%20TX%20%2079765%2C%20United%20States&auid=2753523042508709684&ll=31.804640%2C-102.377930&lsp=9902&q=Standard%20Safety%20%26%20Supply&t=m"
+                    href="https://maps.apple.com/?address=2524%20Trunk%20St%2C%20Odessa%2C%20TX%2079761%2C%20United%20States&q=Standard%20Safety%20%26%20Supply"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block"

@@ -34,13 +34,13 @@ export const secondaryNavigation: NavItem[] = [
 export const companyInfo: CompanyInfo = {
   name: "Standard Safety & Supply",
   tagline: "Your Partner in Safety Excellence",
-  phone: "(432) 367-1515",
+  phone: "(432) 653-0393",
   email: "info@standardtx.com",
   address: {
-    street: "3401 S County Rd 1290",
+    street: "2524 Trunk Street",
     city: "Odessa",
     state: "TX",
-    zip: "79765",
+    zip: "79761",
   },
   hours: "Monday - Friday: 7:00 AM - 5:00 PM",
 };
