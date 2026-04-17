@@ -1,8 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ExternalLink, MapPin, X } from "lucide-react";
+import { ExternalLink, Loader2, MapPin, X } from "lucide-react";
 import Link from "next/link";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import type { PaylocityJob } from "@/data/careers";
@@ -46,16 +46,40 @@ function uniqueValues(
 
 interface CareersPageClientProps {
   jobs: JobWithUrls[];
-  detailsMap: Record<number, JobDetails>;
 }
 
 export function CareersPageClient({
   jobs,
-  detailsMap,
 }: CareersPageClientProps): React.JSX.Element {
   const [locationFilter, setLocationFilter] = useState("all");
   const [departmentFilter, setDepartmentFilter] = useState("all");
   const [selectedJob, setSelectedJob] = useState<JobWithUrls | null>(null);
+  const [detailsCache, setDetailsCache] = useState<
+    Record<number, JobDetails>
+  >({});
+  const [detailsLoading, setDetailsLoading] = useState(false);
+
+  const handleSelect = useCallback(
+    (job: JobWithUrls) => {
+      setSelectedJob(job);
+      if (detailsCache[job.JobId]) return;
+
+      setDetailsLoading(true);
+      const controller = new AbortController();
+      fetch(`/api/careers/${job.JobId}`, { signal: controller.signal })
+        .then((res) => (res.ok ? res.json() : null))
+        .then((data: JobDetails | null) => {
+          if (data) {
+            setDetailsCache((prev) => ({ ...prev, [job.JobId]: data }));
+          }
+        })
+        .catch(() => {
+          // swallow abort + network errors; modal falls back to Apply link
+        })
+        .finally(() => setDetailsLoading(false));
+    },
+    [detailsCache],
+  );
 
   // Sort newest first
   const sortedJobs = useMemo(
@@ -153,7 +177,7 @@ export function CareersPageClient({
                     key={job.JobId}
                     job={job}
                     index={i}
-                    onSelect={setSelectedJob}
+                    onSelect={handleSelect}
                   />
                 ))}
               </motion.div>
@@ -186,7 +210,8 @@ export function CareersPageClient({
       {/* ─── Job Detail Modal ─── */}
       <JobDetailModal
         job={selectedJob}
-        details={selectedJob ? detailsMap[selectedJob.JobId] : undefined}
+        details={selectedJob ? detailsCache[selectedJob.JobId] : undefined}
+        loading={detailsLoading}
         open={selectedJob !== null}
         onClose={() => setSelectedJob(null)}
       />
@@ -269,11 +294,13 @@ function JobCard({
 function JobDetailModal({
   job,
   details,
+  loading,
   open,
   onClose,
 }: {
   job: JobWithUrls | null;
   details: JobDetails | undefined;
+  loading: boolean;
   open: boolean;
   onClose: () => void;
 }) {
@@ -357,6 +384,10 @@ function JobDetailModal({
                       />
                     </div>
                   )}
+                </div>
+              ) : loading ? (
+                <div className="flex items-center justify-center py-16 text-slate-400">
+                  <Loader2 className="h-6 w-6 animate-spin" />
                 </div>
               ) : (
                 <p className="py-8 text-center font-[family-name:var(--font-body)] text-sm text-slate-400">
