@@ -62,7 +62,9 @@ export function CareersPageClient({
   // Ref mirror of detailsCache lets handleSelect read the latest cache without
   // re-creating the callback on every fetch (which would re-render every card).
   const detailsCacheRef = useRef(detailsCache);
-  detailsCacheRef.current = detailsCache;
+  useEffect(() => {
+    detailsCacheRef.current = detailsCache;
+  }, [detailsCache]);
 
   const abortRef = useRef<AbortController | null>(null);
 

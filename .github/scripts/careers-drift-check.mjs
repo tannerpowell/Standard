@@ -21,6 +21,7 @@ const PAYLOCITY_URL =
 const ISSUE_TITLE = "[careers-drift-alert] Careers page out of sync with Paylocity";
 
 const USER_AGENT = "standard-tx-careers-monitor/1.0";
+const FETCH_TIMEOUT_MS = 15_000;
 
 function decodeEntities(s) {
   return s
@@ -32,8 +33,21 @@ function decodeEntities(s) {
 }
 
 async function fetchText(url, label) {
-  const res = await fetch(url, { headers: { "User-Agent": USER_AGENT } });
-  return { ok: res.ok, status: res.status, text: res.ok ? await res.text() : "", label, url };
+  try {
+    const res = await fetch(url, {
+      headers: { "User-Agent": USER_AGENT },
+      signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
+    });
+    return {
+      ok: res.ok,
+      status: res.status,
+      text: res.ok ? await res.text() : "",
+      label,
+      url,
+    };
+  } catch (e) {
+    return { ok: false, status: 0, text: "", label, url, error: e.message };
+  }
 }
 
 function parsePaylocityPageData(html) {
@@ -44,38 +58,50 @@ function parsePaylocityPageData(html) {
   let depth = 0;
   let jsonEnd = -1;
   let inString = false;
-  let prev = "";
+  // Walk the JSON byte by byte. When inside a string, a `\` always consumes
+  // the next character as part of an escape sequence — that correctly handles
+  // `\"`, `\\`, and the tricky `\\"` (escaped backslash followed by the
+  // closing quote).
   for (let i = jsonStart; i < html.length; i++) {
     const c = html[i];
-    if (c === '"' && prev !== "\\") inString = !inString;
-    if (!inString) {
-      if (c === "{") depth++;
-      if (c === "}") depth--;
+    if (inString) {
+      if (c === "\\") {
+        i++; // skip escaped char; for-loop i++ advances past it
+        continue;
+      }
+      if (c === '"') inString = false;
+      continue;
+    }
+    if (c === '"') {
+      inString = true;
+      continue;
+    }
+    if (c === "{") depth++;
+    else if (c === "}") {
+      depth--;
       if (depth === 0) {
         jsonEnd = i + 1;
         break;
       }
     }
-    prev = c;
   }
   if (jsonEnd === -1) throw new Error("Paylocity pageData JSON unterminated");
   return JSON.parse(html.slice(jsonStart, jsonEnd));
 }
 
 function extractLiveTitles(html) {
-  const matches = html.match(/aria-label="View details for ([^"]+)"/g) || [];
-  return matches
-    .map((m) => decodeEntities(m.match(/for (.+)"$/)[1]))
+  return [...html.matchAll(/aria-label="View details for ([^"]+)"/g)]
+    .map((m) => decodeEntities(m[1]))
     .sort();
 }
 
 function extractLiveChips(html) {
-  const matches =
-    html.match(
+  return [
+    ...html.matchAll(
       /<button[^>]*type="button"[^>]*aria-pressed="[^"]*"[^>]*>([^<]+)<\/button>/g,
-    ) || [];
-  return matches
-    .map((m) => decodeEntities(m.match(/>([^<]+)<\/button>/)[1]).trim())
+    ),
+  ]
+    .map((m) => decodeEntities(m[1]).trim())
     .sort();
 }
 
@@ -100,9 +126,12 @@ function setDiff(a, b) {
 
 async function checkDetailEndpoint(jobId) {
   const url = `${API_URL_BASE}/${jobId}`;
-  const res = await fetch(url, { headers: { "User-Agent": USER_AGENT } });
-  if (!res.ok) return { ok: false, reason: `HTTP ${res.status}`, url };
   try {
+    const res = await fetch(url, {
+      headers: { "User-Agent": USER_AGENT },
+      signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
+    });
+    if (!res.ok) return { ok: false, reason: `HTTP ${res.status}`, url };
     const data = await res.json();
     const descLen = data.description?.length ?? 0;
     const reqLen = data.requirements?.length ?? 0;
@@ -111,7 +140,7 @@ async function checkDetailEndpoint(jobId) {
     }
     return { ok: true, descLen, reqLen, url };
   } catch (e) {
-    return { ok: false, reason: `JSON parse error: ${e.message}`, url };
+    return { ok: false, reason: `request error: ${e.message}`, url };
   }
 }
 
@@ -163,6 +192,10 @@ function closeIssue(number, body) {
 async function main() {
   const problems = [];
   const stamp = new Date().toISOString();
+  // Tracks whether we actually ran a full sync comparison. Recovery (closing
+  // an open drift issue) must require this — otherwise a transient Paylocity
+  // outage could silently auto-close a still-real drift.
+  let syncVerified = false;
 
   // 1. Live page reachable?
   const live = await fetchText(LIVE_URL, "Live careers page");
@@ -190,6 +223,7 @@ async function main() {
       if (paylocityTitles.length === 0) {
         console.log("Paylocity returned 0 jobs — treating as transient, not drift.");
       } else {
+        syncVerified = true;
         drift = setDiff(paylocityTitles, liveTitles);
         if (drift.onlyInA.length > 0) {
           problems.push(
@@ -252,12 +286,20 @@ async function main() {
   const existing = process.env.GH_TOKEN ? findOpenDriftIssue() : null;
 
   if (problems.length === 0) {
-    console.log(`[${stamp}] OK: live and Paylocity match.`);
-    if (existing) {
-      console.log(`Closing recovered drift issue #${existing.number}`);
-      closeIssue(
-        existing.number,
-        `Auto-resolved at ${stamp}. Live /careers and Paylocity are back in sync.`,
+    if (syncVerified) {
+      console.log(`[${stamp}] OK: live and Paylocity match.`);
+      if (existing) {
+        console.log(`Closing recovered drift issue #${existing.number}`);
+        closeIssue(
+          existing.number,
+          `Auto-resolved at ${stamp}. Live /careers and Paylocity are back in sync.`,
+        );
+      }
+    } else {
+      // Couldn't verify sync (Paylocity unreachable or returned 0 jobs).
+      // Leave any open drift issue open — do NOT auto-close on unverified state.
+      console.log(
+        `[${stamp}] Skipped: sync unverified (Paylocity unreachable or empty). No issue action taken.`,
       );
     }
     return;
