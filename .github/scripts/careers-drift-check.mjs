@@ -50,6 +50,16 @@ async function fetchText(url, label) {
   }
 }
 
+/**
+ * Human-readable failure description for a fetchText() result. Prefers the
+ * error field (populated on timeouts / network errors where status is 0),
+ * falls back to the HTTP status code.
+ */
+function describeFailure(result) {
+  if (result.status === 0 && result.error) return result.error;
+  return `HTTP ${result.status}`;
+}
+
 function parsePaylocityPageData(html) {
   const marker = "window.pageData = ";
   const start = html.indexOf(marker);
@@ -200,14 +210,16 @@ async function main() {
   // 1. Live page reachable?
   const live = await fetchText(LIVE_URL, "Live careers page");
   if (!live.ok) {
-    problems.push(`Live /careers returned HTTP ${live.status}.`);
+    problems.push(`Live /careers unreachable: ${describeFailure(live)}.`);
   }
 
   // 2. Paylocity reachable?
   const pay = await fetchText(PAYLOCITY_URL, "Paylocity");
   if (!pay.ok) {
     // Paylocity being down is external — note but don't alert on this alone.
-    console.log(`WARN: Paylocity unreachable (${pay.status}); skipping drift check.`);
+    console.log(
+      `WARN: Paylocity unreachable (${describeFailure(pay)}); skipping drift check.`,
+    );
   }
 
   // 3. Drift comparison — only if both responded
