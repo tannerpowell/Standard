@@ -3,8 +3,6 @@
  * Used by both the ISR server component and the API fallback route.
  */
 
-import DOMPurify from "isomorphic-dompurify";
-
 export interface JobDetails {
   description: string;
   requirements: string;
@@ -102,13 +100,40 @@ function extractOuterDiv(html: string): string {
   return "";
 }
 
-/** Sanitize raw HTML with DOMPurify, then structure into paragraphs and lists. */
-function formatPaylocityHtml(html: string): string {
-  // First pass: DOMPurify strips all dangerous content
-  const clean = DOMPurify.sanitize(html, {
-    ALLOWED_TAGS: ["p", "br", "strong", "em", "b", "i", "ul", "ol", "li"],
-    ALLOWED_ATTR: [],
+const ALLOWED_TAGS = new Set([
+  "p",
+  "br",
+  "strong",
+  "em",
+  "b",
+  "i",
+  "ul",
+  "ol",
+  "li",
+]);
+
+/**
+ * Strip everything except an allowlist of safe formatting tags and drop all
+ * attributes. Pure regex — works in any runtime (Node, Edge, Bun) without a
+ * DOM dependency. Input is Paylocity's recruiting HTML, so this is defense in
+ * depth rather than adversarial XSS protection.
+ */
+function sanitizeHtml(html: string): string {
+  // Strip dangerous element bodies entirely (tag + contents).
+  const stripped = html.replace(
+    /<(script|style|iframe|object|embed|link|meta|form|svg|math)[^>]*>[\s\S]*?<\/\1>/gi,
+    "",
+  );
+  // For all remaining tags: keep if allowlisted (as bare tag), otherwise drop.
+  return stripped.replace(/<(\/?)([a-zA-Z0-9]+)\b[^>]*>/g, (_, slash, tag) => {
+    const t = tag.toLowerCase();
+    return ALLOWED_TAGS.has(t) ? `<${slash}${t}>` : "";
   });
+}
+
+/** Sanitize raw HTML, then structure into paragraphs and lists. */
+function formatPaylocityHtml(html: string): string {
+  const clean = sanitizeHtml(html);
 
   // Normalize <br> to newlines
   let text = clean.replace(/<br\s*\/?>/gi, "\n");
