@@ -117,6 +117,14 @@ const ALLOWED_TAGS = new Set([
  * attributes. Pure regex — works in any runtime (Node, Edge, Bun) without a
  * DOM dependency. Input is Paylocity's recruiting HTML, so this is defense in
  * depth rather than adversarial XSS protection.
+ *
+ * Known limitations (theoretical on Paylocity input, documented for maintainers):
+ * - Unclosed dangerous tags like `<style>body{}` without `</style>` leak the
+ *   body text as visible content (tag stripped, CSS remains as text).
+ * - `>` inside quoted attribute values (`<p title="a>b">`) corrupts the text
+ *   after the `>` because the regex treats `>` as tag close. Not a security
+ *   issue since all attributes are dropped anyway, but the leaked text becomes
+ *   visible. Swap this for a proper HTML parser if either case ever appears.
  */
 function sanitizeHtml(html: string): string {
   // Strip dangerous element bodies entirely (tag + contents).
@@ -138,7 +146,7 @@ function formatPaylocityHtml(html: string): string {
   // Normalize <br> to newlines
   let text = clean.replace(/<br\s*\/?>/gi, "\n");
 
-  // Decode common entities that DOMPurify preserves
+  // Decode common HTML entities that Paylocity emits.
   text = text
     .replace(/&nbsp;/g, " ")
     .replace(/&rsquo;/g, "\u2019")
@@ -161,6 +169,17 @@ function formatPaylocityHtml(html: string): string {
     // Strip opening <p> and trim
     const segment = raw.replace(/<p[^>]*>/gi, "").replace(/\n/g, " ").trim();
     if (!segment) continue;
+
+    // If the segment already contains preserved list block tags, emit as-is.
+    // Wrapping it in <p> would produce invalid <p><ul>...</ul></p> markup.
+    if (/<\/?(ul|ol|li)\b/i.test(segment)) {
+      if (inList) {
+        processed.push("</ul>");
+        inList = false;
+      }
+      processed.push(segment);
+      continue;
+    }
 
     const isBullet = /^[-•–]\s/.test(segment);
 

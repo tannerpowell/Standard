@@ -424,6 +424,7 @@ function JobDetailModal({
                 href={job.detailsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`Apply for ${job.JobTitle} on Paylocity (opens in a new tab)`}
                 className="inline-flex items-center gap-2 rounded-full bg-brand-red px-7 py-3 font-[family-name:var(--font-body)] text-sm font-semibold text-white transition-colors hover:bg-brand-red-dark"
               >
                 Apply Now
@@ -462,6 +463,7 @@ function EmptyState({ hasAnyJobs }: { hasAnyJobs: boolean }) {
             href={PAYLOCITY_PAGE_URL}
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="View Openings on Paylocity (opens in a new tab)"
             className="inline-flex items-center gap-2 rounded-full bg-brand-red px-8 py-3 font-[family-name:var(--font-body)] text-sm font-semibold uppercase tracking-wider text-white transition-colors hover:bg-brand-red-dark"
           >
             View Openings on Paylocity
