@@ -1,8 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ExternalLink, MapPin, X } from "lucide-react";
+import { ExternalLink, Loader2, MapPin, X } from "lucide-react";
 import Link from "next/link";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import type { PaylocityJob } from "@/data/careers";
@@ -46,16 +46,62 @@ function uniqueValues(
 
 interface CareersPageClientProps {
   jobs: JobWithUrls[];
-  detailsMap: Record<number, JobDetails>;
 }
 
 export function CareersPageClient({
   jobs,
-  detailsMap,
 }: CareersPageClientProps): React.JSX.Element {
   const [locationFilter, setLocationFilter] = useState("all");
   const [departmentFilter, setDepartmentFilter] = useState("all");
   const [selectedJob, setSelectedJob] = useState<JobWithUrls | null>(null);
+  const [detailsCache, setDetailsCache] = useState<
+    Record<number, JobDetails>
+  >({});
+  const [loadingJobId, setLoadingJobId] = useState<number | null>(null);
+
+  // Ref mirror of detailsCache lets handleSelect read the latest cache without
+  // re-creating the callback on every fetch (which would re-render every card).
+  const detailsCacheRef = useRef(detailsCache);
+  detailsCacheRef.current = detailsCache;
+
+  const abortRef = useRef<AbortController | null>(null);
+
+  useEffect(() => () => abortRef.current?.abort(), []);
+
+  const handleSelect = useCallback((job: JobWithUrls) => {
+    setSelectedJob(job);
+    if (detailsCacheRef.current[job.JobId]) return;
+
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
+    setLoadingJobId(job.JobId);
+
+    fetch(`/api/careers/${job.JobId}`, { signal: controller.signal })
+      .then(async (res) => {
+        if (res.ok) return (await res.json()) as JobDetails;
+        // 404 = Paylocity returned a page with no description/requirements.
+        // Cache a sentinel so repeat clicks don't re-fetch.
+        if (res.status === 404) {
+          return { description: "", requirements: "" } as JobDetails;
+        }
+        return null;
+      })
+      .then((data) => {
+        if (controller.signal.aborted || !data) return;
+        setDetailsCache((prev) => ({ ...prev, [job.JobId]: data }));
+      })
+      .catch(() => {
+        // Swallow abort + network errors. Network errors stay uncached so
+        // reopening the modal retries.
+      })
+      .finally(() => {
+        if (abortRef.current === controller) {
+          abortRef.current = null;
+          setLoadingJobId(null);
+        }
+      });
+  }, []);
 
   // Sort newest first
   const sortedJobs = useMemo(
@@ -153,7 +199,7 @@ export function CareersPageClient({
                     key={job.JobId}
                     job={job}
                     index={i}
-                    onSelect={setSelectedJob}
+                    onSelect={handleSelect}
                   />
                 ))}
               </motion.div>
@@ -186,7 +232,8 @@ export function CareersPageClient({
       {/* ─── Job Detail Modal ─── */}
       <JobDetailModal
         job={selectedJob}
-        details={selectedJob ? detailsMap[selectedJob.JobId] : undefined}
+        details={selectedJob ? detailsCache[selectedJob.JobId] : undefined}
+        loading={selectedJob !== null && loadingJobId === selectedJob.JobId}
         open={selectedJob !== null}
         onClose={() => setSelectedJob(null)}
       />
@@ -269,11 +316,13 @@ function JobCard({
 function JobDetailModal({
   job,
   details,
+  loading,
   open,
   onClose,
 }: {
   job: JobWithUrls | null;
   details: JobDetails | undefined;
+  loading: boolean;
   open: boolean;
   onClose: () => void;
 }) {
@@ -357,6 +406,10 @@ function JobDetailModal({
                       />
                     </div>
                   )}
+                </div>
+              ) : loading ? (
+                <div className="flex items-center justify-center py-16 text-slate-400">
+                  <Loader2 className="h-6 w-6 animate-spin" />
                 </div>
               ) : (
                 <p className="py-8 text-center font-[family-name:var(--font-body)] text-sm text-slate-400">

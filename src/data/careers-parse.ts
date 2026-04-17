@@ -22,6 +22,7 @@ export async function fetchJobDetails(
 
   try {
     const res = await fetch(`${baseUrl}/Recruiting/Jobs/Details/${jobId}`, {
+      cache: "no-store",
       signal: controller.signal,
     });
     clearTimeout(timeoutId);
