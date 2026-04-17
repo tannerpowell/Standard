@@ -3,7 +3,7 @@
  * Used by both the ISR server component and the API fallback route.
  */
 
-import DOMPurify from "isomorphic-dompurify";
+import sanitizeHtmlLib from "sanitize-html";
 
 export interface JobDetails {
   description: string;
@@ -102,18 +102,29 @@ function extractOuterDiv(html: string): string {
   return "";
 }
 
-/** Sanitize raw HTML with DOMPurify, then structure into paragraphs and lists. */
-function formatPaylocityHtml(html: string): string {
-  // First pass: DOMPurify strips all dangerous content
-  const clean = DOMPurify.sanitize(html, {
-    ALLOWED_TAGS: ["p", "br", "strong", "em", "b", "i", "ul", "ol", "li"],
-    ALLOWED_ATTR: [],
+/**
+ * Keep only a minimal allowlist of formatting tags and drop all attributes.
+ * Uses sanitize-html (htmlparser2-backed — pure JS, no JSDOM) so it works in
+ * any runtime including Vercel's Node serverless environment.
+ *
+ * Input is Paylocity's recruiting HTML, so this is defense in depth rather
+ * than adversarial XSS protection.
+ */
+function sanitizeHtml(html: string): string {
+  return sanitizeHtmlLib(html, {
+    allowedTags: ["p", "br", "strong", "em", "b", "i", "ul", "ol", "li"],
+    allowedAttributes: {},
   });
+}
+
+/** Sanitize raw HTML, then structure into paragraphs and lists. */
+function formatPaylocityHtml(html: string): string {
+  const clean = sanitizeHtml(html);
 
   // Normalize <br> to newlines
   let text = clean.replace(/<br\s*\/?>/gi, "\n");
 
-  // Decode common entities that DOMPurify preserves
+  // Decode common HTML entities that Paylocity emits.
   text = text
     .replace(/&nbsp;/g, " ")
     .replace(/&rsquo;/g, "\u2019")
@@ -136,6 +147,17 @@ function formatPaylocityHtml(html: string): string {
     // Strip opening <p> and trim
     const segment = raw.replace(/<p[^>]*>/gi, "").replace(/\n/g, " ").trim();
     if (!segment) continue;
+
+    // If the segment already contains preserved list block tags, emit as-is.
+    // Wrapping it in <p> would produce invalid <p><ul>...</ul></p> markup.
+    if (/<\/?(ul|ol|li)\b/i.test(segment)) {
+      if (inList) {
+        processed.push("</ul>");
+        inList = false;
+      }
+      processed.push(segment);
+      continue;
+    }
 
     const isBullet = /^[-•–]\s/.test(segment);
 

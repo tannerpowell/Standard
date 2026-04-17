@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ExternalLink, Loader2, MapPin, X } from "lucide-react";
 import Link from "next/link";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import type { PaylocityJob } from "@/data/careers";
+import { PAYLOCITY_PAGE_URL, type PaylocityJob } from "@/data/careers";
 import type { JobDetails } from "@/data/careers-parse";
 import { FilterChips } from "@/components/shared/filter-chips";
 import { NOISE_BG } from "@/components/shared/patterns";
@@ -424,6 +424,7 @@ function JobDetailModal({
                 href={job.detailsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`Apply for ${job.JobTitle} on Paylocity (opens in a new tab)`}
                 className="inline-flex items-center gap-2 rounded-full bg-brand-red px-7 py-3 font-[family-name:var(--font-body)] text-sm font-semibold text-white transition-colors hover:bg-brand-red-dark"
               >
                 Apply Now
@@ -454,14 +455,32 @@ function EmptyState({ hasAnyJobs }: { hasAnyJobs: boolean }) {
       <p className="mx-auto mb-6 max-w-md text-[15px] leading-relaxed text-slate-500 dark:text-slate-400">
         {hasAnyJobs
           ? "No jobs match your current filters. Try adjusting your selection or check back later."
-          : "We don't have any open positions right now, but we're always growing. Reach out and we'll keep you in mind."}
+          : "Check Paylocity for the full list of current openings, or reach out and we'll keep you in mind as roles open up."}
       </p>
-      <Link
-        href="/contact"
-        className="inline-flex items-center gap-2 rounded-full bg-brand-red px-8 py-3 font-[family-name:var(--font-body)] text-sm font-semibold uppercase tracking-wider text-white transition-colors hover:bg-brand-red-dark"
-      >
-        Contact Us
-      </Link>
+      <div className="flex flex-wrap items-center justify-center gap-3">
+        {!hasAnyJobs && (
+          <a
+            href={PAYLOCITY_PAGE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="View Openings on Paylocity (opens in a new tab)"
+            className="inline-flex items-center gap-2 rounded-full bg-brand-red px-8 py-3 font-[family-name:var(--font-body)] text-sm font-semibold uppercase tracking-wider text-white transition-colors hover:bg-brand-red-dark"
+          >
+            View Openings on Paylocity
+            <ExternalLink className="h-3.5 w-3.5" />
+          </a>
+        )}
+        <Link
+          href="/contact"
+          className={
+            hasAnyJobs
+              ? "inline-flex items-center gap-2 rounded-full bg-brand-red px-8 py-3 font-[family-name:var(--font-body)] text-sm font-semibold uppercase tracking-wider text-white transition-colors hover:bg-brand-red-dark"
+              : "inline-flex items-center gap-2 rounded-full border border-slate-300 px-8 py-3 font-[family-name:var(--font-body)] text-sm font-semibold uppercase tracking-wider text-slate-700 transition-colors hover:bg-slate-100 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
+          }
+        >
+          Contact Us
+        </Link>
+      </div>
     </div>
   );
 }
