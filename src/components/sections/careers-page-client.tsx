@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ExternalLink, Loader2, MapPin, X } from "lucide-react";
 import Link from "next/link";
@@ -57,29 +57,51 @@ export function CareersPageClient({
   const [detailsCache, setDetailsCache] = useState<
     Record<number, JobDetails>
   >({});
-  const [detailsLoading, setDetailsLoading] = useState(false);
+  const [loadingJobId, setLoadingJobId] = useState<number | null>(null);
 
-  const handleSelect = useCallback(
-    (job: JobWithUrls) => {
-      setSelectedJob(job);
-      if (detailsCache[job.JobId]) return;
+  // Ref mirror of detailsCache lets handleSelect read the latest cache without
+  // re-creating the callback on every fetch (which would re-render every card).
+  const detailsCacheRef = useRef(detailsCache);
+  detailsCacheRef.current = detailsCache;
 
-      setDetailsLoading(true);
-      const controller = new AbortController();
-      fetch(`/api/careers/${job.JobId}`, { signal: controller.signal })
-        .then((res) => (res.ok ? res.json() : null))
-        .then((data: JobDetails | null) => {
-          if (data) {
-            setDetailsCache((prev) => ({ ...prev, [job.JobId]: data }));
-          }
-        })
-        .catch(() => {
-          // swallow abort + network errors; modal falls back to Apply link
-        })
-        .finally(() => setDetailsLoading(false));
-    },
-    [detailsCache],
-  );
+  const abortRef = useRef<AbortController | null>(null);
+
+  useEffect(() => () => abortRef.current?.abort(), []);
+
+  const handleSelect = useCallback((job: JobWithUrls) => {
+    setSelectedJob(job);
+    if (detailsCacheRef.current[job.JobId]) return;
+
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
+    setLoadingJobId(job.JobId);
+
+    fetch(`/api/careers/${job.JobId}`, { signal: controller.signal })
+      .then(async (res) => {
+        if (res.ok) return (await res.json()) as JobDetails;
+        // 404 = Paylocity returned a page with no description/requirements.
+        // Cache a sentinel so repeat clicks don't re-fetch.
+        if (res.status === 404) {
+          return { description: "", requirements: "" } as JobDetails;
+        }
+        return null;
+      })
+      .then((data) => {
+        if (controller.signal.aborted || !data) return;
+        setDetailsCache((prev) => ({ ...prev, [job.JobId]: data }));
+      })
+      .catch(() => {
+        // Swallow abort + network errors. Network errors stay uncached so
+        // reopening the modal retries.
+      })
+      .finally(() => {
+        if (abortRef.current === controller) {
+          abortRef.current = null;
+          setLoadingJobId(null);
+        }
+      });
+  }, []);
 
   // Sort newest first
   const sortedJobs = useMemo(
@@ -211,7 +233,7 @@ export function CareersPageClient({
       <JobDetailModal
         job={selectedJob}
         details={selectedJob ? detailsCache[selectedJob.JobId] : undefined}
-        loading={detailsLoading}
+        loading={selectedJob !== null && loadingJobId === selectedJob.JobId}
         open={selectedJob !== null}
         onClose={() => setSelectedJob(null)}
       />
