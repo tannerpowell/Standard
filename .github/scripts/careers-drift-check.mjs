@@ -13,6 +13,7 @@
  */
 
 import { execSync } from "node:child_process";
+import { parsePaylocityPageData } from "../../src/data/paylocity-page-data.mjs";
 
 const LIVE_URL = "https://standardtx.com/careers";
 const API_URL_BASE = "https://standardtx.com/api/careers";
@@ -58,45 +59,6 @@ async function fetchText(url, label) {
 function describeFailure(result) {
   if (result.status === 0 && result.error) return result.error;
   return `HTTP ${result.status}`;
-}
-
-function parsePaylocityPageData(html) {
-  const marker = "window.pageData = ";
-  const start = html.indexOf(marker);
-  if (start === -1) throw new Error("Paylocity pageData marker missing");
-  const jsonStart = html.indexOf("{", start + marker.length);
-  let depth = 0;
-  let jsonEnd = -1;
-  let inString = false;
-  // Walk the JSON byte by byte. When inside a string, a `\` always consumes
-  // the next character as part of an escape sequence — that correctly handles
-  // `\"`, `\\`, and the tricky `\\"` (escaped backslash followed by the
-  // closing quote).
-  for (let i = jsonStart; i < html.length; i++) {
-    const c = html[i];
-    if (inString) {
-      if (c === "\\") {
-        i++; // skip escaped char; for-loop i++ advances past it
-        continue;
-      }
-      if (c === '"') inString = false;
-      continue;
-    }
-    if (c === '"') {
-      inString = true;
-      continue;
-    }
-    if (c === "{") depth++;
-    else if (c === "}") {
-      depth--;
-      if (depth === 0) {
-        jsonEnd = i + 1;
-        break;
-      }
-    }
-  }
-  if (jsonEnd === -1) throw new Error("Paylocity pageData JSON unterminated");
-  return JSON.parse(html.slice(jsonStart, jsonEnd));
 }
 
 function extractLiveTitles(html) {
