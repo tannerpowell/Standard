@@ -24,6 +24,18 @@ const ISSUE_TITLE = "[careers-drift-alert] Careers page out of sync with Payloci
 const USER_AGENT = "standard-tx-careers-monitor/1.0";
 const FETCH_TIMEOUT_MS = 15_000;
 
+/**
+ * Normalize any thrown value to a human-readable string. Node's `fetch`,
+ * `JSON.parse`, and child_process all throw `Error` instances in practice,
+ * but user code could `throw` a string or plain object — accessing `.message`
+ * blindly would give `undefined` or a secondary TypeError in those cases.
+ */
+function errorMessage(err) {
+  if (typeof err === "string") return err;
+  if (err && typeof err.message === "string") return err.message;
+  return String(err);
+}
+
 function decodeEntities(s) {
   return s
     .replace(/&amp;/g, "&")
@@ -47,7 +59,7 @@ async function fetchText(url, label) {
       url,
     };
   } catch (e) {
-    return { ok: false, status: 0, text: "", label, url, error: e.message };
+    return { ok: false, status: 0, text: "", label, url, error: errorMessage(e) };
   }
 }
 
@@ -112,7 +124,7 @@ async function checkDetailEndpoint(jobId) {
     }
     return { ok: true, descLen, reqLen, url };
   } catch (e) {
-    return { ok: false, reason: `request error: ${e.message}`, url };
+    return { ok: false, reason: `request error: ${errorMessage(e)}`, url };
   }
 }
 
@@ -131,7 +143,7 @@ function findOpenDriftIssue() {
     const issues = JSON.parse(out);
     return issues.find((i) => i.title === ISSUE_TITLE);
   } catch (e) {
-    console.error("gh issue list failed:", e.message);
+    console.error("gh issue list failed:", errorMessage(e));
     return null;
   }
 }
@@ -252,7 +264,7 @@ async function main() {
         }
       }
     } catch (e) {
-      problems.push(`Parse error while comparing: ${e.message}`);
+      problems.push(`Parse error while comparing: ${errorMessage(e)}`);
     }
   }
 

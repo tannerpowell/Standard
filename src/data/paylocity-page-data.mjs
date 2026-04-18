@@ -20,7 +20,12 @@
  *
  * @param {string} html Raw HTML body.
  * @returns {unknown} Parsed JSON value (caller should validate the shape).
- * @throws {Error} If the marker is missing or the JSON is unterminated.
+ * @throws {Error} If the `window.pageData` marker is absent from the HTML.
+ * @throws {Error} If the opening `{` cannot be found after the marker.
+ * @throws {Error} If the JSON body never closes its outermost brace
+ *                 (e.g., response truncated mid-stream).
+ * @throws {SyntaxError} If the extracted slice is not valid JSON and
+ *                       `JSON.parse` rejects it.
  */
 export function parsePaylocityPageData(html) {
   const marker = "window.pageData = ";
