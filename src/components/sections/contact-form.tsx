@@ -100,8 +100,8 @@ export function ContactForm() {
             Message Sent
           </h3>
           <p className="mb-6 text-slate-500 dark:text-slate-400">
-            Thank you for reaching out. We&apos;ll get back to you within 24
-            hours.
+            Thank you for reaching out. We&apos;ll get back to you as soon as
+            possible.
           </p>
           <button
             onClick={() => setStatus("idle")}
