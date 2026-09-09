@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Samsara API Data Audit — Standard Safety &amp; Supply</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', system-ui, sans-serif; background: #f8f9fa; color: #1a1a2e; line-height: 1.6; }
+.container { max-width: 860px; margin: 0 auto; padding: 40px 24px 80px; }
+
+/* Header */
+.header { margin-bottom: 48px; }
+.header h1 { font-size: 28px; font-weight: 700; color: #0f172a; margin-bottom: 4px; }
+.header .subtitle { font-size: 15px; color: #64748b; margin-bottom: 16px; }
+.header .date { font-size: 13px; color: #94a3b8; }
+
+/* Summary bar */
+.summary-bar {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+  margin-bottom: 40px;
+}
+.summary-card {
+  background: #fff; border: 1px solid #e2e8f0; border-radius: 10px;
+  padding: 16px 18px; text-align: center;
+}
+.summary-card .num { font-size: 32px; font-weight: 700; line-height: 1.1; }
+.summary-card .label { font-size: 12px; color: #64748b; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+.num.green { color: #16a34a; }
+.num.amber { color: #d97706; }
+.num.red { color: #dc2626; }
+.num.blue { color: #2563eb; }
+
+/* Section */
+section { margin-bottom: 40px; }
+section h2 {
+  font-size: 18px; font-weight: 700; color: #0f172a;
+  margin-bottom: 6px; display: flex; align-items: center; gap: 8px;
+}
+section h2 .icon { font-size: 20px; }
+section .section-sub { font-size: 13px; color: #64748b; margin-bottom: 16px; }
+
+/* Cards */
+.card {
+  background: #fff; border: 1px solid #e2e8f0; border-radius: 10px;
+  padding: 20px 24px; margin-bottom: 12px;
+}
+.card h3 { font-size: 15px; font-weight: 600; margin-bottom: 8px; color: #0f172a; }
+.card p { font-size: 14px; color: #475569; margin-bottom: 6px; }
+.card p:last-child { margin-bottom: 0; }
+
+/* Data grid */
+.data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+/* Bar chart */
+.bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.bar-label { width: 130px; font-size: 13px; color: #475569; font-weight: 500; flex-shrink: 0; }
+.bar-track { flex: 1; height: 22px; background: #f1f5f9; border-radius: 4px; overflow: hidden; position: relative; }
+.bar-fill { height: 100%; border-radius: 4px; display: flex; align-items: center; padding-left: 8px; font-size: 11px; font-weight: 600; color: #fff; min-width: fit-content; }
+.bar-val { width: 36px; text-align: right; font-size: 13px; font-weight: 600; color: #334155; flex-shrink: 0; }
+
+/* Table */
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { text-align: left; padding: 8px 12px; font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #e2e8f0; }
+td { padding: 8px 12px; border-bottom: 1px solid #f1f5f9; color: #334155; }
+tr:last-child td { border-bottom: none; }
+.mono { font-family: 'SF Mono', 'Cascadia Code', monospace; font-size: 12px; }
+
+/* Badges */
+.badge {
+  display: inline-block; padding: 2px 8px; border-radius: 4px;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.3px;
+}
+.badge-green { background: #dcfce7; color: #166534; }
+.badge-amber { background: #fef3c7; color: #92400e; }
+.badge-red { background: #fee2e2; color: #991b1b; }
+.badge-blue { background: #dbeafe; color: #1e40af; }
+.badge-gray { background: #f1f5f9; color: #475569; }
+
+/* Callout */
+.callout {
+  background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px;
+  padding: 16px 20px; margin-bottom: 12px;
+}
+.callout.green { background: #f0fdf4; border-color: #bbf7d0; }
+.callout.blue { background: #eff6ff; border-color: #bfdbfe; }
+.callout h3 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.callout p { font-size: 13px; color: #475569; }
+
+/* Check list */
+.check-list { list-style: none; }
+.check-list li {
+  padding: 6px 0; font-size: 14px; color: #334155;
+  display: flex; align-items: flex-start; gap: 8px;
+}
+.check-list li::before { content: '✓'; color: #16a34a; font-weight: 700; flex-shrink: 0; }
+.check-list li.warn::before { content: '⚠'; color: #d97706; }
+.check-list li.miss::before { content: '✗'; color: #dc2626; }
+
+/* Footer */
+.footer { margin-top: 48px; padding-top: 24px; border-top: 1px solid #e2e8f0; font-size: 12px; color: #94a3b8; text-align: center; }
+
+@media (max-width: 640px) {
+  .summary-bar { grid-template-columns: repeat(2, 1fr); }
+  .data-grid { grid-template-columns: 1fr; }
+  .bar-label { width: 90px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <h1>Samsara API Data Audit</h1>
+    <div class="subtitle">Standard Safety &amp; Supply (L&amp;C Safety Inc) — Org: StandardTX</div>
+    <div class="date">Generated March 31, 2026 from live API</div>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="summary-bar">
+    <div class="summary-card"><div class="num blue">354</div><div class="label">Total Vehicles</div></div>
+    <div class="summary-card"><div class="num green">308</div><div class="label">Active</div></div>
+    <div class="summary-card"><div class="num amber">29</div><div class="label">Out / In Shop</div></div>
+    <div class="summary-card"><div class="num red">17</div><div class="label">Sold</div></div>
+  </div>
+
+  <!-- WHAT WE CONNECTED TO -->
+  <section>
+    <h2><span class="icon">📡</span> What We Found</h2>
+    <p class="section-sub">We connected to the Samsara API using the existing StandardTX credentials and pulled a full inventory of every tracked asset. Here's what's available.</p>
+
+    <div class="callout green">
+      <h3>The short version</h3>
+      <p>354 vehicles are in Samsara with rich, live data: odometer, engine hours, fuel level, GPS location, coolant temp, oil pressure, dashcam video, and safety events. Nearly everything we need for a maintenance tracker is already flowing through the gateways. We just need to build the app that catches it.</p>
+    </div>
+  </section>
+
+  <!-- FLEET BREAKDOWN -->
+  <section>
+    <h2><span class="icon">🚛</span> Fleet Breakdown</h2>
+    <p class="section-sub">Vehicles by unit prefix (how they're named in Samsara)</p>
+
+    <div class="card">
+      <div style="margin-bottom: 4px;">
+        <div class="bar-row">
+          <div class="bar-label">TK- (trucks/pickups)</div>
+          <div class="bar-track"><div class="bar-fill" style="width:70.3%;background:#2563eb;">249</div></div>
+          <div class="bar-val">249</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">EV.BD- (belly dumps)</div>
+          <div class="bar-track"><div class="bar-fill" style="width:22.9%;background:#7c3aed;">81</div></div>
+          <div class="bar-val">81</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">HVT- (heavy vac)</div>
+          <div class="bar-track"><div class="bar-fill" style="width:2%;background:#0891b2;">7</div></div>
+          <div class="bar-val">7</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">EV.DT- (dump trucks)</div>
+          <div class="bar-track"><div class="bar-fill" style="width:1.4%;background:#059669;">5</div></div>
+          <div class="bar-val">5</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Other (EV, WT, etc.)</div>
+          <div class="bar-track"><div class="bar-fill" style="width:3.4%;background:#94a3b8;">12</div></div>
+          <div class="bar-val">12</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout blue">
+      <h3>Naming Convention: TK- Is Everything</h3>
+      <p>The TK- prefix covers both pickups (Ram 1500, F-150) and heavy-duty trucks (F-250, F-350, Ram 2500). Vehicle type has to be determined from make/model, not the unit prefix. For example, TK-357 is a Ram 1500 (pickup), TK-441 is an F-250 (3/4 ton), and EV.BD-065 is an International LT625 (Class 8). This matters for maintenance scheduling, since service intervals differ by vehicle class.</p>
+    </div>
+
+    <div class="data-grid">
+      <div class="card">
+        <h3>By Make</h3>
+        <table>
+          <tr><td>Ram</td><td style="text-align:right;font-weight:600">114</td></tr>
+          <tr><td>Ford</td><td style="text-align:right;font-weight:600">99</td></tr>
+          <tr><td>International</td><td style="text-align:right;font-weight:600">70</td></tr>
+          <tr><td>Chevrolet</td><td style="text-align:right;font-weight:600">34</td></tr>
+          <tr><td>Peterbilt</td><td style="text-align:right;font-weight:600">14</td></tr>
+          <tr><td>Freightliner</td><td style="text-align:right;font-weight:600">10</td></tr>
+          <tr><td>Kenworth</td><td style="text-align:right;font-weight:600">6</td></tr>
+          <tr><td>GMC</td><td style="text-align:right;font-weight:600">3</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <h3>By Department (Samsara Tags)</h3>
+        <table>
+          <tr><td>DOT-ELD</td><td style="text-align:right;font-weight:600">107</td></tr>
+          <tr><td>Environmental</td><td style="text-align:right;font-weight:600">91</td></tr>
+          <tr><td>H2S Technicians</td><td style="text-align:right;font-weight:600">68</td></tr>
+          <tr><td>Restraints</td><td style="text-align:right;font-weight:600">39</td></tr>
+          <tr><td>EVS Equipment</td><td style="text-align:right;font-weight:600">22</td></tr>
+          <tr><td>South Texas</td><td style="text-align:right;font-weight:600">20</td></tr>
+          <tr><td>Pigging/Pipeline</td><td style="text-align:right;font-weight:600">11</td></tr>
+          <tr><td>Line Locating</td><td style="text-align:right;font-weight:600">9</td></tr>
+          <tr><td>SS Valve</td><td style="text-align:right;font-weight:600">3</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Sample Vehicles from the API</h3>
+      <p style="font-size:13px;color:#64748b;margin-bottom:10px;">Each record includes year, make, model, VIN, gateway serial, camera serial, Samsara tags, and a custom "Asset Status" attribute.</p>
+      <table>
+        <thead><tr><th>Unit</th><th>Year</th><th>Make / Model</th><th>Status</th><th>Tags</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">TK-192</td><td>2021</td><td>Ford F-350</td><td><span class="badge badge-red">Sold</span></td><td>—</td></tr>
+          <tr><td class="mono">EV.BD-010</td><td>2017</td><td>International LF687</td><td><span class="badge badge-green">Active</span></td><td>DOT-ELD</td></tr>
+          <tr><td class="mono">TK-357</td><td>2023</td><td>Ram 1500</td><td><span class="badge badge-green">Active</span></td><td>H2S Technicians</td></tr>
+          <tr><td class="mono">TK-441</td><td>2025</td><td>Ford F-250</td><td><span class="badge badge-green">Active</span></td><td>Pigging/Pipeline</td></tr>
+          <tr><td class="mono">EV.BD-065</td><td>2021</td><td>International LT625</td><td><span class="badge badge-green">Active</span></td><td>DOT-ELD</td></tr>
+          <tr><td class="mono">EV.DT-001</td><td>2013</td><td>Peterbilt 367</td><td><span class="badge badge-green">Active</span></td><td>DOT-ELD, EVS Equipment</td></tr>
+          <tr><td class="mono">TK-326</td><td>2023</td><td>Chevrolet Silverado HD</td><td><span class="badge badge-green">Active</span></td><td>South Texas</td></tr>
+          <tr><td class="mono">TK-139</td><td>2019</td><td>Ford F-150</td><td><span class="badge badge-amber">Out of Service</span></td><td>Restraints</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- DATA AVAILABILITY -->
+  <section>
+    <h2><span class="icon">📊</span> Data Availability</h2>
+    <p class="section-sub">What each gateway is reporting, and how many vehicles have it</p>
+
+    <div class="card">
+      <table>
+        <thead>
+          <tr><th>Data Point</th><th>Coverage</th><th style="text-align:right">Vehicles</th><th>Maintenance Use</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>OBD Odometer</strong></td>
+            <td><span class="badge badge-green">99%</span></td>
+            <td style="text-align:right" class="mono">349 / 354</td>
+            <td>Mileage-based service intervals</td>
+          </tr>
+          <tr>
+            <td><strong>Engine Hours</strong></td>
+            <td><span class="badge badge-green">88%</span></td>
+            <td style="text-align:right" class="mono">311 / 354</td>
+            <td>Hour-based service for equipment</td>
+          </tr>
+          <tr>
+            <td><strong>Fuel Level %</strong></td>
+            <td><span class="badge badge-green">High</span></td>
+            <td style="text-align:right" class="mono">Most</td>
+            <td>Fuel consumption tracking</td>
+          </tr>
+          <tr>
+            <td><strong>GPS Location</strong></td>
+            <td><span class="badge badge-green">Live</span></td>
+            <td style="text-align:right" class="mono">All active</td>
+            <td>Locate assets, reverse geocoding</td>
+          </tr>
+          <tr>
+            <td><strong>Coolant Temp</strong></td>
+            <td><span class="badge badge-green">Available</span></td>
+            <td style="text-align:right" class="mono">Reporting</td>
+            <td>Overheating alerts, trend analysis</td>
+          </tr>
+          <tr>
+            <td><strong>Oil Pressure</strong></td>
+            <td><span class="badge badge-amber">Partial</span></td>
+            <td style="text-align:right" class="mono">Some units</td>
+            <td>Engine health monitoring</td>
+          </tr>
+          <tr>
+            <td><strong>Engine RPM</strong></td>
+            <td><span class="badge badge-green">Available</span></td>
+            <td style="text-align:right" class="mono">Reporting</td>
+            <td>Idle time detection, abuse patterns</td>
+          </tr>
+          <tr>
+            <td><strong>Dashcam Video</strong></td>
+            <td><span class="badge badge-green">95%</span></td>
+            <td style="text-align:right" class="mono">335 / 354</td>
+            <td>Incident review, safety coaching</td>
+          </tr>
+          <tr>
+            <td><strong>VIN</strong></td>
+            <td><span class="badge badge-green">99%</span></td>
+            <td style="text-align:right" class="mono">350 / 354</td>
+            <td>Parts lookup, recall tracking</td>
+          </tr>
+          <tr>
+            <td><strong>Fault Codes</strong></td>
+            <td><span class="badge badge-red">100+ active</span></td>
+            <td style="text-align:right" class="mono">All gateways</td>
+            <td>See note below</td>
+          </tr>
+          <tr>
+            <td><strong>Safety Events</strong></td>
+            <td><span class="badge badge-green">Active</span></td>
+            <td style="text-align:right" class="mono">Reporting</td>
+            <td>Hard braking, speeding, collisions</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout" style="background:#fef2f2;border-color:#fecaca;">
+      <h3>Fault Codes: 100+ Alerts in Under 3 Minutes</h3>
+      <p>When we first pulled the API, fault code alerting was <strong>turned off</strong>, which is why the data showed zero active codes. Meghan enabled it during meeting prep and was immediately flooded with <strong>over 100 notifications in less than 3 minutes</strong>. The fleet is not clean. There are active faults across many vehicles that have been silently accumulating.</p>
+      <p style="margin-top:8px;">This is exactly the problem a maintenance tracker solves. Right now those 100+ alerts are just push notifications with no triage, no prioritization, and no diagnosis. An app that catches fault codes, runs AI-powered diagnosis, and ranks them by severity would turn that firehose into an actionable repair queue.</p>
+    </div>
+  </section>
+
+  <!-- ODOMETER DEEP DIVE -->
+  <section>
+    <h2><span class="icon">🔢</span> Odometer: Two Sources, One Winner</h2>
+    <p class="section-sub">Samsara provides two odometer readings. Here's the difference and why it matters.</p>
+
+    <div class="data-grid">
+      <div class="card">
+        <h3>OBD Odometer <span class="badge badge-green" style="margin-left:6px;">Use This</span></h3>
+        <p>Reads the vehicle's actual odometer through the OBD-II port. This is the real mileage, same as what the dashboard shows. <strong>349 of 354 vehicles</strong> are reporting it.</p>
+      </div>
+      <div class="card">
+        <h3>GPS Odometer <span class="badge badge-gray" style="margin-left:6px;">Supplemental</span></h3>
+        <p>Counts distance traveled via GPS since the gateway was installed. Not the vehicle's true mileage, just miles-since-install. Only <strong>81 vehicles</strong> have meaningful GPS odometer data.</p>
+      </div>
+    </div>
+
+    <div class="callout blue">
+      <h3>Why this matters for maintenance</h3>
+      <p>Service intervals are based on the vehicle's lifetime mileage (e.g., "oil change every 15,000 miles"). OBD odometer gives us that directly. GPS odometer would require knowing the install date and adding a baseline, which introduces error. We'll use OBD for all maintenance scheduling.</p>
+    </div>
+  </section>
+
+  <!-- LIVE LOCATION -->
+  <section>
+    <h2><span class="icon">📍</span> Live GPS Locations</h2>
+    <p class="section-sub">Every active vehicle reports its position with reverse-geocoded street addresses. Here's a snapshot pulled moments ago.</p>
+
+    <div class="card">
+      <table>
+        <thead><tr><th>Unit</th><th>Location</th><th>Last Seen</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">EV.BD-010</td><td>Maurice Road, Odessa, TX 79763</td><td class="mono">Mar 31, 12:13 AM</td></tr>
+          <tr><td class="mono">TK-175</td><td>2119 Maurice Road, Odessa, TX 79763</td><td class="mono">Mar 31, 12:14 AM</td></tr>
+          <tr><td class="mono">TK-259</td><td>1313 W Montgomery Ave, Midland, TX 79701</td><td class="mono">Mar 31, 11:44 PM</td></tr>
+          <tr><td class="mono">EV.BD-012</td><td>Warfield, TX 79711</td><td class="mono">Jan 23 (inactive)</td></tr>
+          <tr><td class="mono">TK-192</td><td>2499 E Murphy St, Odessa, TX 79761</td><td class="mono">May 31, 2024 (sold)</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:12px;color:#94a3b8;margin-top:10px;">Fleet is clustered around Odessa, Midland, Pecos, Kermit, and Andrews (Permian Basin). Inactive units show their last known position.</p>
+    </div>
+  </section>
+
+  <!-- ENGINE DIAGNOSTICS -->
+  <section>
+    <h2><span class="icon">🌡️</span> Live Engine Diagnostics</h2>
+    <p class="section-sub">Coolant temperature, oil pressure, and RPM are available in real time. A sample from the current snapshot:</p>
+
+    <div class="card">
+      <table>
+        <thead><tr><th>Unit</th><th style="text-align:right">Coolant Temp</th><th style="text-align:right">Oil Pressure</th><th style="text-align:right">RPM</th><th>Reading</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">TK-192</td><td style="text-align:right">162 &deg;F</td><td style="text-align:right">—</td><td style="text-align:right">600</td><td><span class="badge badge-green">Normal</span></td></tr>
+          <tr><td class="mono">EV.BD-010</td><td style="text-align:right">165 &deg;F</td><td style="text-align:right">—</td><td style="text-align:right">—</td><td><span class="badge badge-green">Normal</span></td></tr>
+          <tr><td class="mono">TK-175</td><td style="text-align:right">190 &deg;F</td><td style="text-align:right">—</td><td style="text-align:right">—</td><td><span class="badge badge-green">Normal</span></td></tr>
+          <tr><td class="mono">EV.BD-011</td><td style="text-align:right">198 &deg;F</td><td style="text-align:right">—</td><td style="text-align:right">—</td><td><span class="badge badge-amber">Warm</span></td></tr>
+          <tr><td class="mono">EV.BD-006</td><td style="text-align:right">185 &deg;F</td><td style="text-align:right">—</td><td style="text-align:right">—</td><td><span class="badge badge-green">Normal</span></td></tr>
+          <tr><td class="mono">EV-003</td><td style="text-align:right">68 &deg;F</td><td style="text-align:right">1 psi</td><td style="text-align:right">—</td><td><span class="badge badge-gray">Engine Off</span></td></tr>
+          <tr><td class="mono">EV.BD-012</td><td style="text-align:right">81 &deg;F</td><td style="text-align:right">2 psi</td><td style="text-align:right">—</td><td><span class="badge badge-gray">Engine Off</span></td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:12px;color:#94a3b8;margin-top:10px;">Low coolant temps and near-zero oil pressure indicate engine-off vehicles (ambient readings). Normal operating coolant is 180-210 &deg;F. A maintenance app can track these over time and flag when a vehicle starts running hot compared to its own baseline.</p>
+    </div>
+  </section>
+
+  <!-- SAFETY EVENTS + DASHCAM -->
+  <section>
+    <h2><span class="icon">🎥</span> Safety Events + Dashcam</h2>
+    <p class="section-sub">The API returns safety events with driver names and direct links to dashcam footage. Here's a real event from the feed:</p>
+
+    <div class="card">
+      <table>
+        <tbody>
+          <tr><td style="width:120px;color:#64748b;font-weight:500;">Event</td><td>Safety event on <span class="mono">TK-328</span></td></tr>
+          <tr><td style="color:#64748b;font-weight:500;">Driver</td><td>Angel Gonzalez Angulo</td></tr>
+          <tr><td style="color:#64748b;font-weight:500;">Vehicle</td><td>2022 Chevrolet (VIN: 1GC4YMEY9PF169635)</td></tr>
+          <tr><td style="color:#64748b;font-weight:500;">Time</td><td class="mono">March 31, 2026 — 11:56 PM</td></tr>
+          <tr><td style="color:#64748b;font-weight:500;">Video</td><td><span class="badge badge-green">Available</span> Forward camera footage with direct download link</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:13px;color:#475569;margin-top:12px;">335 of 354 vehicles have dashcams. Every safety event includes the driver name, vehicle ID, timestamp, and a downloadable video URL. A maintenance tracker could correlate repeated hard-braking events on a specific vehicle with accelerated brake wear, prompting earlier inspections.</p>
+    </div>
+  </section>
+
+  <!-- HIGH-MILEAGE / HIGH-HOUR ASSETS -->
+  <section>
+    <h2><span class="icon">⚙️</span> Highest-Use Assets</h2>
+    <p class="section-sub">These are the vehicles closest to needing major service or disposal review</p>
+
+    <div class="data-grid">
+      <div class="card">
+        <h3>Top Mileage (OBD Odometer)</h3>
+        <table>
+          <thead><tr><th>Unit</th><th style="text-align:right">Miles</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">EV.BD-032</td><td style="text-align:right" class="mono">714,802</td></tr>
+            <tr><td class="mono">EV.DT-003</td><td style="text-align:right" class="mono">641,718</td></tr>
+            <tr><td class="mono">EV.DT-002</td><td style="text-align:right" class="mono">623,354</td></tr>
+            <tr><td class="mono">EV.BD-019</td><td style="text-align:right" class="mono">621,123</td></tr>
+            <tr><td class="mono">EV.BD-006</td><td style="text-align:right" class="mono">606,574</td></tr>
+            <tr><td class="mono">EV.BD-017</td><td style="text-align:right" class="mono">597,134</td></tr>
+            <tr><td class="mono">EV.BD-066</td><td style="text-align:right" class="mono">593,938</td></tr>
+            <tr><td class="mono">EV.BD-079</td><td style="text-align:right" class="mono">588,133</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card">
+        <h3>Top Engine Hours</h3>
+        <table>
+          <thead><tr><th>Unit</th><th style="text-align:right">Hours</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">EVVT-001</td><td style="text-align:right" class="mono">34,070</td></tr>
+            <tr><td class="mono">EV.BD-068</td><td style="text-align:right" class="mono">33,577</td></tr>
+            <tr><td class="mono">EV.BD-066</td><td style="text-align:right" class="mono">32,668</td></tr>
+            <tr><td class="mono">EV.BD-067</td><td style="text-align:right" class="mono">31,434</td></tr>
+            <tr><td class="mono">WT-001</td><td style="text-align:right" class="mono">24,135</td></tr>
+            <tr><td class="mono">EV.BD-032</td><td style="text-align:right" class="mono">22,513</td></tr>
+            <tr><td class="mono">EV.BD-079</td><td style="text-align:right" class="mono">21,736</td></tr>
+            <tr><td class="mono">EVBD-073</td><td style="text-align:right" class="mono">21,729</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT A MAINTENANCE TRACKER COULD DO -->
+  <section>
+    <h2><span class="icon">🔧</span> What This Unlocks for Maintenance Tracking</h2>
+    <p class="section-sub">With this data already flowing, here's what a maintenance tracker app could do on day one</p>
+
+    <div class="card">
+      <h3>Service Interval Alerts (Mileage + Hours)</h3>
+      <p>With live odometer and engine hour readings on 300+ vehicles, we can set service-due thresholds and get automatic alerts. No more checking spreadsheets or relying on memory. Oil change every 15,000 miles? The system tells you when TK-340 hits 700,000. PM every 500 engine hours? It flags EV.BD-068 when it crosses 34,000.</p>
+    </div>
+
+    <div class="card">
+      <h3>Fault Code Triage + AI Diagnosis</h3>
+      <p>When fault code reporting is enabled, the API pushes J1939 codes (Class 8) and OBD-II codes (pickups) in real time. A maintenance app could catch those, run an AI diagnosis (root cause, estimated repair cost, in-house vs. outside shop recommendation), and create a work order automatically. Outside diagnosis runs $2,500 per event.</p>
+    </div>
+
+    <div class="card">
+      <h3>Coolant Temp + Oil Pressure Trending</h3>
+      <p>The API already reports engine coolant temperature and oil pressure. Over time, we can build baseline profiles per vehicle and flag when readings drift outside normal range, catching overheating or lubrication issues <em>before</em> they become breakdowns. Preventive, not reactive.</p>
+    </div>
+
+    <div class="card">
+      <h3>Safety Event Integration</h3>
+      <p>Hard braking, speeding, and collision events are coming through with driver names and dashcam video links. A maintenance tracker could correlate safety events with vehicle wear: a truck with frequent hard-braking events probably needs brake inspections more often. And the video evidence is right there for incident review.</p>
+    </div>
+
+    <div class="card">
+      <h3>GPS-Based Shop Routing</h3>
+      <p>Every vehicle has a live GPS location with reverse geocoding (street address). When a truck needs service, the app can show where it is, what shop is closest, and whether it makes more sense to route to in-house or a nearby third party. Right now the fleet is clustered around Odessa, Midland, Pecos, Kermit, and Andrews.</p>
+    </div>
+
+    <div class="card">
+      <h3>Fuel Consumption + Cost Tracking</h3>
+      <p>Fuel level %, odometer readings, and engine hours give us enough to calculate per-vehicle fuel burn for trucks over any time window. Combined with current diesel prices, that's a live fuel cost dashboard that replaces the manual Excel reports.</p>
+      <p><strong>Equipment caveat:</strong> The AG51 trackers on heavy equipment (backhoes, dozers, etc.) only report GPS and battery. No engine hours, no fuel data. For the 50 pieces of equipment, fuel tracking will need manual logging of hours and fuel at the pump, or upgraded gateways that read engine data.</p>
+    </div>
+  </section>
+
+  <!-- FUEL MPG TRACKING RECOMMENDATION -->
+  <section>
+    <h2><span class="icon">⛽</span> Recommendation: Per-Vehicle MPG Tracking</h2>
+    <p class="section-sub">The single biggest data gap in the fleet right now, and a simple way to close it</p>
+
+    <div class="card">
+      <h3>The Problem</h3>
+      <p>Right now, fuel cost estimates rely on <strong>assumed MPG by vehicle class</strong>: 11 MPG for a half-ton, 9.5 for a 3/4 ton, 3.7 for a Class 8. Those are reasonable averages, but averages hide a lot. A poorly-maintained truck running at 2.8 MPG costs 25% more in fuel than one running at 3.7. Across 354 vehicles and $2M+ in annual fuel spend, even a 10% variance is six figures.</p>
+      <p>Fuel cards can give us fleet-level MPG (total miles / total gallons), but the card names don't map 1:1 to unit numbers, so per-vehicle MPG is impossible from fuel card data alone.</p>
+    </div>
+
+    <div class="card">
+      <h3>The Fix: Odometer at Fill-Up</h3>
+      <p>If drivers record their <strong>odometer reading and gallons pumped</strong> each time they refuel, we get real-world MPG for every vehicle, every fill-up. The math is simple: miles since last fill / gallons pumped = actual MPG.</p>
+      <p>Samsara already gives us the odometer reading in real time. But odometer at the pump, matched to gallons, closes the loop. A simple phone-friendly form at the fuel island, 30 seconds per fill-up, is all it takes.</p>
+    </div>
+
+    <div class="card">
+      <h3>What That Data Unlocks</h3>
+      <table>
+        <tbody>
+          <tr>
+            <td style="width:200px;font-weight:600;">Fuel cost accuracy</td>
+            <td>Replace class-average MPG with real per-vehicle numbers. Fuel surcharge calculations become airtight and defensible to customers.</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;">Maintenance signal</td>
+            <td>A truck whose MPG drops 15% over a month has a problem: dirty air filter, injector issue, tire pressure, drag from a bad bearing. MPG degradation is often the first sign of a mechanical issue, before a fault code ever fires.</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;">Driver behavior</td>
+            <td>Two identical trucks on the same route shouldn't have wildly different MPG. If they do, it's a driver coaching opportunity (idling, speed, braking habits).</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;">Fleet benchmarking</td>
+            <td>Know which vehicles in the fleet are the most and least efficient. Inform disposal decisions: a 2017 International averaging 2.9 MPG might be costing more to operate than a replacement would cost to finance.</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;">Audit trail</td>
+            <td>GPS-verified odometer + fuel receipt = hard evidence. Useful for customer-facing surcharge justification, tax reporting, and catching fuel card misuse.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout green">
+      <h3>Implementation: Low Effort, High Payoff</h3>
+      <p>This doesn't require new hardware. The Samsara gateways already report odometer. Drivers just need a quick way to log gallons at the pump. We can build a simple mobile form (scan or type unit number, enter gallons, confirm odometer) that writes to the same database the maintenance tracker uses. Once we have 30 days of fill-up data, we'll have real MPG baselines for every vehicle in the fleet.</p>
+      <p>At this fleet's scale (354 vehicles, $2M+/year in fuel), knowing actual per-vehicle efficiency pays for itself almost immediately.</p>
+    </div>
+  </section>
+
+  <!-- WHAT WE NEED -->
+  <section>
+    <h2><span class="icon">📋</span> Open Items</h2>
+    <p class="section-sub">A few things to confirm or enable</p>
+
+    <div class="card">
+      <ul class="check-list">
+        <li>API token is working and returns all 354 vehicles</li>
+        <li>OBD odometer reporting on 349 vehicles (99%)</li>
+        <li>Engine hours on 311 vehicles (88%)</li>
+        <li>Dashcam on 335 vehicles (95%)</li>
+        <li>GPS location with reverse geocoding</li>
+        <li>Safety events with driver attribution</li>
+        <li>Fault code alerting is now <strong>enabled</strong> — 100+ active faults detected immediately. Data is flowing.</li>
+        <li class="warn"><strong>Fault code triage</strong> — Meghan is the only person receiving alerts and is already overwhelmed. This needs an app, not a notification inbox.</li>
+        <li class="warn"><strong>Webhook setup (ask James)</strong> — when we're ready for real-time push (fault alerts, engine on/off), we'll need a webhook URL registered in Samsara. Takes 5 minutes.</li>
+        <li class="warn"><strong>Rival Energy</strong> — separate Samsara org, not in this token. Need a separate API token from whoever manages Rival's Samsara.</li>
+        <li class="warn"><strong>Equipment trackers (AG51)</strong> — only report battery + GPS location. No engine hours, no fuel, no diagnostics. Equipment fuel tracking will need manual hour/fuel logging or upgraded trackers.</li>
+        <li class="warn"><strong>43 vehicles missing engine hours</strong> — likely older gateways or pickups that don't report OBD engine seconds. Not critical but worth checking.</li>
+        <li class="warn"><strong>Fuel fill-up logging</strong> — start having drivers record odometer + gallons at refueling. 30 days of data gives us real per-vehicle MPG baselines that transform the fuel cost analysis from estimates to actuals.</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="footer">
+    Pulled from Samsara REST API (api.samsara.com) on March 31, 2026<br>
+    Org: StandardTX (L&amp;C Safety Inc) &middot; 354 tracked vehicles
+  </div>
+
+</div>
+</body>
+</html>

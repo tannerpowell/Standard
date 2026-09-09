@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Templeton Properties — Legal Description Index | Gregg County, Texas</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #FAFAF9;
+    --bg-card: #FFFFFF;
+    --bg-subtle: #F5F5F4;
+    --bg-highlight: #FFFBEB;
+    --text: #1C1917;
+    --text-secondary: #57534E;
+    --text-tertiary: #A8A29E;
+    --border: #E7E5E4;
+    --border-dark: #D6D3D1;
+    --accent: #92400E;
+    --accent-light: #FEF3C7;
+    --green: #166534;
+    --green-light: #DCFCE7;
+    --red: #991B1B;
+    --red-light: #FEE2E2;
+    --blue: #1E3A5F;
+    --blue-light: #DBEAFE;
+  }
+
+  html { font-size: 15px; }
+
+  body {
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4, h5 {
+    font-family: 'Outfit', sans-serif;
+    text-wrap: balance;
+    line-height: 1.25;
+  }
+
+  p, li { text-wrap: pretty; }
+
+  .page {
+    max-width: 52rem;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+  }
+
+  /* --- HEADER --- */
+  .report-header {
+    text-align: center;
+    padding-bottom: 2.5rem;
+    border-bottom: 2px solid var(--text);
+    margin-bottom: 2.5rem;
+  }
+  .report-header .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 0.5rem;
+  }
+  .report-header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+  .report-header .subtitle {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    font-weight: 400;
+  }
+  .report-header .meta {
+    margin-top: 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--text-tertiary);
+  }
+
+  /* --- EXECUTIVE SUMMARY --- */
+  .exec-summary {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.75rem 2rem;
+    margin-bottom: 2.5rem;
+  }
+  .exec-summary h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+  .exec-summary p {
+    color: var(--text-secondary);
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+  }
+  .exec-summary p:last-child { margin-bottom: 0; }
+  .exec-summary strong { color: var(--text); font-weight: 600; }
+
+  /* --- SUMMARY TABLE --- */
+  .summary-table-wrap {
+    margin-bottom: 2.5rem;
+    overflow-x: auto;
+  }
+  .summary-table-wrap h2 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  table.summary {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+  table.summary thead th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    text-align: left;
+    padding: 0.6rem 0.75rem;
+    border-bottom: 2px solid var(--border-dark);
+    white-space: nowrap;
+  }
+  table.summary tbody td {
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  table.summary tbody tr:last-child td { border-bottom: none; }
+  table.summary .mono {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+  }
+  table.summary .acreage {
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  /* --- PROPERTY CARDS --- */
+  .properties-section h2 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-dark);
+  }
+
+  .property {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.75rem 2rem;
+    margin-bottom: 1.5rem;
+    page-break-inside: avoid;
+  }
+  .property-header {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+  .property-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--accent);
+    background: var(--accent-light);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  .property-header h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+
+  .property-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    gap: 0.5rem 1.5rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .property-meta dt {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 0.1rem;
+  }
+  .property-meta dd {
+    font-size: 0.9rem;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+
+  .legal-desc {
+    margin-bottom: 1rem;
+  }
+  .legal-desc h4 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+  }
+  .legal-desc p, .legal-desc li {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+  }
+
+  .metes-bounds {
+    background: var(--bg-subtle);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 0.75rem 0;
+    font-size: 0.85rem;
+    line-height: 1.7;
+  }
+  .metes-bounds .call {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text);
+  }
+  .metes-bounds .direction {
+    font-weight: 600;
+  }
+
+  .encumbrance {
+    background: var(--bg-highlight);
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    margin-top: 0.75rem;
+    font-size: 0.85rem;
+    color: var(--accent);
+  }
+  .encumbrance strong {
+    font-weight: 600;
+  }
+
+  .note {
+    font-size: 0.85rem;
+    color: var(--text-tertiary);
+    font-style: italic;
+    margin-top: 0.75rem;
+  }
+
+  .save-except {
+    margin: 0.75rem 0;
+    padding: 0;
+    list-style: none;
+  }
+  .save-except li {
+    background: var(--bg-subtle);
+    border-radius: 6px;
+    padding: 0.6rem 1rem;
+    margin-bottom: 0.4rem;
+    font-size: 0.85rem;
+  }
+  .save-except li strong {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-right: 0.25rem;
+  }
+
+  .sub-tract {
+    margin-bottom: 1rem;
+  }
+  .sub-tract h5 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.35rem;
+  }
+
+  /* --- MINERAL / OPERATOR INFO --- */
+  .operator-section {
+    margin-top: 2.5rem;
+  }
+  .operator-section h2 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-dark);
+  }
+  .operator-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .operator-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+  }
+  .operator-card h4 {
+    font-size: 0.7rem;
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-tertiary);
+    margin-bottom: 0.5rem;
+  }
+  .operator-card p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.25rem;
+  }
+  .operator-card strong { color: var(--text); }
+
+  /* --- FOOTER --- */
+  .report-footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--text-tertiary);
+  }
+  .report-footer p { margin-bottom: 0.25rem; }
+
+  /* --- PRINT --- */
+  @page {
+    size: letter;
+    margin: 0.6in 0.55in;
+  }
+  @media print {
+    html { font-size: 12.5px; }
+    body { background: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .page { padding: 0; max-width: none; }
+    .report-header { border-bottom-color: #000; break-after: avoid; }
+    .exec-summary { border-color: #ccc; break-inside: avoid; }
+    .summary-table-wrap { break-inside: avoid; }
+    .property { break-inside: avoid; border-color: #ccc; margin-bottom: 1rem; }
+    .metes-bounds { break-inside: avoid; }
+    .sub-tract { break-inside: avoid; }
+    .operator-grid { break-inside: avoid; }
+    .operator-card { break-inside: avoid; }
+    .save-except { break-inside: avoid; }
+    .properties-section h2 { break-after: avoid; }
+    .operator-section h2 { break-after: avoid; }
+    .property-header { break-after: avoid; }
+    .report-footer { break-before: avoid; }
+    h2, h3, h4, h5 { orphans: 3; widows: 3; break-after: avoid; }
+    p { orphans: 3; widows: 3; }
+  }
+
+  @media (max-width: 640px) {
+    .page { padding: 1.5rem 1rem; }
+    .property { padding: 1.25rem 1rem; }
+    .property-meta { grid-template-columns: 1fr; }
+    .operator-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="report-header">
+    <div class="label">Title Review: Legal Description Index</div>
+    <h1>Templeton Properties</h1>
+    <div class="subtitle">Gregg County, Texas</div>
+    <div class="meta">Prepared April 2026 &middot; Source: DOC174–DOC177 (Gregg County Clerk Records)</div>
+  </header>
+
+  <!-- EXECUTIVE SUMMARY -->
+  <section class="exec-summary">
+    <h2>Executive Summary</h2>
+    <p>The Templeton family's land centers on the <strong>Haden Edwards Survey</strong> in Gregg County, with the <strong>173-acre homestead</strong> (Property 4) being the big one. Most of the other tracts are carved out of or overlap with that same ground. The mineral interest is still active (barely), with <strong>Mary Lou Templeton Sanders</strong> getting shut-in royalty checks from Sydri Operating on the Danville Field wells.</p>
+    <p>Eight properties were identified across four document packages, ranging from a 0.16-acre city lot in Longview to the homestead tract (net ~165 acres after carve-outs). The homestead was lost to a <strong>Sheriff's Tax Deed</strong> in 1999 (Kilgore ISD v. Luther Templeton), purchased by M&M Investments for $9,272.83. The 1.392-acre partition tract (Property 1) generated the most recorded deed activity and appears to remain in the family chain.</p>
+    <p>The Danville Field wells (Gregg & Rusk Counties) were shut-in as of March 2023 due to a pipeline force majeure. Current operator is <strong>Sydri Operating, LLC</strong> (formerly Titan Rock). Shut-in royalty payments of $5 per lease are being issued.</p>
+  </section>
+
+  <!-- SUMMARY TABLE -->
+  <section class="summary-table-wrap">
+    <h2>Property Index</h2>
+    <table class="summary">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Acreage</th>
+          <th>Survey</th>
+          <th>Description</th>
+          <th>Key Recording</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="mono">1</td>
+          <td class="acreage">1.392 ac</td>
+          <td>Haden Edwards, A-64</td>
+          <td>Partition tract, part of 16.39-ac Tract No. 3</td>
+          <td class="mono">Vol. 1874, Pg. 551</td>
+        </tr>
+        <tr>
+          <td class="mono">2</td>
+          <td class="acreage">~0.16 ac</td>
+          <td>City of Longview</td>
+          <td>50' x 140' lot, NCB 226, Harrison St.</td>
+          <td class="mono">Filed 03/03/1941</td>
+        </tr>
+        <tr>
+          <td class="mono">3</td>
+          <td class="acreage">1 ac</td>
+          <td>F. Castro H.R.</td>
+          <td>SW corner of 38-ac tract</td>
+          <td class="mono">10/25/1940</td>
+        </tr>
+        <tr>
+          <td class="mono">4</td>
+          <td class="acreage">~165 ac</td>
+          <td>Hayden Edwards</td>
+          <td>173 ac homestead less exceptions (tax deed)</td>
+          <td class="mono">GCC 9922865</td>
+        </tr>
+        <tr>
+          <td class="mono">5</td>
+          <td class="acreage">~19.5 ac</td>
+          <td>Haden Edwards</td>
+          <td>O&G lease: 3 tracts less 38.5-ac exception</td>
+          <td class="mono">Vol. 215, Pg. 165</td>
+        </tr>
+        <tr>
+          <td class="mono">6</td>
+          <td class="acreage">83.6 ac</td>
+          <td>Haden Edwards</td>
+          <td>Block 1 of 4,428-ac grant (O&G + mineral deeds)</td>
+          <td class="mono">Vol. 259, Pg. 440</td>
+        </tr>
+        <tr>
+          <td class="mono">7</td>
+          <td class="acreage">43.18 ac</td>
+          <td>Baltimore Simpson, A-238</td>
+          <td>Lola Templeton O&G lease to Tyler Oil & Gas</td>
+          <td class="mono">GCC 200216609</td>
+        </tr>
+        <tr>
+          <td class="mono">8</td>
+          <td class="acreage">—</td>
+          <td>Edwards</td>
+          <td>Royalty deed to Rio Grande Royalties</td>
+          <td class="mono">Bk. 1798, Pg. 589</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- PROPERTY DETAILS -->
+  <section class="properties-section">
+    <h2>Property Details</h2>
+
+    <!-- PROPERTY 1 -->
+    <article class="property">
+      <div class="property-header">
+        <span class="property-num">PROPERTY 1</span>
+        <h3>The 1.392-Acre Partition Tract</h3>
+      </div>
+      <dl class="property-meta">
+        <div><dt>Document Type</dt><dd>Warranty Deed (Partition)</dd></div>
+        <div><dt>Recording</dt><dd>Vol. 1874, Pg. 551, Gregg County</dd></div>
+        <div><dt>Filed</dt><dd>December 7, 1987</dd></div>
+        <div><dt>Grantee</dt><dd>Lewis Templeton</dd></div>
+        <div><dt>Grantors</dt><dd>Marvin, Boyd, Eunice, Dorothy Templeton; Warnett Allen; Vee McCalister; Tom, Fleda, James, Spiavia, Odie Templeton; Fleda Morrell</dd></div>
+        <div><dt>Acreage</dt><dd>1.392 acres</dd></div>
+      </dl>
+      <div class="legal-desc">
+        <h4>Legal Description</h4>
+        <p>1.392 acres, more or less, situated in the <strong>Haden Edwards Survey, Abstract No. 64</strong>, Gregg County, Texas, being a part of that certain 16.39-acre tract described as "Tract No. 3" in the Partition Deed by and between T.W. Templeton et al, dated October 4, 1932, of record as Cause No. 7095 in Vol. Q, Pg. 35 of the District Court Records of Harrison County, Texas.</p>
+        <div class="metes-bounds">
+          <span class="call"><span class="direction">POB:</span> 5/8" iron pipe set for NWC, S 81&deg;45'43" E a distance of 87.42' from NWC of said 16.39-ac tract (also NEC of Tract No. 1)</span><br>
+          <span class="call"><span class="direction">Thence</span> S 81&deg;45'43" E along NBL of said 16.39-ac tract, 75.22' to 5/8" iron pipe at NEC (also NWC of Tract No. 3)</span><br>
+          <span class="call"><span class="direction">Thence</span> S 10&deg;04'10" W along WBL of Tract No. 3, 806.86' to 5/8" iron pipe at SEC (in SBL of 16.39-ac tract, also SWC of Tract No. 3)</span><br>
+          <span class="call"><span class="direction">Thence</span> N 81&deg;36' W along SBL, 75.21' to 5/8" iron pipe at SWC (also SEC of Tract No. 1)</span><br>
+          <span class="call"><span class="direction">Thence</span> N 10&deg;04'10" E along EBL of Tract No. 1, 806.65' to POB</span>
+        </div>
+        <div class="encumbrance"><strong>Encumbrance:</strong> 30' road easement along the SBL reserved for ingress/egress to adjoining tracts.</div>
+      </div>
+      <p class="note">This tract appears repeatedly in the Gregg County OPR index ("1.392 AC EDWARDS SUR") and is the core family parcel that generated most recorded deed activity.</p>
+    </article>
+
+    <!-- PROPERTY 2 -->
+    <article class="property">
+      <div class="property-header">
+        <span class="property-num">PROPERTY 2</span>
+        <h3>Longview City Lot</h3>
+      </div>
+      <dl class="property-meta">
+        <div><dt>Document Type</dt><dd>Warranty Deed</dd></div>
+        <div><dt>Filed</dt><dd>March 3, 1941</dd></div>
+        <div><dt>Grantors</dt><dd>Rogers Boyd and wife, Bonniegene Boyd</dd></div>
+        <div><dt>Grantee</dt><dd>Emmett Cobb</dd></div>
+        <div><dt>Consideration</dt><dd>$10 cash + assumption of $1,800 deed of trust note (7.2%, $30/mo)</dd></div>
+        <div><dt>Acreage</dt><dd>~0.16 acres (50' x 140')</dd></div>
+      </dl>
+      <div class="legal-desc">
+        <h4>Legal Description</h4>
+        <p>A lot within the corporate limits of the <strong>City of Longview, Texas</strong>, in <strong>New City Block 226</strong>, per New City Block Map of Longview:</p>
+        <div class="metes-bounds">
+          <span class="call"><span class="direction">POB:</span> SE corner of Tract No. 20, New City Block 226</span><br>
+          <span class="call"><span class="direction">Thence</span> South with West side of Harrison Street, 50 feet</span><br>
+          <span class="call"><span class="direction">Thence</span> Westerly 140 feet</span><br>
+          <span class="call"><span class="direction">Thence</span> North 50 feet to SBL of S.C. Starr lot</span><br>
+          <span class="call"><span class="direction">Thence</span> Easterly 140 feet to POB</span>
+        </div>
+        <div class="encumbrance"><strong>Encumbrance:</strong> Vendor's lien retained until note fully paid. Note payable to First Federal Savings & Loan of Longview.</div>
+      </div>
+    </article>
+
+    <!-- PROPERTY 3 -->
+    <article class="property">
+      <div class="property-header">
+        <span class="property-num">PROPERTY 3</span>
+        <h3>F. Castro H.R. Survey, 1-Acre Tract</h3>
+      </div>
+      <dl class="property-meta">
+        <div><dt>Document Type</dt><dd>Warranty Deed</dd></div>
+        <div><dt>Date</dt><dd>October 25, 1940</dd></div>
+        <div><dt>Grantor</dt><dd>C.H. Hughes</dd></div>
+        <div><dt>Grantee</dt><dd>Fronie Sowels</dd></div>
+        <div><dt>Consideration</dt><dd>$20.00</dd></div>
+        <div><dt>Acreage</dt><dd>1 acre</dd></div>
+      </dl>
+      <div class="legal-desc">
+        <h4>Legal Description</h4>
+        <p>1 acre out of a 38.4-acre tract, part of the <strong>F. Castro H.R. Survey</strong>, Gregg County, Texas. The 1 acre is in the <strong>Southwest corner</strong> of the larger tract, on the south side of the road.</p>
+        <div class="metes-bounds">
+          <span class="call"><span class="direction">Parent Tract POB:</span> SEC of Hannah Howard Lot</span><br>
+          <span class="call"><span class="direction">Thence</span> S 10 W, 35 chains 50 links</span><br>
+          <span class="call"><span class="direction">Thence</span> N 80.13 chains 21 links</span><br>
+          <span class="call"><span class="direction">Thence</span> N 10 E, 35 chains 50 links</span><br>
+          <span class="call"><span class="direction">Thence</span> S 80 E, 13 chains 21 links to POB</span><br>
+          <em style="font-size: 0.8rem; color: var(--text-tertiary);">Parent tract containing 38.4 acres. 1-acre conveyance is SW corner.</em>
+        </div>
+      </div>
+    </article>
+
+    <!-- PROPERTY 4 -->
+    <article class="property">
+      <div class="property-header">
+        <span class="property-num">PROPERTY 4</span>
+        <h3>173-Acre Templeton Homestead (Tax Deed)</h3>
+      </div>
+      <dl class="property-meta">
+        <div><dt>Document Type</dt><dd>Sheriff's Tax Deed</dd></div>
+        <div><dt>Recording</dt><dd>GCC 9922865, Gregg County</dd></div>
+        <div><dt>Filed</dt><dd>October 8, 1999</dd></div>
+        <div><dt>Case</dt><dd>Kilgore ISD et al v. Luther Templeton et al</dd></div>
+        <div><dt>Grantee</dt><dd>M&M Investments</dd></div>
+        <div><dt>Purchase Price</dt><dd>$9,272.83</dd></div>
+        <div><dt>Net Acreage</dt><dd>~165.4 acres (after exceptions)</dd></div>
+      </dl>
+      <div class="legal-desc">
+        <h4>Legal Description</h4>
+        <p>All that certain tract or parcel situated in the <strong>Hayden Edwards Survey</strong>, Gregg County, Texas, described as 173 acres more or less in deed dated June 29, 1942, from Everett L. Culver to Annie Templeton et al, recorded in <strong>Volume 349, Page 426</strong>, Deed Records of Gregg County, Texas.</p>
+        <h4 style="margin-top: 1rem;">Save & Except</h4>
+        <ul class="save-except">
+          <li><strong>A.</strong> 1.8 acres — Deed 11/16/1951, Annie R. Templeton et al to Ras Hall and Minnie Lee Hall (Vol. 368, Pg. 643)</li>
+          <li><strong>B.</strong> 1.8 acres — Deed 01/01/1955, Annie Templeton et al to Johnny Woods (Vol. 448, Pg. 99)</li>
+          <li><strong>C.</strong> 4.0 acres — Deed 08/04/1968, Annie Templeton to Ruthie Lee Jackson (Vol. 572, Pg. 382)</li>
+        </ul>
+        <div class="encumbrance"><strong>Title Note:</strong> Tax deed conveyance. Subject to right of redemption under Section 34.21 of the Texas Property Tax Code.</div>
+      </div>
+    </article>
+
+    <!-- PROPERTY 5 -->
+    <article class="property">
+      <div class="property-header">
+        <span class="property-num">PROPERTY 5</span>
+        <h3>Annie Templeton O&G Lease Tracts</h3>
+      </div>
+      <dl class="property-meta">
+        <div><dt>Document Type</dt><dd>Oil and Gas Lease</dd></div>
+        <div><dt>Recording</dt><dd>Vol. 215, Pg. 165–166, Gregg County</dd></div>
+        <div><dt>Date</dt><dd>March 19, 1937</dd></div>
+        <div><dt>Lessor</dt><dd>Annie Templeton (widow)</dd></div>
+        <div><dt>Lessee</dt><dd>J.M. Hudson</dd></div>
+        <div><dt>Royalty</dt><dd>1/8th</dd></div>
+        <div><dt>Net Acreage</dt><dd>~19.5 acres (58 gross less 38.5-ac exception)</dd></div>
+      </dl>
+      <div class="legal-desc">
+        <h4>Legal Description</h4>
+        <p>Part of the <strong>Haden Edwards Survey</strong>, Gregg County, Texas, described in three tracts with one exception:</p>
+
+        <div class="sub-tract">
+          <h5>First Tract (24 acres)</h5>
+          <div class="metes-bounds">
+            <span class="call"><span class="direction">POB:</span> NE corner of 100-acre Sydney Templeton tract (sweet gum corner tree)</span><br>
+            <span class="call"><span class="direction">Thence</span> South 1,515 feet to stake on EBL</span><br>
+            <span class="call"><span class="direction">Thence</span> West 735 feet to stake in field</span><br>
+            <span class="call"><span class="direction">Thence</span> North 1,515 feet to SBL of L.T. Templeton's land</span><br>
+            <span class="call"><span class="direction">Thence</span> East 735 feet to POB</span><br>
+            <em style="font-size: 0.8rem; color: var(--text-tertiary);">Same tract deeded J.N. Campbell by Ocie Templeton, June 15, 1915</em>
+          </div>
+        </div>
+
+        <div class="sub-tract">
+          <h5>Second Tract (6 acres)</h5>
+          <div class="metes-bounds">
+            <span class="call"><span class="direction">POB:</span> SE corner of tract deeded to Ocie Templeton by Sydney Templeton and wife, Sept. 24, 1913</span><br>
+            <span class="call"><span class="direction">Thence</span> South with L.T. Templeton's WBL, 138 varas</span><br>
+            <span class="call"><span class="direction">Thence</span> West 252.6 varas</span><br>
+            <span class="call"><span class="direction">Thence</span> North 138 varas to SW corner of Ocie Templeton tract</span><br>
+            <span class="call"><span class="direction">Thence</span> East 252.6 varas to POB</span><br>
+            <em style="font-size: 0.8rem; color: var(--text-tertiary);">Same land deeded J.N. Campbell by Sydney Templeton and wife, June 16, 1915</em>
+          </div>
+        </div>
+
+        <div class="sub-tract">
+          <h5>Third Tract (28 acres)</h5>
+          <div class="metes-bounds">
+            <span class="call"><span class="direction">POB:</span> SW corner of 101.25-acre tract deeded to L.T. Templeton by Thomas Angel, March 10, 1900</span><br>
+            <span class="call"><span class="direction">Thence</span> N 10 E with Sydney Templeton's EBL, 850 varas to SBL of L.T. Templeton's tract</span><br>
+            <span class="call"><span class="direction">Thence</span> East 200 varas</span><br>
+            <span class="call"><span class="direction">Thence</span> S 10 W, 850 varas</span><br>
+            <span class="call"><span class="direction">Thence</span> West 200 varas to POB</span><br>
+            <em style="font-size: 0.8rem; color: var(--text-tertiary);">Same land deeded J.H. Campbell by L.T. Templeton and wife, June 15, 1916</em>
+          </div>
+        </div>
+
+        <div class="sub-tract">
+          <h5>Exception (38.5 acres)</h5>
+          <div class="metes-bounds">
+            <span class="call"><span class="direction">POB:</span> NE corner, witness P 0 S 80 E, 37 links</span><br>
+            <span class="call"><span class="direction">Thence</span> S 10 W, 521 varas to stake in field</span><br>
+            <span class="call"><span class="direction">Thence</span> N 80 W, 415 varas</span><br>
+            <span class="call"><span class="direction">Thence</span> N 10 E, 521 varas to NW corner</span><br>
+            <span class="call"><span class="direction">Thence</span> S 80 E, 415 varas to POB</span><br>
+            <em style="font-size: 0.8rem; color: var(--text-tertiary);">Containing 38.5 acres, excepted from the three tracts above</em>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- PROPERTY 6 -->
+    <article class="property">
+      <div class="property-header">
+        <span class="property-num">PROPERTY 6</span>
+        <h3>83.6-Acre Block 1, Edwards Grant</h3>
+      </div>
+      <dl class="property-meta">
+        <div><dt>Document Types</dt><dd>O&G Lease + Two Mineral Deeds</dd></div>
+        <div><dt>Recording</dt><dd>Vol. 259, Pg. 440 / Vol. 259, Pg. 442 / Vol. 256, Pg. 460</dd></div>
+        <div><dt>Grantors</dt><dd>Louise Templeton; T.L. Lockhart (Executor, Estate of T.D. Templeton)</dd></div>
+        <div><dt>Lessee/Grantee</dt><dd>G.P. Birdwell</dd></div>
+        <div><dt>Mineral Interest</dt><dd>10/83.6 undivided interest</dd></div>
+        <div><dt>Acreage</dt><dd>83.6 acres</dd></div>
+      </dl>
+      <div class="legal-desc">
+        <h4>Legal Description</h4>
+        <p>83.6 acres on the <strong>Haden Edwards Survey</strong>, commonly called <strong>Block One (1)</strong> of the Haden Edwards 4,428-acre grant, being all of that certain tract described in a deed to T.D. Templeton and J.H. Templeton from C.J. Luckett, dated March 4, 1905, recorded in <strong>Volume U, Page 556</strong>, Deed Records of Gregg County, Texas.</p>
+        <p><strong>Bounded by:</strong> North by E. Gough Survey; West by Dickson/Horton place and Eliza Alex place; South by Meadows place; East by Porter Horton place.</p>
+        <div class="metes-bounds">
+          <span class="call"><span class="direction">POB:</span> North line of survey at NE corner of Eliza Ellick 83.6 acres, 561 varas west from NW corner of Porter Horton home place</span><br>
+          <span class="call"><span class="direction">Thence</span> S 50 E with north line of league, 561 varas to W corner of Porter Horton home place</span><br>
+          <span class="call"><span class="direction">Thence</span> S 10 W with west line of Horton place, 743 varas to corner in N.C. Meadows' north line</span><br>
+          <span class="call"><span class="direction">Thence</span> N 50 W with Meadows' north line, 561 varas to Ellick's SE corner</span><br>
+          <span class="call"><span class="direction">Thence</span> N 10 E, 743 varas to POB</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- PROPERTY 7 -->
+    <article class="property">
+      <div class="property-header">
+        <span class="property-num">PROPERTY 7</span>
+        <h3>Lola Templeton O&G Lease (2002)</h3>
+      </div>
+      <dl class="property-meta">
+        <div><dt>Document Type</dt><dd>Oil, Gas and Mineral Lease</dd></div>
+        <div><dt>Recording</dt><dd>GCC 200216609, Gregg County</dd></div>
+        <div><dt>Filed</dt><dd>July 18, 2002</dd></div>
+        <div><dt>Lessor</dt><dd>Lola Templeton (sole and separate property)</dd></div>
+        <div><dt>Lessee</dt><dd>Tyler Oil & Gas, Inc. (Tyler, TX)</dd></div>
+        <div><dt>Royalty</dt><dd>1/8th</dd></div>
+        <div><dt>Acreage</dt><dd>43.18 acres</dd></div>
+      </dl>
+      <div class="legal-desc">
+        <h4>Legal Description</h4>
+        <p>43.18 acres, more or less, part of the <strong>Baltimore Simpson Survey, A-238</strong>, Gregg County, Texas, and being all of the same land described as 45.5 acres in that certain Warranty Deed dated April 12, 1945, from Alfred Bradley et ux Mary Bradley to D.W. Portley, recorded in <strong>Volume 297, Page 217</strong> of the Deed Records of Gregg County, Texas.</p>
+        <h4 style="margin-top: 0.75rem;">Less & Except</h4>
+        <ul class="save-except">
+          <li><strong>A.</strong> 1.9 acres — Warranty Deed dated 08/12/1959, D.W. Portley et al to Harry Allen (Vol. 566, Pg. 330)</li>
+        </ul>
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.5rem;"><strong>Also includes:</strong> 0.81 acres (Timberlake, Vol. 701, Pg. 164) and 0.61 acres from Leathe Portley Colbert et al to Dillon C. Portley (Vol. 2012, Pg. 1).</p>
+      </div>
+    </article>
+
+    <!-- PROPERTY 8 -->
+    <article class="property">
+      <div class="property-header">
+        <span class="property-num">PROPERTY 8</span>
+        <h3>Royalty Deed to Rio Grande Royalties</h3>
+      </div>
+      <dl class="property-meta">
+        <div><dt>Document Type</dt><dd>Royalty Deed</dd></div>
+        <div><dt>Recording</dt><dd>Instrument #8706759, Book 1798, Page 589</dd></div>
+        <div><dt>Received</dt><dd>April 13, 1987</dd></div>
+        <div><dt>Grantors</dt><dd>Templeton Lewis et al, Thomas Tommy Ray et al</dd></div>
+        <div><dt>Grantee</dt><dd>Rio Grande Royalties</dd></div>
+      </dl>
+      <div class="legal-desc">
+        <h4>Legal Description</h4>
+        <p>Freeform location: <strong>Edwards</strong> (Haden Edwards Survey). Full metes and bounds not available from the county clerk index record. The underlying deed at Book 1798, Page 589 would need to be pulled for the complete legal description.</p>
+      </div>
+    </article>
+
+  </section>
+
+  <!-- CURRENT OPERATOR / MINERAL STATUS -->
+  <section class="operator-section">
+    <h2>Current Mineral Status</h2>
+    <div class="operator-grid">
+      <div class="operator-card">
+        <h4>Current Operator</h4>
+        <p><strong>Sydri Operating, LLC</strong></p>
+        <p>Formerly Titan Rock Exploration & Production</p>
+        <p>10210 N. Central Expy, Suite 130</p>
+        <p>Dallas, TX 75231</p>
+      </div>
+      <div class="operator-card">
+        <h4>Royalty Owner on File</h4>
+        <p><strong>Mary Lou Templeton Sanders</strong></p>
+        <p>P.O. Box 1872</p>
+        <p>Lovington, NM 88260</p>
+      </div>
+      <div class="operator-card">
+        <h4>Field Status</h4>
+        <p><strong>Danville Field</strong> (Gregg & Rusk Counties)</p>
+        <p>Shut-in as of 03/20/2023</p>
+        <p>Cause: third-party pipeline force majeure</p>
+        <p>Shut-in royalty: $5.00/lease</p>
+      </div>
+      <div class="operator-card">
+        <h4>Producing Units (per 06/2006 statement)</h4>
+        <p><strong>7 units:</strong> #6-1 through #6-7 GRGU</p>
+        <p>Royalty interest: 0.0000008972</p>
+        <p>Combined monthly royalty: ~$0.84</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUPPORTING DOCUMENTS -->
+  <section class="operator-section">
+    <h2>Supporting Parties & Documents</h2>
+    <div class="operator-grid">
+      <div class="operator-card">
+        <h4>Land Services</h4>
+        <p><strong>Geo-Vest Incorporated</strong></p>
+        <p>Carlos "Scooter" Griffin, Jr., President</p>
+        <p>P.O. Box 1157, Kilgore, TX 75663</p>
+        <p>(903) 643-0402</p>
+      </div>
+      <div class="operator-card">
+        <h4>Attorney (Property Issues)</h4>
+        <p><strong>Flowers Davis, PLLC</strong></p>
+        <p>1021 ESE Loop 323, Suite 200</p>
+        <p>Tyler, TX 75701</p>
+        <p>(903) 534-8063</p>
+      </div>
+      <div class="operator-card">
+        <h4>Heirship Affidavit</h4>
+        <p><strong>Dessy Rea Woods</strong> (Houston, TX)</p>
+        <p>Declared sole surviving child of Luther Templeton</p>
+        <p>Instrument #9427020, 12/19/1994</p>
+      </div>
+      <div class="operator-card">
+        <h4>Royalty Statement Contact</h4>
+        <p><strong>Lynn Rogers</strong>, Petro-Ledger</p>
+        <p>(214) 265-7101 x131</p>
+        <p>For Titan Rock historical statements</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="report-footer">
+    <p>Compiled from DOC174, DOC175, DOC176, DOC177 — Gregg County Clerk Public Records</p>
+    <p>This report is for informational purposes only and does not constitute legal advice or a certified title opinion.</p>
+  </footer>
+
+</div>
+
+<!-- CHEATSHEET PAGE — prints landscape on its own page -->
+<div class="cheatsheet-page">
+  <div class="cheatsheet-inner">
+    <div class="cheatsheet-header">
+      <h2>Templeton Properties — Quick Reference</h2>
+      <span class="cheatsheet-sub">Gregg County, Texas &middot; All surveys within or adjacent to the Haden Edwards Grant</span>
+    </div>
+
+    <table class="cheatsheet-table">
+      <thead>
+        <tr>
+          <th class="col-num">#</th>
+          <th class="col-name">Property</th>
+          <th class="col-acres">Acres</th>
+          <th class="col-survey">Survey / Location</th>
+          <th class="col-type">Doc Type</th>
+          <th class="col-grantor">Grantor(s)</th>
+          <th class="col-grantee">Grantee / Lessee</th>
+          <th class="col-date">Date</th>
+          <th class="col-rec">Recording</th>
+          <th class="col-mineral">Mineral Interest</th>
+          <th class="col-notes">Key Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="mono">1</td>
+          <td><strong>Partition Tract</strong></td>
+          <td class="num">1.392</td>
+          <td>Haden Edwards, A-64<br><span class="dim">Part of 16.39-ac Tract No. 3</span></td>
+          <td>Warranty Deed<br>(Partition)</td>
+          <td>Marvin, Boyd, Eunice, Dorothy Templeton; Warnett Allen; Vee McCalister; Tom, Fleda, James, Spiavia, Odie Templeton; Fleda Morrell</td>
+          <td><strong>Lewis Templeton</strong></td>
+          <td class="mono">12/07/1987</td>
+          <td class="mono">Vol. 1874<br>Pg. 551</td>
+          <td class="dim">Not severed</td>
+          <td>30' road easement on SBL. Core family parcel, most deed activity in OPR index.</td>
+        </tr>
+        <tr>
+          <td class="mono">2</td>
+          <td><strong>Longview City Lot</strong></td>
+          <td class="num">~0.16</td>
+          <td>City of Longview<br><span class="dim">NCB 226, Harrison St.</span></td>
+          <td>Warranty Deed</td>
+          <td>Rogers Boyd &amp; wife Bonniegene Boyd</td>
+          <td><strong>Emmett Cobb</strong></td>
+          <td class="mono">03/03/1941</td>
+          <td class="mono dim">Gregg Co.<br>Filed 1941</td>
+          <td class="dim">Presumed conveyed</td>
+          <td>50'&times;140'. Vendor's lien for $1,800 note at 7.2%.</td>
+        </tr>
+        <tr>
+          <td class="mono">3</td>
+          <td><strong>Castro 1-Acre</strong></td>
+          <td class="num">1.0</td>
+          <td>F. Castro H.R.<br><span class="dim">SW corner of 38-ac tract</span></td>
+          <td>Warranty Deed</td>
+          <td>C.H. Hughes</td>
+          <td><strong>Fronie Sowels</strong></td>
+          <td class="mono">10/25/1940</td>
+          <td class="mono dim">Gregg Co.</td>
+          <td class="dim">Presumed conveyed</td>
+          <td>Vague legal desc. 1 acre in SW corner, south of road.</td>
+        </tr>
+        <tr class="row-highlight">
+          <td class="mono">4</td>
+          <td><strong>Homestead (Tax Deed)</strong></td>
+          <td class="num">~165</td>
+          <td>Hayden Edwards<br><span class="dim">173 ac less 7.6 ac exceptions</span></td>
+          <td>Sheriff's Tax Deed</td>
+          <td>Bobby Weaver, Sheriff<br><span class="dim">Kilgore ISD v. Luther Templeton</span></td>
+          <td><strong>M&amp;M Investments</strong></td>
+          <td class="mono">10/08/1999</td>
+          <td class="mono">GCC<br>9922865</td>
+          <td class="dim">Likely included (not previously severed)</td>
+          <td>Tax sale at $9,272. Subject to redemption (Tex. Prop. Tax Code &sect;34.21). Inferior title.</td>
+        </tr>
+        <tr>
+          <td class="mono">5</td>
+          <td><strong>Annie Templeton O&amp;G Lease</strong></td>
+          <td class="num">~19.5</td>
+          <td>Haden Edwards<br><span class="dim">3 tracts (58 ac) less 38.5-ac exception</span></td>
+          <td>Oil &amp; Gas Lease</td>
+          <td>Annie Templeton (widow)</td>
+          <td><strong>J.M. Hudson</strong></td>
+          <td class="mono">03/19/1937</td>
+          <td class="mono">Vol. 215<br>Pg. 165</td>
+          <td>1/8 royalty<br><span class="dim">875/3500 mineral (separate deed)</span></td>
+          <td>10-year primary term. 3 sub-tracts (24, 6, 28 ac) less 38.5-ac exception.</td>
+        </tr>
+        <tr>
+          <td class="mono">6</td>
+          <td><strong>Block 1, Edwards Grant</strong></td>
+          <td class="num">83.6</td>
+          <td>Haden Edwards<br><span class="dim">Block 1 of 4,428-ac grant</span></td>
+          <td>O&amp;G Lease +<br>2 Mineral Deeds</td>
+          <td>Louise Templeton; T.L. Lockhart (Exec., Est. of T.D. Templeton)</td>
+          <td><strong>G.P. Birdwell</strong></td>
+          <td class="mono">06/07/1941</td>
+          <td class="mono">Vol. 259<br>Pg. 440</td>
+          <td>10/83.6 undivided interest</td>
+          <td>Per deed to T.D. &amp; J.H. Templeton from C.J. Luckett (1905), Vol. U, Pg. 556.</td>
+        </tr>
+        <tr>
+          <td class="mono">7</td>
+          <td><strong>Lola Templeton O&amp;G Lease</strong></td>
+          <td class="num">43.18</td>
+          <td>Baltimore Simpson, A-238<br><span class="dim">Portley land</span></td>
+          <td>Oil, Gas &amp;<br>Mineral Lease</td>
+          <td>Lola Templeton</td>
+          <td><strong>Tyler Oil &amp; Gas, Inc.</strong></td>
+          <td class="mono">07/18/2002</td>
+          <td class="mono">GCC<br>200216609</td>
+          <td>1/8 royalty</td>
+          <td>45.5 ac less 1.9 ac exception. Plus 0.81 + 0.61 ac additions.</td>
+        </tr>
+        <tr>
+          <td class="mono">8</td>
+          <td><strong>Rio Grande Royalty Deed</strong></td>
+          <td class="num">—</td>
+          <td>Edwards (freeform)<br><span class="dim">Full desc. requires pulling deed</span></td>
+          <td>Royalty Deed</td>
+          <td>Lewis Templeton et al; Tommy Ray Thomas et al</td>
+          <td><strong>Rio Grande Royalties</strong></td>
+          <td class="mono">04/13/1987</td>
+          <td class="mono">Bk. 1798<br>Pg. 589</td>
+          <td>Royalty interest (amt. unknown)</td>
+          <td>Index record only. Pull Bk. 1798, Pg. 589 for full legal.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="cheatsheet-footer">
+      <div class="cheatsheet-footer-col">
+        <strong>Current Operator:</strong> Sydri Operating, LLC (fka Titan Rock) &middot; Dallas, TX
+      </div>
+      <div class="cheatsheet-footer-col">
+        <strong>Royalty Owner:</strong> Mary Lou Templeton Sanders &middot; Lovington, NM 88260
+      </div>
+      <div class="cheatsheet-footer-col">
+        <strong>Field Status:</strong> Danville Field shut-in 03/2023 (pipeline force majeure) &middot; 7 GRGU units
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* --- CHEATSHEET (landscape 1-pager) --- */
+  .cheatsheet-page {
+    break-before: page;
+    page: cheatsheet;
+    background: var(--bg-card);
+  }
+
+  @page cheatsheet {
+    size: letter landscape;
+    margin: 0.4in;
+  }
+
+  .cheatsheet-inner {
+    padding: 0.25rem;
+  }
+
+  .cheatsheet-header {
+    text-align: center;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--text);
+  }
+  .cheatsheet-header h2 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 0.15rem;
+  }
+  .cheatsheet-sub {
+    font-size: 0.75rem;
+    color: var(--text-tertiary);
+  }
+
+  .cheatsheet-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.65rem;
+    line-height: 1.4;
+  }
+  .cheatsheet-table thead th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    text-align: left;
+    padding: 0.35rem 0.4rem;
+    border-bottom: 1.5px solid var(--border-dark);
+    white-space: nowrap;
+    vertical-align: bottom;
+  }
+  .cheatsheet-table tbody td {
+    padding: 0.4rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .cheatsheet-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+  .cheatsheet-table .mono {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+  }
+  .cheatsheet-table .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .cheatsheet-table .dim {
+    color: var(--text-tertiary);
+    font-size: 0.6rem;
+  }
+  .cheatsheet-table strong {
+    font-weight: 600;
+    color: var(--text);
+  }
+  .cheatsheet-table .row-highlight td {
+    background: #FFFBEB;
+  }
+
+  .col-num { width: 2%; }
+  .col-name { width: 10%; }
+  .col-acres { width: 4%; text-align: right; }
+  .col-survey { width: 12%; }
+  .col-type { width: 8%; }
+  .col-grantor { width: 16%; }
+  .col-grantee { width: 10%; }
+  .col-date { width: 7%; }
+  .col-rec { width: 7%; }
+  .col-mineral { width: 10%; }
+  .col-notes { width: 14%; }
+
+  .cheatsheet-footer {
+    margin-top: 0.6rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--border-dark);
+    display: flex;
+    gap: 2rem;
+    font-size: 0.6rem;
+    color: var(--text-secondary);
+  }
+  .cheatsheet-footer strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  /* Hide cheatsheet on screen (it's meant for print/PDF) — or show it, your call */
+  @media screen {
+    .cheatsheet-page {
+      max-width: 72rem;
+      margin: 2rem auto;
+      padding: 2rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow-x: auto;
+    }
+  }
+
+  @media print {
+    .cheatsheet-page {
+      break-before: page;
+      padding: 0;
+    }
+    .cheatsheet-table { break-inside: avoid; }
+  }
+</style>
+
+</body>
+</html>

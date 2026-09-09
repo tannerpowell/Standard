@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Templeton NMA Research: Next Steps</title>
+<style>
+  :root {
+    --bg: #FAF8F3;
+    --bg-card: #FFFFFF;
+    --bg-card-alt: #F5F2EB;
+    --bg-code: #EDE9E0;
+    --text: #1C1917;
+    --text-secondary: #57534E;
+    --text-tertiary: #A8A29E;
+    --border: #D6D3D1;
+    --border-light: #E7E5E4;
+    --accent: #92400E;
+    --accent-bg: #FEF3C7;
+    --accent-border: #F59E0B;
+    --critical: #991B1B;
+    --critical-bg: #FEE2E2;
+    --critical-border: #EF4444;
+    --high: #9A3412;
+    --high-bg: #FFEDD5;
+    --high-border: #F97316;
+    --medium: #854D0E;
+    --medium-bg: #FEF9C3;
+    --medium-border: #EAB308;
+    --low: #166534;
+    --low-bg: #DCFCE7;
+    --low-border: #22C55E;
+    --green: #166534;
+    --green-bg: #DCFCE7;
+    --green-border: #22C55E;
+    --shadow: 0 1px 3px rgba(28,25,23,0.06), 0 1px 2px rgba(28,25,23,0.04);
+    --shadow-lg: 0 4px 12px rgba(28,25,23,0.08), 0 2px 4px rgba(28,25,23,0.04);
+    --radius: 8px;
+    --font-serif: 'Georgia', 'Times New Roman', 'Palatino', serif;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', 'Helvetica Neue', sans-serif;
+    --font-mono: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  }
+  html.dark {
+    --bg: #1C1F26;
+    --bg-card: #242830;
+    --bg-card-alt: #2A2E37;
+    --bg-code: #31363F;
+    --text: #E8E6E3;
+    --text-secondary: #B0B5BD;
+    --text-tertiary: #7B8291;
+    --border: #374151;
+    --border-light: #2D3340;
+    --accent: #FCD34D;
+    --accent-bg: rgba(252,211,77,0.12);
+    --accent-border: #B45309;
+    --critical: #FCA5A5;
+    --critical-bg: rgba(239,68,68,0.12);
+    --critical-border: #7F1D1D;
+    --high: #FDBA74;
+    --high-bg: rgba(249,115,22,0.12);
+    --high-border: #7C2D12;
+    --medium: #FDE68A;
+    --medium-bg: rgba(234,179,8,0.12);
+    --medium-border: #713F12;
+    --low: #86EFAC;
+    --low-bg: rgba(34,197,94,0.12);
+    --low-border: #14532D;
+    --green: #86EFAC;
+    --green-bg: rgba(34,197,94,0.12);
+    --green-border: #14532D;
+    --shadow: 0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2);
+    --shadow-lg: 0 4px 12px rgba(0,0,0,0.4), 0 2px 4px rgba(0,0,0,0.2);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 18px; scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Header */
+  .header {
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    padding: 2.5rem 2rem 2rem;
+  }
+  .header-inner {
+    max-width: 880px;
+    margin: 0 auto;
+  }
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+  }
+  .kicker {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+  }
+  .header h1 {
+    font-family: var(--font-serif);
+    font-size: 2.2rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.4rem;
+  }
+  .header .subtitle {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    max-width: 640px;
+  }
+
+  /* Theme toggle */
+  .theme-toggle {
+    display: flex; align-items: center; gap: 0.5rem; cursor: pointer; user-select: none;
+  }
+  .theme-toggle input { display: none; }
+  .toggle-track {
+    width: 48px; height: 26px; background: var(--border); border-radius: 999px;
+    position: relative; transition: background 0.25s; flex-shrink: 0;
+  }
+  .toggle-track::after {
+    content: ''; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px;
+    border-radius: 50%; background: var(--bg-card); box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    transition: transform 0.25s;
+  }
+  .theme-toggle input:checked + .toggle-track { background: #475569; }
+  .theme-toggle input:checked + .toggle-track::after { transform: translateX(22px); }
+  .toggle-icon { font-size: 1rem; line-height: 1; }
+
+  /* Main */
+  .main { max-width: 880px; margin: 0 auto; padding: 2rem; }
+
+  /* Section */
+  .section { margin-bottom: 2.75rem; }
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 0.35rem;
+  }
+  .section h2 {
+    font-family: var(--font-serif);
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 0.75rem;
+  }
+  .section p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+  .section p + p { margin-top: 0.65rem; }
+
+  /* Step cards */
+  .step {
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 1.25rem;
+    overflow: hidden;
+  }
+  .step-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    cursor: pointer;
+    user-select: none;
+    list-style: none;
+  }
+  .step-header::-webkit-details-marker { display: none; }
+  .step-header:hover { background: var(--bg-card-alt); }
+  .step-num {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-tertiary);
+    background: var(--bg-card-alt);
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+    padding: 0.2rem 0.55rem;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+  .step-title-row {
+    flex: 1;
+  }
+  .step-title {
+    font-weight: 700;
+    font-size: 1.05rem;
+    line-height: 1.35;
+    margin-bottom: 0.15rem;
+  }
+  .step-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    font-size: 0.82rem;
+    color: var(--text-tertiary);
+    margin-top: 0.25rem;
+  }
+  .step-meta .cost {
+    font-weight: 700;
+    color: var(--green);
+    background: var(--green-bg);
+    border: 1px solid var(--green-border);
+    padding: 0.05rem 0.45rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+  }
+  .step-meta .cost.paid {
+    color: var(--medium);
+    background: var(--medium-bg);
+    border-color: var(--medium-border);
+  }
+  .step-meta .cost.invest {
+    color: var(--high);
+    background: var(--high-bg);
+    border-color: var(--high-border);
+  }
+  .step-arrow {
+    color: var(--text-tertiary);
+    font-size: 0.65rem;
+    transition: transform 0.2s;
+    margin-top: 0.35rem;
+    flex-shrink: 0;
+  }
+  details.step[open] .step-arrow { transform: rotate(90deg); }
+  .step-body {
+    padding: 0 1.5rem 1.5rem 4.25rem;
+    font-size: 0.95rem;
+    line-height: 1.75;
+    color: var(--text-secondary);
+  }
+  .step-body p { margin-bottom: 0.6rem; }
+  .step-body h4 {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-top: 1.1rem;
+    margin-bottom: 0.3rem;
+  }
+  .step-body h4:first-child { margin-top: 0; }
+  .step-body ul { padding-left: 1.25rem; margin: 0.4rem 0; }
+  .step-body li { margin-bottom: 0.3rem; }
+  .step-body li strong { color: var(--text); }
+
+  /* Contact card */
+  .contact {
+    background: var(--bg-card-alt);
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+    padding: 0.85rem 1rem;
+    margin: 0.6rem 0;
+    font-size: 0.92rem;
+  }
+  .contact .name { font-weight: 700; color: var(--text); }
+  .contact .role { color: var(--text-tertiary); font-size: 0.82rem; }
+  .contact .detail { color: var(--text-secondary); margin-top: 0.15rem; }
+  .contact a { color: var(--accent); text-decoration: none; }
+  .contact a:hover { text-decoration: underline; }
+
+  /* Link button */
+  .link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--accent);
+    text-decoration: none;
+    padding: 0.4rem 0.75rem;
+    border: 1px solid var(--accent-border);
+    border-radius: 6px;
+    background: var(--accent-bg);
+    transition: opacity 0.15s;
+    margin-top: 0.35rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.35rem;
+  }
+  .link-btn:hover { opacity: 0.8; }
+  .link-btn .arrow { font-size: 0.75rem; }
+
+  /* Callout */
+  .callout {
+    border-radius: var(--radius);
+    padding: 1.15rem 1.35rem;
+    margin-bottom: 1.25rem;
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+  .callout-info {
+    background: var(--accent-bg);
+    border: 1px solid var(--accent-border);
+    color: var(--accent);
+  }
+  .callout-critical {
+    background: var(--critical-bg);
+    border: 1px solid var(--critical-border);
+    color: var(--critical);
+  }
+  .callout strong {
+    display: block;
+    margin-bottom: 0.2rem;
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* Mapping table */
+  .table-wrap {
+    overflow-x: auto;
+    margin: 0.75rem 0;
+    border-radius: var(--radius);
+    border: 1px solid var(--border-light);
+    box-shadow: var(--shadow);
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+  thead { background: var(--bg-card-alt); }
+  th {
+    text-align: left; font-weight: 600; font-size: 0.75rem;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--text-secondary); padding: 0.8rem 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 0.8rem 1rem; border-bottom: 1px solid var(--border-light);
+    color: var(--text-secondary); vertical-align: top;
+  }
+  tr:last-child td { border-bottom: none; }
+  tbody tr { background: var(--bg-card); }
+  tbody tr:hover { background: var(--bg-card-alt); }
+  td a { color: var(--accent); text-decoration: none; }
+  td a:hover { text-decoration: underline; }
+
+  /* Script block */
+  .script-block {
+    background: var(--bg-code);
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 0.75rem 0;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    line-height: 1.65;
+    white-space: pre-wrap;
+    word-break: break-word;
+    color: var(--text);
+  }
+
+  /* Checklist */
+  .checklist { list-style: none; padding: 0; margin: 0.5rem 0; }
+  .checklist li {
+    padding: 0.5rem 0 0.5rem 2rem;
+    position: relative;
+    border-bottom: 1px solid var(--border-light);
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .checklist li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.65rem;
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    background: var(--bg-card);
+  }
+
+  /* Footer */
+  .footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem;
+    text-align: center;
+    font-size: 0.82rem;
+    color: var(--text-tertiary);
+    max-width: 880px;
+    margin: 0 auto;
+  }
+  hr { border: none; border-top: 1px solid var(--border-light); margin: 2rem 0; }
+
+  @media (max-width: 640px) {
+    .header { padding: 1.75rem 1.25rem 1.5rem; }
+    .header h1 { font-size: 1.65rem; }
+    .main { padding: 1.5rem 1.25rem; }
+    .step-body { padding-left: 1.5rem; }
+    .step-meta { flex-direction: column; gap: 0.3rem; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <div class="header-top">
+      <div class="kicker">Templeton Tract / Gregg County, TX</div>
+      <label class="theme-toggle" title="Toggle light/dark mode">
+        <span class="toggle-icon" id="theme-icon">&#9788;</span>
+        <input type="checkbox" id="theme-switch">
+        <span class="toggle-track"></span>
+      </label>
+    </div>
+    <h1>Net Mineral Acres: Research Playbook</h1>
+    <p class="subtitle">A step-by-step plan to determine the complete mineral ownership on the ~119-173 acre Templeton tract, Haden Edwards Survey, Abstract 64. Work through these in order. Each step feeds the next.</p>
+  </div>
+</header>
+
+<main class="main">
+
+  <div class="callout callout-critical">
+    <strong>Before Anything Else</strong>
+    No public database gives you a net mineral acre breakdown for a specific tract. The NMA answer lives in two places: the operator's division orders (showing each owner's decimal interest) and the county deed records (showing the full chain of title). The steps below are the fastest path to both.
+  </div>
+
+  <!-- ============================================ -->
+  <section class="section">
+    <div class="section-label">Phase 1</div>
+    <h2>Free Calls That Get You 80% There</h2>
+    <p>If Mary Lou Templeton Sanders (or any family member) is on a division order, the operator must provide it. That document shows the ownership decimal for every interest holder on the lease. Call first, pay later.</p>
+
+    <!-- Step 1 -->
+    <details class="step" open>
+      <summary class="step-header">
+        <span class="step-num">01</span>
+        <div class="step-title-row">
+          <div class="step-title">Call Sydri Operating (Current Operator)</div>
+          <div class="step-meta">
+            <span class="cost">Free</span>
+            <span>15 minutes</span>
+          </div>
+        </div>
+        <span class="step-arrow">&#9654;</span>
+      </summary>
+      <div class="step-body">
+        <h4>Who to Call</h4>
+        <div class="contact">
+          <div class="name">Sydri Operating, LLC</div>
+          <div class="role">Division Order / Revenue Department</div>
+          <div class="detail"><strong>(214) 373-8626</strong></div>
+          <div class="detail">10210 N Central Expressway, Suite 130, Dallas, TX 75231</div>
+        </div>
+        <div class="contact">
+          <div class="name">Marlaina Ward</div>
+          <div class="role">Accountant, Sydri Energy Group (from DOC177 correspondence)</div>
+          <div class="detail">She sent the owner info form to Mary Sanders in May 2023. She knows this account.</div>
+        </div>
+        <div class="contact">
+          <div class="name">Lynn Rogers</div>
+          <div class="role">Petro-Ledger (handles Sydri's royalty statements)</div>
+          <div class="detail">Referenced in the Sydri letter as the contact for Titan Rock statements.</div>
+        </div>
+
+        <h4>What to Ask For</h4>
+        <ul>
+          <li><strong>Division order</strong> for Mary Lou Templeton Sanders on all Gregg County leases (especially Griffin Ranch units, Flewellen, Horton, Barton Martha)</li>
+          <li><strong>Ownership decimal</strong> and <strong>unit acreage</strong> for each lease she's in</li>
+          <li><strong>Current well status</strong>: still shut-in, or has production resumed?</li>
+          <li>Names of <strong>all other interest owners</strong> on the same leases (they may or may not share this)</li>
+        </ul>
+
+        <h4>What It Tells You</h4>
+        <p>The division order will show something like <strong>0.00142857</strong> next to Mary's name. Multiply that decimal by the lease's unit acreage to get her net mineral acres on that lease. If she's on multiple leases, you add them up.</p>
+
+        <h4>Phone Script</h4>
+        <div class="script-block">"Hi, I'm calling on behalf of Mary Lou Templeton Sanders regarding her mineral interest in Gregg County. We're trying to confirm her ownership decimal and net mineral acres across her Sydri leases. Could I speak with someone in your division order or revenue department? We'd also like to know the current status of the Danville Field wells — are they still shut-in or has production resumed?"</div>
+      </div>
+    </details>
+
+    <!-- Step 2 -->
+    <details class="step">
+      <summary class="step-header">
+        <span class="step-num">02</span>
+        <div class="step-title-row">
+          <div class="step-title">Call BASA Resources (Operates a "Templeton" Lease)</div>
+          <div class="step-meta">
+            <span class="cost">Free</span>
+            <span>15 minutes</span>
+          </div>
+        </div>
+        <span class="step-arrow">&#9654;</span>
+      </summary>
+      <div class="step-body">
+        <h4>Why This Matters</h4>
+        <p>BASA Resources is one of the top 50 private oil producers in the US (~6,000 wells). They operate a lease literally named <strong>TEMPLETON</strong> (Lease #07968) and an <strong>EDWARDS</strong> lease (#06740) in RRC District 6E, East Texas field. This may be a separate lease on the same family minerals that Sydri doesn't operate.</p>
+
+        <div class="contact">
+          <div class="name">BASA Resources, Inc.</div>
+          <div class="role">Division Order Department</div>
+          <div class="detail"><strong>(214) 580-5206</strong></div>
+          <div class="detail">14875 Landmark Blvd, Suite 400, Dallas, TX 75254</div>
+        </div>
+
+        <h4>What to Ask For</h4>
+        <ul>
+          <li>Division order for the <strong>TEMPLETON lease (#07968)</strong> and <strong>EDWARDS lease (#06740)</strong></li>
+          <li>Is Mary Lou Templeton Sanders (or any Templeton) on these leases?</li>
+          <li>What survey/abstract do these leases cover?</li>
+          <li>Current production status and recent monthly volumes</li>
+        </ul>
+      </div>
+    </details>
+
+    <!-- Step 3 -->
+    <details class="step">
+      <summary class="step-header">
+        <span class="step-num">03</span>
+        <div class="step-title-row">
+          <div class="step-title">Call Long Trusts (Active Edwards Survey Wells)</div>
+          <div class="step-meta">
+            <span class="cost">Free</span>
+            <span>15 minutes</span>
+          </div>
+        </div>
+        <span class="step-arrow">&#9654;</span>
+      </summary>
+      <div class="step-body">
+        <h4>Why This Matters</h4>
+        <p>Long Trusts operates the Edwards J.K. AC 2 wells, which are <strong>still producing</strong> as of November 2025 (~1,052 BBL oil / 4,966 MCF gas monthly). They also run the Danville Oil Unit. If any Templeton minerals are under these leases, there's real current income.</p>
+
+        <div class="contact">
+          <div class="name">The Long Trusts</div>
+          <div class="role">Kilgore, TX office</div>
+          <div class="detail"><strong>(903) 984-3443</strong></div>
+          <div class="detail">PO Box 921, Kilgore, TX 75663</div>
+        </div>
+
+        <h4>What to Ask For</h4>
+        <ul>
+          <li>Division order for <strong>Edwards J.K. AC 2</strong> (Lease #6E-06942) and <strong>Danville Oil Unit</strong> (Lease #06-14075)</li>
+          <li>Is any Templeton or Sanders interest holder on these leases?</li>
+          <li>What abstract/survey do these wells sit on?</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============================================ -->
+  <section class="section">
+    <div class="section-label">Phase 2</div>
+    <h2>Low-Cost Database Searches</h2>
+    <p>Run these after the phone calls. They fill in the gaps and give you a broader picture of who holds minerals across the survey.</p>
+
+    <!-- Step 4 -->
+    <details class="step">
+      <summary class="step-header">
+        <span class="step-num">04</span>
+        <div class="step-title-row">
+          <div class="step-title">TexasFile Mineral Search</div>
+          <div class="step-meta">
+            <span class="cost paid">$0.25 - $5.00</span>
+            <span>30 minutes</span>
+          </div>
+        </div>
+        <span class="step-arrow">&#9654;</span>
+      </summary>
+      <div class="step-body">
+        <p>TexasFile pulls mineral ownership records from the county appraisal district. It shows who's currently assessed for mineral taxes, which operator they're under, and the appraised value.</p>
+        <a class="link-btn" href="https://www.texasfile.com/minerals/texas/gregg-county/" target="_blank" rel="noopener">Open TexasFile (Gregg County) <span class="arrow">&#8599;</span></a>
+
+        <h4>Searches to Run</h4>
+        <ul>
+          <li><strong>Owner: TEMPLETON</strong> ($0.25) — see all Templeton mineral accounts</li>
+          <li><strong>Owner: SANDERS MARY</strong> ($0.25) — catch married-name accounts</li>
+          <li><strong>Owner: M M INVESTMENTS</strong> ($0.25) — who bought at the tax sale</li>
+          <li><strong>Operator: SYDRI OPERATING</strong> ($0.25) — all interests under Sydri</li>
+          <li><strong>Operator: BASA RESOURCES</strong> ($0.25) — all interests under BASA</li>
+          <li><strong>Lease: TEMPLETON</strong> ($0.25) — the BASA-operated Templeton lease</li>
+          <li><strong>Lease: GRIFFIN RANCH</strong> ($0.25) — the Sydri-operated units</li>
+        </ul>
+        <p>Total: about <strong>$1.75</strong> for all seven searches. If you want the full county mineral roll (every producing mineral interest in Gregg County), that's <strong>$500</strong> for a CSV download.</p>
+      </div>
+    </details>
+
+    <!-- Step 5 -->
+    <details class="step">
+      <summary class="step-header">
+        <span class="step-num">05</span>
+        <div class="step-title-row">
+          <div class="step-title">Contact Capitol Appraisal Group</div>
+          <div class="step-meta">
+            <span class="cost">Free</span>
+            <span>Email + wait</span>
+          </div>
+        </div>
+        <span class="step-arrow">&#9654;</span>
+      </summary>
+      <div class="step-body">
+        <p>Capitol Appraisal Group handles mineral appraisals for Gregg County. Their records may show mineral accounts not visible in GCAD's public search (the public site returned zero mineral accounts for Abstract 64, which is suspicious for a producing area).</p>
+
+        <div class="contact">
+          <div class="name">Priscilla Weston</div>
+          <div class="role">Capitol Appraisal Group</div>
+          <div class="detail">Email: <a href="mailto:priscilla@cagi.com">priscilla@cagi.com</a></div>
+          <div class="detail">Phone: <strong>(903) 238-8823</strong></div>
+        </div>
+
+        <h4>What to Ask</h4>
+        <ul>
+          <li>Are there mineral accounts on <strong>Abstract 64 (A0123), Haden Edwards Survey</strong> in Gregg County?</li>
+          <li>Who is currently assessed for mineral taxes on that survey?</li>
+          <li>Can you provide a list of mineral account holders for the ~119-173 acre tract described in Vol. 349, Pg. 426?</li>
+        </ul>
+      </div>
+    </details>
+
+    <!-- Step 6 -->
+    <details class="step">
+      <summary class="step-header">
+        <span class="step-num">06</span>
+        <div class="step-title-row">
+          <div class="step-title">Search GCAD and Map the Property</div>
+          <div class="step-meta">
+            <span class="cost">Free</span>
+            <span>1 hour</span>
+          </div>
+        </div>
+        <span class="step-arrow">&#9654;</span>
+      </summary>
+      <div class="step-body">
+        <p>Use the free GIS tools to see the tract boundaries, find neighboring wells, and identify current surface owners.</p>
+
+        <h4>Mapping Tools</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Tool</th><th>What It Shows</th><th>Search For</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><a href="https://gis.rrc.texas.gov/GISViewer/" target="_blank" rel="noopener">RRC GIS Viewer</a></td>
+                <td>All oil/gas wells, pipelines, lease boundaries</td>
+                <td>Abstract 64, Haden Edwards, Gregg County</td>
+              </tr>
+              <tr>
+                <td><a href="https://gisweb.glo.texas.gov/glomapjs/index.html" target="_blank" rel="noopener">TX GLO Map Viewer</a></td>
+                <td>Original survey boundaries on aerial imagery</td>
+                <td>Turn on survey layer, zoom to Gregg County east of Kilgore</td>
+              </tr>
+              <tr>
+                <td><a href="https://esearch.gcad.org/" target="_blank" rel="noopener">GCAD Property Search</a></td>
+                <td>Current parcel ownership and tax records</td>
+                <td>Owner: TEMPLETON, then M M INVESTMENTS</td>
+              </tr>
+              <tr>
+                <td><a href="https://gis.bisclient.com/greggcad/" target="_blank" rel="noopener">GCAD Interactive Map</a></td>
+                <td>Parcel boundaries on aerial imagery</td>
+                <td>Find Property IDs from search above</td>
+              </tr>
+              <tr>
+                <td><a href="https://www.earthpoint.us/TexasLandSurvey.aspx" target="_blank" rel="noopener">EarthPoint TX Survey</a></td>
+                <td>Google Earth KML overlay of survey boundary</td>
+                <td>County: Gregg, Abstract: 64</td>
+              </tr>
+              <tr>
+                <td><a href="https://app.regrid.com/us/tx/gregg" target="_blank" rel="noopener">Regrid</a></td>
+                <td>Nationwide parcel data (25 free lookups/day)</td>
+                <td>Browse to the tract area</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Known Templeton Parcels on Abstract 64 (from GCAD)</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Owner</th><th>Tract</th><th>Acres</th><th>Address</th><th>GCAD ID</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Templeton Isiah</td><td>TR 48</td><td>1.35</td><td>197 PR 2459, Kilgore</td><td><a href="https://esearch.gcad.org/Property/View/15560?year=2025" target="_blank" rel="noopener">15560</a></td></tr>
+              <tr><td>Templeton Melvin Mrs</td><td>TR 143</td><td>0.57</td><td>580 Templeton St, Kilgore</td><td><a href="https://esearch.gcad.org/Property/View/15671?year=2025" target="_blank" rel="noopener">15671</a></td></tr>
+              <tr><td>Templeton Minnie Est</td><td>TR 165</td><td>5.60</td><td>1433 FM 349, Kilgore</td><td><a href="https://esearch.gcad.org/Property/View/15708?year=2025" target="_blank" rel="noopener">15708</a></td></tr>
+              <tr><td>Templeton Mary Estate</td><td>TR 174</td><td>7.00</td><td>FM 2276, Kilgore</td><td><a href="https://esearch.gcad.org/Property/View/15718?year=2025" target="_blank" rel="noopener">15718</a></td></tr>
+              <tr><td>Williams Chaney Templeton Est</td><td>TR 175</td><td>7.00</td><td>1299 FM 2276, Kilgore</td><td><a href="https://esearch.gcad.org/Property/View/15720?year=2025" target="_blank" rel="noopener">15720</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Note: <strong>Templeton Mary Estate</strong> and <strong>Williams Chaney Templeton Est</strong> share a mailing address at 5325 Breakwood Dr, Dallas TX 75227. Adjacent tracts, likely related owners.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============================================ -->
+  <section class="section">
+    <div class="section-label">Phase 3</div>
+    <h2>Professional Title Search</h2>
+    <p>If the phone calls and database searches paint a picture worth pursuing, this is where you get the definitive answer. A landman pulls every recorded instrument in the chain and builds a runsheet showing exactly who owns what.</p>
+
+    <!-- Step 7 -->
+    <details class="step">
+      <summary class="step-header">
+        <span class="step-num">07</span>
+        <div class="step-title-row">
+          <div class="step-title">Hire a Gregg County Landman</div>
+          <div class="step-meta">
+            <span class="cost invest">$500 - $3,000</span>
+            <span>1-3 weeks</span>
+          </div>
+        </div>
+        <span class="step-arrow">&#9654;</span>
+      </summary>
+      <div class="step-body">
+        <h4>What You Get</h4>
+        <p>A <strong>mineral title runsheet</strong>: a spreadsheet listing every deed, mineral deed, royalty deed, assignment, probate, and tax sale in the chain. Each row shows document type, book/page, date, grantor, grantee, legal description, and the fractional interest conveyed or reserved. The bottom line is a <strong>net mineral acre calculation</strong> showing every current owner's share.</p>
+
+        <h4>Why It's Non-Negotiable for This Tract</h4>
+        <ul>
+          <li>Multiple mineral severances (Hudson ~25%, Birdwell 10/83.6, Rio Grande Royalties unknown fraction)</li>
+          <li>A 1999 Sheriff's Tax Sale that may or may not have conveyed unsevered minerals</li>
+          <li>Guardianship deeds that may be voidable</li>
+          <li>A 1932 partition deed that's only partially in the package</li>
+          <li>Heirship questions for Luther Templeton, Charlie Templeton Sr., and others</li>
+        </ul>
+        <p>No shortcut gets you past this complexity. You need someone sitting in the Gregg County Clerk's office pulling records.</p>
+
+        <h4>East Texas Landman Services</h4>
+        <div class="contact">
+          <div class="name">Ryan Wilson, Landman</div>
+          <div class="role">Independent landman / advisory, Longview TX area</div>
+          <div class="detail"><a href="https://ryanwilson.land/locations/longview-tx" target="_blank" rel="noopener">ryanwilson.land</a></div>
+        </div>
+        <div class="contact">
+          <div class="name">East Texas Landman</div>
+          <div class="role">Regional specialist</div>
+          <div class="detail"><a href="https://www.easttexaslandman.com/" target="_blank" rel="noopener">easttexaslandman.com</a></div>
+        </div>
+        <div class="contact">
+          <div class="name">Davick Services Directory</div>
+          <div class="role">Gregg County abstractors, landmen, public record retrievers</div>
+          <div class="detail"><a href="https://www.davickservices.com/gregg_county_tx_experts.htm" target="_blank" rel="noopener">davickservices.com/gregg_county_tx_experts.htm</a></div>
+        </div>
+
+        <h4>What to Tell the Landman</h4>
+        <div class="script-block">"I need a mineral title runsheet for approximately 119-173 net acres on the Haden Edwards Survey, Abstract 64 (GCAD Abstract A0123), Gregg County, Texas. The root deed is Everett L. Culver to Templeton et al, dated June 29, 1942, recorded in Volume 349, Page 426, Deed Records of Gregg County.
+
+Key issues to trace:
+- Sheriff's Tax Deed to M M Investments (October 1999, ~$9,272.83)
+- Mineral severance: Annie Templeton to J.N. Hudson, 875/3500ths (Vol. 215, Pg. 167)
+- Mineral severance: Louise Templeton/Lockhart to G.P. Birdwell, 10/83.6 (Vol. 256, Pg. 460)
+- Royalty Deed: Lewis Templeton et al to Rio Grande Royalties (Bk. 1798, Pg. 589)
+- 1932 Partition Deed: T.W. Templeton et al, Cause 7095, Harrison County
+- Heirship: Luther Templeton, Charlie Templeton Sr.
+- Guardianship: James Templeton (incompetent), Odie Templeton (NCM)
+
+I need NMA for every current owner, including a determination of whether the mineral severances survived the 1999 tax sale."</div>
+
+        <h4>Expected Cost</h4>
+        <p>Typical rate is ~$600/day. For a tract this complex, expect 1-5 days of courthouse work: <strong>$500-$3,000</strong>. The high end is if the landman has to pull records from both Gregg County and Harrison County (for the 1932 partition deed).</p>
+      </div>
+    </details>
+
+    <!-- Step 8 -->
+    <details class="step">
+      <summary class="step-header">
+        <span class="step-num">08</span>
+        <div class="step-title-row">
+          <div class="step-title">Alternative: Enverus DI Courthouse (Free Trial)</div>
+          <div class="step-meta">
+            <span class="cost paid">Free trial, then $$$$</span>
+            <span>Self-service</span>
+          </div>
+        </div>
+        <span class="step-arrow">&#9654;</span>
+      </summary>
+      <div class="step-body">
+        <p>Enverus is the industry gold standard for mineral ownership data. Their DI Courthouse product has 20M+ mineral ownership records across 150+ Texas counties. A free trial might get you enough to answer your question without hiring a landman.</p>
+        <a class="link-btn" href="https://www.enverus.com/products/land/" target="_blank" rel="noopener">Enverus Land Products <span class="arrow">&#8599;</span></a>
+        <p>Overkill for a single tract. But if you're doing land work professionally, it pays for itself.</p>
+      </div>
+    </details>
+  </section>
+
+  <hr>
+
+  <!-- ============================================ -->
+  <section class="section">
+    <div class="section-label">Tracking</div>
+    <h2>Progress Checklist</h2>
+    <p>Print this or check it off as you go.</p>
+    <ul class="checklist">
+      <li>Called Sydri Operating, got division order / ownership decimal</li>
+      <li>Called BASA Resources re: TEMPLETON lease #07968</li>
+      <li>Called Long Trusts re: Edwards J.K. AC 2 and Danville Oil Unit</li>
+      <li>Ran TexasFile searches (Templeton, Sanders, M M Investments, operators)</li>
+      <li>Emailed Capitol Appraisal Group (Priscilla Weston) re: mineral accounts on Abstract 64</li>
+      <li>Mapped the tract on RRC GIS Viewer (well locations identified)</li>
+      <li>Mapped the tract on GLO / GCAD (survey and parcel boundaries confirmed)</li>
+      <li>Searched GCAD for M M Investments (found successor entity or confirmed absent)</li>
+      <li>Decision: hire landman for full runsheet? (Y/N)</li>
+      <li>Landman engaged, runsheet in progress</li>
+      <li>NMA calculation complete, all current owners identified</li>
+      <li>Oil and gas attorney reviewed title before purchase</li>
+    </ul>
+  </section>
+
+  <div class="callout callout-info">
+    <strong>Rule of Thumb</strong>
+    Don't pay for a landman until the phone calls are done. If Sydri's division order shows a tiny decimal (like 0.001 or less), the mineral position may not be worth the $500-$3,000 title search. Let the free data guide the spend.
+  </div>
+
+  <footer class="footer">
+    <p>Prepared March 30, 2026. All contact information sourced from public records, RRC filings, and operator correspondence in the Templeton document package.</p>
+    <p style="margin-top: 0.5rem;">Standard Land Services</p>
+  </footer>
+
+</main>
+
+<script>
+(function() {
+  var toggle = document.getElementById('theme-switch');
+  var icon = document.getElementById('theme-icon');
+  var html = document.documentElement;
+  function setDark(dark) {
+    if (dark) { html.classList.add('dark'); icon.innerHTML = '\u263E'; toggle.checked = true; }
+    else { html.classList.remove('dark'); icon.innerHTML = '\u263C'; toggle.checked = false; }
+    try { localStorage.setItem('templeton-theme', dark ? 'dark' : 'light'); } catch(e) {}
+  }
+  var saved = null;
+  try { saved = localStorage.getItem('templeton-theme'); } catch(e) {}
+  if (saved === 'dark') setDark(true);
+  else if (saved === 'light') setDark(false);
+  else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) setDark(true);
+  toggle.addEventListener('change', function() { setDark(toggle.checked); });
+})();
+</script>
+</body>
+</html>

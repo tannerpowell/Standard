@@ -44,3 +44,18 @@ Standard Safety & Supply/
 
 # Local Netlify folder
 .netlify
+.gstack/
+
+# Large reference binaries — kept locally, synced between machines via
+# Unison, not committed to git
+docs/Templeton/DOC17*.pdf
+docs/Templeton/templeton-legal-descriptions*.pdf
+docs/faultboard-morning-brief.pdf
+docs/Reference/fwdnewestimates/
+docs/Reference/fwdnewestimates.zip
+
+# Fleet/telematics reference binaries — may carry API tokens, VINs, and
+# driver detail. Local only; never commit.
+docs/Reference/*.docx
+docs/Reference/*.pdf
+docs/Reference/*.xlsx

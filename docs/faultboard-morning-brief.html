@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Faultboard Morning Brief — Standard Safety &amp; Supply</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --bg-card: #ffffff;
+  --bg-card-alt: #f4f4f5;
+  --text: #09090b;
+  --text-2: #52525b;
+  --text-3: #a1a1aa;
+  --border: #e4e4e7;
+  --border-light: #f4f4f5;
+  --accent: #a78b60;
+  --critical: #ef4444;
+  --critical-bg: #fef2f2;
+  --critical-border: #fecaca;
+  --critical-text: #b91c1c;
+  --high: #f59e0b;
+  --high-bg: #fffbeb;
+  --high-border: #fde68a;
+  --high-text: #92400e;
+  --medium: #0ea5e9;
+  --medium-bg: #f0f9ff;
+  --medium-border: #bae6fd;
+  --medium-text: #0369a1;
+  --ok: #10b981;
+  --ok-bg: #ecfdf5;
+  --ok-border: #a7f3d0;
+  --ok-text: #047857;
+  --radius: 10px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', -apple-system, system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.page {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 40px 48px 64px;
+}
+
+/* =========================================================
+   MASTHEAD
+   ========================================================= */
+.masthead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding-bottom: 14px;
+  margin-bottom: 22px;
+  border-bottom: 1px solid var(--border);
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.brand-mark {
+  width: 28px; height: 28px;
+  border-radius: 7px;
+  background: linear-gradient(135deg, #18181b 0%, #3f3f46 100%);
+  position: relative;
+  flex-shrink: 0;
+}
+.brand-mark::after {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 2px solid #fafafa;
+  border-radius: 3px;
+  border-top-color: var(--high);
+  border-right-color: var(--critical);
+}
+.brand-name {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: 17px;
+  letter-spacing: -0.2px;
+  color: var(--text);
+}
+.brand-tagline {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  margin-top: 1px;
+}
+
+.prepared-for {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+.prepared-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+}
+.prepared-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  padding: 0 16px;
+  border: 1.5px dashed var(--border);
+  border-radius: 6px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--text-3);
+  letter-spacing: 0.4px;
+  background: var(--bg-card-alt);
+}
+
+/* =========================================================
+   BRIEF HEADER
+   ========================================================= */
+.brief-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.brief-kicker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 1.4px;
+}
+.fresh-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ok-text);
+  background: var(--ok-bg);
+  border-radius: 999px;
+  padding: 3px 10px;
+}
+.fresh-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--ok);
+}
+
+.headline {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: 32px;
+  line-height: 1.12;
+  letter-spacing: -0.5px;
+  color: var(--text);
+  text-wrap: balance;
+  margin-bottom: 14px;
+}
+.headline span {
+  display: block;
+}
+.headline span + span {
+  margin-top: 4px;
+}
+
+.summary {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-2);
+  text-wrap: pretty;
+  margin-bottom: 22px;
+}
+.summary strong { color: var(--text); font-weight: 600; }
+
+/* =========================================================
+   STAT STRIP
+   ========================================================= */
+.stat-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 32px;
+}
+.stat {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+}
+.stat-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-feature-settings: "tnum";
+  font-weight: 600;
+  font-size: 26px;
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+  color: var(--text);
+}
+.stat-num.crit { color: var(--critical-text); }
+.stat-num.high { color: var(--high-text); }
+.stat-num.med { color: var(--medium-text); }
+.stat-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-2);
+  margin-top: 4px;
+}
+.stat-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-3);
+  margin-top: 2px;
+  letter-spacing: 0.2px;
+}
+
+/* =========================================================
+   TIER SECTION
+   ========================================================= */
+.tier {
+  margin-bottom: 28px;
+}
+.tier-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.tier-title {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.1px;
+  color: var(--text);
+  text-transform: uppercase;
+}
+.tier-title.cant_roll { color: var(--critical-text); }
+.tier-title.schedule { color: var(--high-text); }
+.tier-title.watchlist { color: var(--medium-text); }
+.tier-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-3);
+  letter-spacing: 0.5px;
+}
+
+/* =========================================================
+   ITEM CARD
+   ========================================================= */
+.item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  margin-bottom: 10px;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+.item.crit { background: var(--critical-bg); border-color: var(--critical-border); }
+.item.high { background: var(--high-bg); border-color: var(--high-border); }
+.item.med  { background: var(--medium-bg); border-color: var(--medium-border); }
+
+.item-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+.badge-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.sev-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.sev-dot.crit { background: var(--critical); }
+.sev-dot.high { background: var(--high); }
+.sev-dot.med  { background: var(--medium); }
+.sev-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+}
+.sev-label.crit { color: var(--critical-text); }
+.sev-label.high { color: var(--high-text); }
+.sev-label.med  { color: var(--medium-text); }
+
+.action-chip {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 3px 10px;
+  white-space: nowrap;
+}
+
+.item-title {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--text);
+  line-height: 1.3;
+  text-wrap: balance;
+  margin-bottom: 6px;
+}
+.item-reasoning {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text-2);
+  text-wrap: pretty;
+  margin-bottom: 10px;
+}
+.item-reasoning strong { color: var(--text); font-weight: 600; }
+
+.sources {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-3);
+  letter-spacing: 0.2px;
+}
+.sources-label {
+  font-weight: 600;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+.source-code {
+  display: inline-flex;
+  padding: 2px 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-2);
+}
+.item.crit .source-code, .item.high .source-code, .item.med .source-code {
+  background: rgba(255,255,255,0.7);
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+.footer {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+}
+.footer-msg {
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.5;
+  text-wrap: pretty;
+  max-width: 520px;
+}
+.footer-msg strong { color: var(--text); font-weight: 600; }
+.footer-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: right;
+  line-height: 1.6;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   PRINT
+   ========================================================= */
+@page {
+  size: letter;
+  margin: 0.6in;
+}
+@media print {
+  html, body { background: #ffffff; }
+  .page { padding: 0; max-width: none; }
+  .item, .stat { break-inside: avoid; page-break-inside: avoid; }
+  .tier { break-inside: avoid-page; }
+  .headline { font-size: 28px; }
+  .item-title { font-size: 15px; }
+  .summary { font-size: 14.5px; }
+}
+
+/* responsive (screen) */
+@media (max-width: 720px) {
+  .page { padding: 24px 20px 48px; }
+  .stat-strip { grid-template-columns: repeat(2, 1fr); }
+  .headline { font-size: 26px; }
+  .footer { flex-direction: column; align-items: flex-start; }
+  .footer-meta { text-align: left; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- MASTHEAD -->
+  <header class="masthead">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true"></div>
+      <div>
+        <div class="brand-name">Faultboard</div>
+        <div class="brand-tagline">Fleet maintenance triage</div>
+      </div>
+    </div>
+    <div class="prepared-for">
+      <div class="prepared-label">Prepared for</div>
+      <div class="prepared-logo">[ Standard Logo ]</div>
+    </div>
+  </header>
+
+  <!-- BRIEF META -->
+  <div class="brief-meta">
+    <div class="brief-kicker">Morning Briefing &middot; Tue, Apr 28</div>
+    <div class="fresh-pill">
+      <span class="fresh-dot" aria-hidden="true"></span>
+      Generated 6:30 AM CT
+    </div>
+  </div>
+
+  <h1 class="headline"><span>Five trucks shouldn&rsquo;t go out today.</span><span>One has an active fuel leak.</span></h1>
+
+  <p class="summary">
+    Five trucks should stay parked this morning. <strong>TK-311</strong> is the most urgent: a fuel rail pressure fault paired with a &ldquo;large fuel leak detected&rdquo; code makes it both a fire risk and a no-go. <strong>TK-339 and TK-351</strong> (both 2022 F-150s) are showing critical low oil pressure; running them risks engine damage. <strong>TK-268 and TK-279</strong> (Chevy Silverados) are logging powertrain control module faults, with TK-268 adding a fresh brake-booster code today. Two fleet patterns are stacking underneath: <strong>nine 2024 Ram 2500s sharing a turbo underboost fault</strong>, and three International belly dumps reporting low coolant in the same way. Both are coordinated repairs, not nine and three separate jobs.
+  </p>
+
+  <!-- STAT STRIP -->
+  <div class="stat-strip">
+    <div class="stat">
+      <div class="stat-num crit">5</div>
+      <div class="stat-label">Hold today</div>
+      <div class="stat-sub">Not safe to dispatch</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num high">3</div>
+      <div class="stat-label">Schedule this week</div>
+      <div class="stat-sub">Group repairs across fleet</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">357</div>
+      <div class="stat-label">Vehicles tracked</div>
+      <div class="stat-sub">Across 5 divisions</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num med">764</div>
+      <div class="stat-label">Active fault codes</div>
+      <div class="stat-sub">Triaged automatically</div>
+    </div>
+  </div>
+
+  <!-- ============ CAN'T ROLL ============ -->
+  <section class="tier">
+    <div class="tier-head">
+      <div class="tier-title cant_roll">Can&rsquo;t Roll</div>
+      <div class="tier-count">5 items</div>
+    </div>
+
+    <article class="item crit">
+      <div class="item-top">
+        <div class="badge-row">
+          <span class="sev-dot crit" aria-hidden="true"></span>
+          <span class="sev-label crit">Critical &middot; Hold</span>
+        </div>
+        <span class="action-chip">Create work order</span>
+      </div>
+      <div class="item-title">TK-311: active fuel leak plus low fuel rail pressure</div>
+      <p class="item-reasoning">
+        This 2022 Ford F-350 is logging a <strong>&ldquo;large fuel leak detected&rdquo; code together with critical low fuel rail pressure</strong> and low injector control pressure at startup. Active fuel leak is a fire-safety hold. Do not roll until the fuel system has been pressure-tested and inspected.
+      </p>
+      <div class="sources">
+        <span class="sources-label">Sources</span>
+        <span class="source-code">P0093 large fuel leak</span>
+        <span class="source-code">P0087 rail pressure low</span>
+        <span class="source-code">P2291 ICP low at crank</span>
+      </div>
+    </article>
+
+    <article class="item crit">
+      <div class="item-top">
+        <div class="badge-row">
+          <span class="sev-dot crit" aria-hidden="true"></span>
+          <span class="sev-label crit">Critical &middot; Hold</span>
+        </div>
+        <span class="action-chip">Create work order</span>
+      </div>
+      <div class="item-title">TK-339: low oil pressure with full-engine misfires</div>
+      <p class="item-reasoning">
+        This 2022 Ford F-150 is showing critical low engine oil pressure alongside <strong>misfires on every cylinder</strong> and timing-correlation faults between the camshaft and crankshaft. Running this engine risks immediate damage. Hold and tow to the shop.
+      </p>
+      <div class="sources">
+        <span class="sources-label">Sources</span>
+        <span class="source-code">P0524 oil pressure low</span>
+        <span class="source-code">P0300 multi-cyl misfire</span>
+        <span class="source-code">P0016 / P0017 / P0018 cam/crank</span>
+      </div>
+    </article>
+
+    <article class="item crit">
+      <div class="item-top">
+        <div class="badge-row">
+          <span class="sev-dot crit" aria-hidden="true"></span>
+          <span class="sev-label crit">Critical &middot; Hold</span>
+        </div>
+        <span class="action-chip">Create work order</span>
+      </div>
+      <div class="item-title">TK-351: critical low oil pressure since December</div>
+      <p class="item-reasoning">
+        This 2022 Ford F-150 has been logging critical low engine oil pressure since December alongside EVAP and camshaft sensor codes. <strong>Same oil-pressure failure as TK-339</strong>, second 2022 F-150 in the fleet showing it. Hold until oil pressure has been verified at the shop.
+      </p>
+      <div class="sources">
+        <span class="sources-label">Sources</span>
+        <span class="source-code">P0524 oil pressure low</span>
+        <span class="source-code">P0451 EVAP</span>
+        <span class="source-code">P0390 cam sensor B2</span>
+      </div>
+    </article>
+
+    <article class="item crit">
+      <div class="item-top">
+        <div class="badge-row">
+          <span class="sev-dot crit" aria-hidden="true"></span>
+          <span class="sev-label crit">Critical &middot; Hold</span>
+        </div>
+        <span class="action-chip">Create work order</span>
+      </div>
+      <div class="item-title">TK-268: control-module fault plus new brake code today</div>
+      <p class="item-reasoning">
+        This 2021 Chevy Silverado has been logging a critical powertrain-control-module processor fault since March, and <strong>today added a brake-booster performance code and a brake-module warning</strong>. Powertrain unreliability plus a fresh brake flag is a no-go combination on a 147,000-mile pickup.
+      </p>
+      <div class="sources">
+        <span class="sources-label">Sources</span>
+        <span class="source-code">P0606 PCM processor</span>
+        <span class="source-code">C0021 brake booster (today)</span>
+        <span class="source-code">P25A2 brake MIL</span>
+      </div>
+    </article>
+
+    <article class="item crit">
+      <div class="item-top">
+        <div class="badge-row">
+          <span class="sev-dot crit" aria-hidden="true"></span>
+          <span class="sev-label crit">Critical &middot; Hold</span>
+        </div>
+        <span class="action-chip">Create work order</span>
+      </div>
+      <div class="item-title">TK-279: powertrain module unreliable, voltage dropping</div>
+      <p class="item-reasoning">
+        This 2022 Chevy Silverado&rsquo;s main control module is logging a critical processor fault with cascading communication losses to the battery monitor and low system voltage. <strong>The module that runs the engine cannot be trusted.</strong> Don&rsquo;t dispatch until the module has been diagnosed.
+      </p>
+      <div class="sources">
+        <span class="sources-label">Sources</span>
+        <span class="source-code">P0606 PCM processor</span>
+        <span class="source-code">U01B0 battery-monitor lost comm</span>
+        <span class="source-code">P0562 voltage low</span>
+      </div>
+    </article>
+  </section>
+
+  <!-- ============ SCHEDULE THIS WEEK ============ -->
+  <section class="tier">
+    <div class="tier-head">
+      <div class="tier-title schedule">Schedule This Week</div>
+      <div class="tier-count">3 coordinated repairs</div>
+    </div>
+
+    <article class="item high">
+      <div class="item-top">
+        <div class="badge-row">
+          <span class="sev-dot high" aria-hidden="true"></span>
+          <span class="sev-label high">High &middot; Campaign</span>
+        </div>
+        <span class="action-chip">Create campaign</span>
+      </div>
+      <div class="item-title">Nine 2024 Ram 2500s losing turbo boost &mdash; fleet pattern</div>
+      <p class="item-reasoning">
+        Nine late-model Ram 2500s are showing the same turbocharger underboost fault: <strong>TK-382, TK-395, TK-397, TK-420, TK-422, TK-424, TK-426, TK-427, TK-428</strong>, with several more pairing it with cold-start boost issues. Pattern points to a common boost-control or charge-air component, not nine separate failures. Open a single campaign before more trucks lose power under load on a job.
+      </p>
+      <div class="sources">
+        <span class="sources-label">Pattern</span>
+        <span class="source-code">P0299 turbo underboost &times;9</span>
+        <span class="source-code">P056E cold-start boost (paired)</span>
+      </div>
+    </article>
+
+    <article class="item high">
+      <div class="item-top">
+        <div class="badge-row">
+          <span class="sev-dot high" aria-hidden="true"></span>
+          <span class="sev-label high">High &middot; Campaign</span>
+        </div>
+        <span class="action-chip">Create work order</span>
+      </div>
+      <div class="item-title">Four trucks with diesel exhaust fluid pump failures</div>
+      <p class="item-reasoning">
+        Four pickups are logging a &ldquo;reductant no-flow&rdquo; fault that means the DEF pump or injector isn&rsquo;t delivering. <strong>TK-192 has been in this state since May 2024</strong>, escalate or retire that one. TK-308, the stolen-tagged duplicate of TK-308, and TK-371 are newer. Without DEF flow, the engine forces a 5 mph crawl mode and the driver pulls off the road mid-job.
+      </p>
+      <div class="sources">
+        <span class="sources-label">Sources</span>
+        <span class="source-code">TK-192 P218F (since 2024)</span>
+        <span class="source-code">TK-308 P218F</span>
+        <span class="source-code">TK-371 P218F</span>
+      </div>
+    </article>
+
+    <article class="item high">
+      <div class="item-top">
+        <div class="badge-row">
+          <span class="sev-dot high" aria-hidden="true"></span>
+          <span class="sev-label high">High &middot; Campaign</span>
+        </div>
+        <span class="action-chip">Create campaign</span>
+      </div>
+      <div class="item-title">Three International belly dumps reporting low coolant</div>
+      <p class="item-reasoning">
+        EV.BD-009, EV.BD-029, and EV.BD-078 are <strong>all reporting low engine coolant in the same way</strong>. Most likely shared cause: cap, sensor, or actual coolant loss. Pull all three for coolant inspection before next highway dispatch, before any of them overheats on a job.
+      </p>
+      <div class="sources">
+        <span class="sources-label">Sources</span>
+        <span class="source-code">SPN 111 FMI 18 &times;3</span>
+      </div>
+    </article>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-msg">
+      <strong>Delivered every morning at 6:30 AM CT.</strong> Generated overnight from your Samsara feed. Zero human time. The brief replaces the 100&plus; raw fault notifications your team would otherwise sort by hand.
+    </div>
+    <div class="footer-meta">
+      Standard Safety &amp; Supply<br>
+      357 vehicles &middot; 5 divisions<br>
+      Live data &middot; Samsara API
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
