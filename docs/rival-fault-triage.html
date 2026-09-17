@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fleet Diagnostic Triage — Rival Energy Services</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --bg-card: #ffffff;
+  --bg-card-alt: #f4f4f5;
+  --bg-hover: #f4f4f5;
+  --text: #09090b;
+  --text-2: #52525b;
+  --text-3: #a1a1aa;
+  --border: #e4e4e7;
+  --border-light: #f4f4f5;
+  --accent: #a78b60;
+  --critical: #f87171;
+  --critical-bg: #fef2f2;
+  --critical-border: #fecaca;
+  --high: #fbbf24;
+  --high-bg: #fffbeb;
+  --high-border: #fde68a;
+  --medium: #38bdf8;
+  --medium-bg: #f0f9ff;
+  --medium-border: #bae6fd;
+  --low: #a1a1aa;
+  --low-bg: #fafafa;
+  --low-border: #e4e4e7;
+  --green: #34d399;
+  --green-bg: #ecfdf5;
+  --green-border: #a7f3d0;
+  --critical-text: #b91c1c;
+  --high-text: #92400e;
+  --medium-text: #0369a1;
+  --green-text: #065f46;
+  --radius: 8px;
+}
+[data-theme="dark"] {
+  --bg: #18181b;
+  --bg-card: #27272a;
+  --bg-card-alt: #3f3f46;
+  --bg-hover: #3f3f46;
+  --text: #f4f4f5;
+  --text-2: #d4d4d8;
+  --text-3: #71717a;
+  --border: #3f3f46;
+  --border-light: #2e2e35;
+  --accent: #c4a875;
+  --critical: #f87171;
+  --critical-bg: #3b1a1a;
+  --critical-border: #7f2d2d;
+  --high: #fbbf24;
+  --high-bg: #382c0a;
+  --high-border: #7c5c14;
+  --medium: #38bdf8;
+  --medium-bg: #0c2a4a;
+  --medium-border: #1a5085;
+  --low: #71717a;
+  --low-bg: #222226;
+  --low-border: #3f3f46;
+  --green: #34d399;
+  --green-bg: #0f3524;
+  --green-border: #1e6b45;
+  --critical-text: #f87171;
+  --critical-badge-bg: #5c1e1e;
+  --high-text: #fbbf24;
+  --high-badge-bg: #4a3408;
+  --medium-text: #38bdf8;
+  --medium-badge-bg: #103a66;
+  --green-text: #34d399;
+  --green-badge-bg: #14503a;
+  --shadow: 0 1px 3px rgba(0,0,0,.5);
+  --shadow-lg: 0 3px 12px rgba(0,0,0,.5);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'DM Sans', 'Segoe UI', Tahoma, Geneva, Verdana, Arial, sans-serif;
+  background: var(--bg); color: var(--text);
+  line-height: 1.65; font-size: 16px;
+  transition: background .2s, color .2s;
+}
+.container { max-width: 960px; margin: 0 auto; padding: 40px 28px 80px; }
+
+/* Theme toggle */
+.theme-toggle {
+  position: fixed; top: 16px; right: 20px; z-index: 100;
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 8px; padding: 6px 12px; cursor: pointer;
+  font-family: 'DM Sans', 'Segoe UI', Tahoma, Geneva, Verdana, Arial, sans-serif; font-size: 13px; font-weight: 500;
+  color: var(--text-2);
+  display: flex; align-items: center; gap: 6px;
+  transition: all .15s;
+}
+.theme-toggle:hover { border-color: var(--text-3); color: var(--text); }
+.theme-icon { font-size: 16px; }
+
+/* Header */
+.header { margin-bottom: 44px; padding-bottom: 28px; border-bottom: 1px solid var(--border); }
+.header-top { display: flex; align-items: flex-start; justify-content: space-between; }
+.header h1 {
+  font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, Arial, sans-serif;
+  font-size: 32px; font-weight: 800; color: var(--text);
+  letter-spacing: -.2px; line-height: 1.15;
+}
+.header .org {
+  font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, Arial, sans-serif;
+  font-weight: 500;
+  font-size: 16px; color: var(--text-2); margin-top: 6px;
+}
+.header .date { font-size: 13px; color: var(--text-3); margin-top: 10px; letter-spacing: .3px; }
+
+/* Summary strip */
+.summary-strip {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px;
+  margin-bottom: 28px;
+}
+.stat-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 18px 14px; text-align: center;
+}
+.stat-num { font-family: 'JetBrains Mono', 'Cascadia Code', 'Consolas', 'Courier New', monospace; font-size: 30px; font-weight: 700; line-height: 1; }
+.stat-num.critical { color: var(--critical-text); }
+.stat-num.high { color: var(--high-text); }
+.stat-num.medium { color: var(--text-2); }
+.stat-num.low { color: var(--text-3); }
+.stat-num.total { color: var(--text); }
+.stat-label { font-size: 12px; color: var(--text-3); margin-top: 6px; font-weight: 600; text-transform: uppercase; letter-spacing: .8px; }
+.stat-sub { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+
+/* Tabs */
+.tabs {
+  display: flex; gap: 2px; margin-bottom: 24px;
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 4px;
+}
+.tab {
+  flex: 1; padding: 10px 16px; text-align: center; cursor: pointer;
+  font-size: 15px; font-weight: 600; color: var(--text-3);
+  border-radius: 6px; transition: all .15s; white-space: nowrap;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.tab:hover { color: var(--text); background: var(--bg-hover); }
+.tab.active { background: var(--text); color: var(--bg); }
+.tab .count {
+  font-family: 'JetBrains Mono', 'Cascadia Code', 'Consolas', 'Courier New', monospace; font-size: 12px;
+  background: rgba(255,255,255,.15); padding: 1px 6px; border-radius: 4px;
+}
+.tab:not(.active) .count { background: var(--border-light); }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* Section headers */
+.section-head { margin-bottom: 20px; }
+.section-head h2 {
+  font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, Arial, sans-serif;
+  font-size: 22px; font-weight: 700; color: var(--text);
+  display: flex; align-items: center; gap: 8px; margin-bottom: 8px;
+  letter-spacing: -.1px;
+}
+.section-head p {
+  font-size: 15px; color: var(--text-2); line-height: 1.55;
+}
+
+/* Vehicle cards */
+.vehicle-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); margin-bottom: 10px;
+  overflow: hidden; transition: border-color .15s;
+}
+.vehicle-card:hover { border-color: var(--text-3); }
+
+.vc-header {
+  padding: 14px 18px; display: flex; align-items: center; gap: 14px;
+  cursor: pointer; user-select: none;
+}
+.vc-identity { flex: 1; min-width: 0; }
+.vc-unit {
+  font-family: 'JetBrains Mono', 'Cascadia Code', 'Consolas', 'Courier New', monospace; font-size: 18px;
+  font-weight: 700; color: var(--text); letter-spacing: -.3px;
+}
+.vc-vehicle { font-size: 17px; font-weight: 600; color: var(--text-2); margin-top: 2px; }
+.vc-meta {
+  display: flex; gap: 12px; margin-top: 4px; flex-wrap: wrap;
+}
+.vc-meta-item {
+  font-size: 12px; color: var(--text-3); display: flex; align-items: center; gap: 3px;
+}
+.vc-meta-item strong { color: var(--text-2); font-weight: 600; }
+.vc-badges { display: flex; gap: 6px; flex-wrap: wrap; flex-shrink: 0; }
+.vc-chevron { color: var(--text-3); font-size: 18px; transition: transform .2s; margin-left: 8px; }
+.vc-header[aria-expanded="true"] .vc-chevron { transform: rotate(180deg); }
+
+.vc-body { display: none; border-top: 1px solid var(--border-light); }
+.vc-header[aria-expanded="true"] + .vc-body { display: block; }
+
+.fault-table { width: 100%; border-collapse: collapse; }
+.fault-table td {
+  padding: 9px 18px; font-size: 15px; color: var(--text-2);
+  border-bottom: 1px solid var(--border-light); vertical-align: top;
+}
+.fault-table tr:last-child td { border-bottom: none; }
+.fault-code { font-family: 'JetBrains Mono', 'Cascadia Code', 'Consolas', 'Courier New', monospace; font-size: 13px; white-space: nowrap; color: var(--text-2); font-weight: 500; }
+.fault-desc { color: var(--text); }
+.fault-fmi { color: var(--text-3); font-size: 14px; }
+.fault-occ { font-family: 'JetBrains Mono', 'Cascadia Code', 'Consolas', 'Courier New', monospace; font-size: 12px; color: var(--text-3); }
+
+/* Badges */
+.badge {
+  display: inline-flex; align-items: center; padding: 3px 9px;
+  border-radius: 5px; font-size: 11px; font-weight: 700;
+  letter-spacing: .3px; white-space: nowrap;
+}
+.b-critical { background: var(--critical-badge-bg, var(--critical-bg)); color: var(--critical-text); border: 1px solid var(--critical-border); }
+.b-high { background: var(--high-badge-bg, var(--high-bg)); color: var(--high-text); border: 1px solid var(--high-border); }
+.b-medium { background: var(--medium-badge-bg, var(--medium-bg)); color: var(--medium-text); border: 1px solid var(--medium-border); }
+.b-low { background: var(--low-bg); color: var(--text-3); border: 1px solid var(--low-border); }
+.b-active { background: var(--green-badge-bg, var(--green-bg)); color: var(--green-text); border: 1px solid var(--green-border); }
+.b-shop { background: var(--high-badge-bg, var(--high-bg)); color: var(--high-text); border: 1px solid var(--high-border); }
+
+/* Callouts / Recs */
+.callout {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px 24px; margin-bottom: 14px;
+}
+.callout.urgent { background: var(--critical-bg); border-color: var(--critical-border); }
+.callout.urgent h3 { color: var(--critical-text); }
+.callout.warn { background: var(--high-bg); border-color: var(--high-border); }
+.callout.warn h3 { color: var(--high-text); }
+.callout.info { background: var(--medium-bg); border-color: var(--medium-border); }
+.callout.info h3 { color: var(--medium-text); }
+.callout.good { background: var(--green-bg); border-color: var(--green-border); }
+.callout.good h3 { color: var(--green-text); }
+.callout h3 {
+  font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, Arial, sans-serif;
+  font-size: 18px; font-weight: 800; margin-bottom: 8px; color: var(--text);
+  letter-spacing: -.1px;
+}
+.callout p { font-size: 15px; color: var(--text-2); margin-bottom: 6px; line-height: 1.6; }
+.callout em strong, .rec-card em strong { color: var(--text); font-style: italic; }
+.callout p:last-child { margin-bottom: 0; }
+
+/* Rec cards */
+.rec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+.rec-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 18px 20px;
+}
+.rec-card h4 {
+  font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, Arial, sans-serif;
+  font-size: 17px; font-weight: 700; margin-bottom: 6px; color: var(--text);
+  letter-spacing: -.1px;
+}
+.rec-card .rec-scope { font-size: 13px; color: var(--text-3); font-weight: 600; margin-bottom: 8px; letter-spacing: .2px; }
+.rec-card p { font-size: 15px; color: var(--text-2); line-height: 1.6; }
+
+/* Summary table */
+.summary-table {
+  width: 100%; border-collapse: collapse; background: var(--bg-card);
+  border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden;
+}
+.summary-table th {
+  text-align: left; padding: 10px 16px; font-size: 12px; font-weight: 700;
+  color: var(--text-3); text-transform: uppercase; letter-spacing: .5px;
+  border-bottom: 2px solid var(--border); background: var(--bg-card-alt);
+}
+.summary-table td {
+  padding: 10px 16px; border-bottom: 1px solid var(--border-light);
+  color: var(--text-2); font-size: 15px;
+}
+.summary-table tr:last-child td { border-bottom: none; }
+.summary-table tr:hover td { background: var(--bg-hover); }
+
+/* List controls */
+.list-controls {
+  display: flex; gap: 8px; margin-top: 12px;
+}
+.list-controls button {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 6px; padding: 6px 14px; cursor: pointer;
+  font-family: inherit; font-size: 13px; font-weight: 500;
+  color: var(--text-2); transition: all .15s;
+}
+.list-controls button:hover { border-color: var(--text-3); color: var(--text); }
+
+/* Back to top */
+.back-to-top {
+  text-align: center; padding: 16px 0 8px;
+}
+.back-to-top a {
+  font-size: 13px; color: var(--text-3); text-decoration: none;
+  font-weight: 500;
+}
+.back-to-top a:hover { color: var(--text-2); }
+
+.footer {
+  margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border);
+  font-size: 14px; color: var(--text-3); text-align: center; line-height: 1.8;
+}
+
+@media (max-width: 700px) {
+  .summary-strip { grid-template-columns: repeat(3, 1fr); }
+  .rec-grid { grid-template-columns: 1fr; }
+  .tabs { overflow-x: auto; }
+  .vc-header { flex-wrap: wrap; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<button class="theme-toggle" onclick="toggleTheme()">
+  <span class="theme-icon" id="themeIcon">☀️</span>
+  <span id="themeLabel">Light</span>
+</button>
+
+<div class="header">
+  <h1>Fleet Diagnostic Triage</h1>
+  <div class="org">Rival Energy Services</div>
+  <div class="date">Live data from Samsara API &middot; April 2, 2026 &middot; All vehicles active</div>
+</div>
+
+<div class="summary-strip" style="grid-template-columns:repeat(4,1fr);">
+  <div class="stat-card">
+    <div class="stat-num total">43</div>
+    <div class="stat-label">Vehicles</div>
+    <div class="stat-sub">259 codes total</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num critical">23</div>
+    <div class="stat-label">Critical</div>
+    <div class="stat-sub">Inspect immediately</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num high">5</div>
+    <div class="stat-label">High</div>
+    <div class="stat-sub">Schedule within days</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num medium">15</div>
+    <div class="stat-label">Monitor</div>
+    <div class="stat-sub">Next scheduled service</div>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <div class="tab active" data-tab="exec" role="tab">Executive Summary</div>
+  <div class="tab" data-tab="critical" role="tab">Critical <span class="count">23</span></div>
+  <div class="tab" data-tab="high" role="tab">High <span class="count">5</span></div>
+  <div class="tab" data-tab="monitor" role="tab">Monitor <span class="count">15</span></div>
+  <div class="tab" data-tab="recs" role="tab">Recommendations</div>
+</div>
+
+<!-- EXECUTIVE SUMMARY -->
+<div class="tab-panel active" id="panel-exec">
+  <div class="callout urgent">
+    <h3>19 trucks have low engine coolant</h3>
+    <p>Engine Coolant Level warnings are the most common critical fault in the Rival fleet. 19 vehicles are reporting low coolant, which risks overheating and catastrophic engine failure. In Permian Basin summer heat, a truck running low on coolant won't last. These need to be checked and topped off before they go out again.</p>
+  </div>
+
+  <div class="callout urgent">
+    <h3>ABS/VDC failures across the heavy fleet</h3>
+    <p>Multiple trucks (Kenworths, Peterbilts, Internationals) are showing ABS wheel sensor and VDC system faults. These are Class 8 trucks running loaded in oilfield conditions. Compromised ABS means longer stopping distances at weight. 5 trucks have full ABS/VDC system communication failures.</p>
+  </div>
+
+  <div class="callout warn">
+    <h3>Water in fuel on 8 trucks</h3>
+    <p>The "Water In Fuel Indicator" code is showing up across 8 vehicles. Water in diesel causes injector damage, poor combustion, and accelerated fuel system wear. Common causes: contaminated fuel source, condensation in tanks (temperature swings), or failed water separator filters. <em><strong>If multiple trucks are fueling from the same source, that source needs to be tested.</strong></em></p>
+  </div>
+
+  <div class="callout warn">
+    <h3>PTO and transmission codes on 6 trucks</h3>
+    <p>Enable Switch and Engagement Consent codes for the transmission input shaft PTO. These are oilfield service trucks that use PTO-driven equipment. If the PTO engagement is unreliable, that's a truck that can't do its job on-site.</p>
+  </div>
+
+  <div class="callout info">
+    <h3>Unit 48 Mario: 28 fault codes</h3>
+    <p>This 2015 Kenworth T880 is the worst vehicle in the fleet by code count. 28 active faults including coolant, ABS, transmission oil temp, and exhaust pressure. At 1.1M+ miles and multiple system failures, this truck may be past the point of economical repair.</p>
+  </div>
+
+  <div class="section-head" style="margin-top: 28px;">
+    <h2>Fleet Health at a Glance</h2>
+    <p>43 of 54 vehicles (80%) have at least one diagnostic code.</p>
+  </div>
+
+  <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 22px;margin-bottom:14px;">
+    <div style="display:flex;gap:4px;height:28px;border-radius:6px;overflow:hidden;margin-bottom:14px;">
+      <div style="flex:23;background:var(--critical);border-radius:4px 0 0 4px;" title="23 Critical"></div>
+      <div style="flex:5;background:var(--high);" title="5 High"></div>
+      <div style="flex:15;background:var(--medium);" title="15 Medium/Low"></div>
+      <div style="flex:11;background:var(--green);border-radius:0 4px 4px 0;" title="11 Clean"></div>
+    </div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;font-size:14px;margin-top:4px;">
+      <span class="badge b-critical">23 Critical</span>
+      <span class="badge b-high">5 High</span>
+      <span class="badge b-medium">15 Medium/Low</span>
+      <span class="badge b-active">11 Clean</span>
+    </div>
+  </div>
+</div>
+
+<!-- CRITICAL TAB -->
+<div class="tab-panel" id="panel-critical">
+  <div class="section-head">
+    <h2>Critical — Immediate Attention</h2>
+    <p>Engine coolant, ABS/VDC system failures, oil pressure, engine speed faults. Inspect before dispatching.</p>
+    <div class="list-controls"><button onclick="toggleAll('critical-list',true)">Expand All</button><button onclick="toggleAll('critical-list',false)">Collapse All</button></div>
+  </div>
+  <div id="critical-list"></div>
+  <div class="back-to-top"><a href="#">Back to top</a></div>
+</div>
+
+<!-- HIGH TAB -->
+<div class="tab-panel" id="panel-high">
+  <div class="section-head">
+    <h2>High — Schedule Within Days</h2>
+    <p>Water in fuel, ABS wheel sensors, PTO engagement, transmission and brake codes.</p>
+    <div class="list-controls"><button onclick="toggleAll('high-list',true)">Expand All</button><button onclick="toggleAll('high-list',false)">Collapse All</button></div>
+  </div>
+  <div id="high-list"></div>
+  <div class="back-to-top"><a href="#">Back to top</a></div>
+</div>
+
+<!-- MONITOR TAB -->
+<div class="tab-panel" id="panel-monitor">
+  <div class="section-head">
+    <h2>Medium &amp; Low — Address at Next Service</h2>
+    <p>Manufacturer-specific codes, sensor readings, and system diagnostics. Not urgent but track for trends.</p>
+    <div class="list-controls"><button onclick="toggleAll('monitor-list',true)">Expand All</button><button onclick="toggleAll('monitor-list',false)">Collapse All</button></div>
+  </div>
+  <div id="monitor-list"></div>
+  <div class="back-to-top"><a href="#">Back to top</a></div>
+</div>
+
+<!-- RECOMMENDATIONS TAB -->
+<div class="tab-panel" id="panel-recs">
+  <div class="section-head">
+    <h2>Fleet-Wide Recommendations</h2>
+    <p>Patterns in the diagnostic data that point to fleet-level actions.</p>
+  </div>
+
+  <div class="rec-grid">
+    <div class="rec-card">
+      <h4>Coolant System Sweep</h4>
+      <div class="rec-scope">19 trucks &middot; All makes &middot; Critical priority</div>
+      <p>Low engine coolant is the number one fault across the fleet. 19 trucks need coolant level checks and top-offs. <em><strong>In Permian Basin heat, a low-coolant truck is a blown head gasket waiting to happen.</strong></em> Check for leaks (radiator, hoses, water pump, EGR cooler) while topping off. If the same trucks keep coming back low, there's an underlying leak that needs repair.</p>
+    </div>
+    <div class="rec-card">
+      <h4>Fuel Source Investigation</h4>
+      <div class="rec-scope">8 trucks &middot; Water In Fuel &middot; High priority</div>
+      <p>Eight trucks showing "Water In Fuel Indicator" codes. <em><strong>If they're fueling from the same source, that fuel supply needs to be tested immediately.</strong></em> Water in diesel destroys injectors ($500-2,000 each on a Class 8) and causes misfires and power loss. Drain water separators on all affected trucks, replace fuel filters, and verify the fuel source is clean.</p>
+    </div>
+  </div>
+
+  <div class="rec-grid">
+    <div class="rec-card">
+      <h4>ABS Sensor Inspection</h4>
+      <div class="rec-scope">11+ trucks &middot; Wheel sensors &middot; Critical priority</div>
+      <p>ABS wheel sensor codes on Axle 1 and Axle 2 across multiple trucks. These are heavy Class 8s (Kenworth T880, Peterbilt 367/389, International LT625) running loaded on rough oilfield roads. <em><strong>Bad wheel speed sensors mean the ABS can't do its job when a 80,000 lb truck needs to stop fast.</strong></em> Inspect sensor wiring, air gaps, and tone rings on all flagged units.</p>
+    </div>
+    <div class="rec-card">
+      <h4>PTO System Service</h4>
+      <div class="rec-scope">6 trucks &middot; Transmission PTO &middot; High priority</div>
+      <p>PTO enable and engagement codes mean these trucks can't reliably power their on-site equipment. For an oilfield services fleet, a truck that can't engage its PTO is a truck that can't work. <em><strong>Check PTO wiring harnesses, engagement switches, and transmission PTO output shaft for wear.</strong></em></p>
+    </div>
+  </div>
+
+  <div class="rec-grid">
+    <div class="rec-card">
+      <h4>Unit 48 Mario: Disposition Review</h4>
+      <div class="rec-scope">1 vehicle &middot; 2015 Kenworth T880 &middot; 28 codes</div>
+      <p>Over 1.1 million miles, 28 active fault codes across coolant, ABS, transmission, and exhaust systems. <em><strong>At some point, the cost of keeping a truck running exceeds the cost of replacing it.</strong></em> A repair-vs-replace analysis on this unit would be worthwhile. The code volume alone suggests cascading system failures.</p>
+    </div>
+    <div class="rec-card">
+      <h4>Fuel-at-Fill-Up Logging</h4>
+      <div class="rec-scope">All 54 vehicles &middot; Ongoing &middot; High value</div>
+      <p>Rival's fuel analysis showed fleet-wide MPG of 3.70 from Samsara GPS data, but per-vehicle MPG was impossible because fuel cards don't map to individual trucks. <em><strong>Logging odometer and gallons at each fill-up would close that gap in 30 days.</strong></em> At $480K/year in fuel cost increase from the diesel spike, knowing which trucks are burning more than they should has real dollar value.</p>
+    </div>
+  </div>
+
+  <div class="callout good" style="margin-top:20px;">
+    <h3>Fleet profile</h3>
+    <p>54 vehicles, almost entirely Class 8 (International, Peterbilt, Kenworth). <em><strong>80% of the fleet has active fault codes</strong></em>, which is high. The pattern is consistent with heavy-duty trucks in hard service: coolant, ABS, and PTO systems taking the brunt of oilfield work. The good news: these are known failure modes with straightforward fixes. A focused maintenance push over 2-3 weeks could clear the majority of critical and high codes.</p>
+  </div>
+</div>
+
+<div class="footer">
+  Pulled from Samsara REST API on April 2, 2026 &middot; Rival Energy Services &middot; 54 vehicles<br>
+  Severity classification is automated. Verify with a qualified mechanic before taking action.
+</div>
+
+</div>
+
+<script>
+const VEHICLES = [{"unit": "Unit 35 David R (New Rig)", "year": "2020", "make": "INTERNATIONAL", "model": "LT625", "status": "Active", "tags": "", "odo": 512475, "hrs": 23546, "total_codes": 7, "severity_counts": {"HIGH": 1, "MEDIUM": 2, "LOW": 1, "CRITICAL": 3}, "faults": [{"severity": "CRITICAL", "code": "SPN 1243 FMI 2", "description": "ABS Fully Operational", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 127, "type": "J1939"}, {"severity": "CRITICAL", "code": "SPN 1814 FMI 2", "description": "VDC Fully Operational", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 127, "type": "J1939"}, {"severity": "CRITICAL", "code": "SPN 111 FMI 3", "description": "Engine Coolant Level 1", "fmi_desc": "Voltage Above Normal", "occurrences": 34, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 790 FMI 9", "description": "Wheel Sensor ABS Axle 1 Right", "fmi_desc": "Abnormal Update Rate", "occurrences": 1, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 906 FMI 19", "description": "Relative Speed; Front Axle  Right Wheel", "fmi_desc": "Data Error", "occurrences": 127, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 2058 FMI 14", "description": "Source Address 58 ", "fmi_desc": "Special instruction", "occurrences": 1, "type": "J1939"}, {"severity": "LOW", "code": "SPN 2917 FMI 19", "description": "XBR System State", "fmi_desc": "Data Error", "occurrences": 127, "type": "J1939"}]}, {"unit": "Unit 22 down", "year": "2012", "make": "FREIGHTLINER", "model": "CASCADIA", "status": "Active", "tags": "", "odo": 788865, "hrs": 46026, "total_codes": 8, "severity_counts": {"MEDIUM": 5, "CRITICAL": 3}, "faults": [{"severity": "CRITICAL", "code": "SPN 100 FMI 4", "description": "Engine Oil Pressure 1", "fmi_desc": "Voltage Below Normal", "occurrences": 1, "type": "J1939"}, {"severity": "CRITICAL", "code": "SPN 190 FMI 2", "description": "Engine Speed", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 1, "type": "J1939"}, {"severity": "CRITICAL", "code": "SPN 111 FMI 3", "description": "Engine Coolant Level 1", "fmi_desc": "Voltage Above Normal", "occurrences": 1, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 829 FMI 3", "description": "Left Fuel Level Sensor", "fmi_desc": "Voltage Above Normal", "occurrences": 126, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 177 FMI 3", "description": "Transmission Oil Temperature 1", "fmi_desc": "Voltage Above Normal", "occurrences": 93, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 596 FMI 31", "description": "Cruise Control Enable Switch", "fmi_desc": "", "occurrences": 4, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 157 FMI 18", "description": "Engine Fuel 1 Injector Metering Rail 1 Pressure", "fmi_desc": "Low\u2014moderate severity", "occurrences": 2, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 629 FMI 12", "description": "Controller #1", "fmi_desc": "Failure", "occurrences": 127, "type": "J1939"}]}, {"unit": "Unit 02 Kevin", "year": "2020", "make": "INTERNATIONAL", "model": "LT625", "status": "Active", "tags": "", "odo": 477487, "hrs": 21729, "total_codes": 8, "severity_counts": {"HIGH": 4, "MEDIUM": 1, "CRITICAL": 2, "LOW": 1}, "faults": [{"severity": "CRITICAL", "code": "SPN 1243 FMI 2", "description": "ABS Fully Operational", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 127, "type": "J1939"}, {"severity": "CRITICAL", "code": "SPN 1814 FMI 2", "description": "VDC Fully Operational", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 127, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 792 FMI 10", "description": "Wheel Sensor ABS Axle 2 Right", "fmi_desc": "Abnormal Rate of Change", "occurrences": 1, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 908 FMI 19", "description": "Relative Speed; Rear Axle #1  Right Wheel", "fmi_desc": "Data Error", "occurrences": 127, "type": "J1939"}, {"severity": "LOW", "code": "SPN 2917 FMI 19", "description": "XBR System State", "fmi_desc": "Data Error", "occurrences": 127, "type": "J1939"}]}, {"unit": "Unit 12 Alan", "year": "2019", "make": "INTERNATIONAL", "model": "LT625", "status": "Active", "tags": "", "odo": 422831, "hrs": 19191, "total_codes": 17, "severity_counts": {"MEDIUM": 5, "LOW": 7, "CRITICAL": 2, "HIGH": 3}, "faults": [{"severity": "CRITICAL", "code": "SPN 1243 FMI 2", "description": "ABS Fully Operational", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 127, "type": "J1939"}, {"severity": "CRITICAL", "code": "SPN 1814 FMI 2", "description": "VDC Fully Operational", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 127, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 792 FMI 2", "description": "Wheel Sensor ABS Axle 2 Right", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 20, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 6713 FMI 9", "description": "Engine Variable Geometry Turbocharger Actuator Software Identification", "fmi_desc": "Abnormal Update Rate", "occurrences": 86, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 787 FMI 7", "description": "Transmission Inertia Brake Actuator", "fmi_desc": "Not Responding Properly", "occurrences": 1, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 691 FMI 2", "description": "Disengage Differential Lock Request - Central Rear", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 2, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 908 FMI 19", "description": "Relative Speed; Rear Axle #1  Right Wheel", "fmi_desc": "Data Error", "occurrences": 127, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 3564 FMI 2", "description": "Lane Departure Warning Enable Command", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 126, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 3565 FMI 2", "description": "Lane Departure Left", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 126, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 1564 FMI 2", "description": "CCD Data Link", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 126, "type": "J1939"}, {"severity": "LOW", "code": "SPN 516529 FMI 13", "description": "Manufacturer Assignable SPN", "fmi_desc": "Out of Calibration", "occurrences": 4, "type": "J1939"}, {"severity": "LOW", "code": "SPN 1705 FMI 14", "description": "Forward View Imager System", "fmi_desc": "Special instruction", "occurrences": 127, "type": "J1939"}]}, {"unit": "Unit 16 Fransisco", "year": "2020", "make": "INTERNATIONAL", "model": "LT625", "status": "Active", "tags": "", "odo": 471029, "hrs": 15664, "total_codes": 10, "severity_counts": {"HIGH": 3, "CRITICAL": 2, "LOW": 2, "MEDIUM": 3}, "faults": [{"severity": "CRITICAL", "code": "SPN 1243 FMI 2", "description": "ABS Fully Operational", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 127, "type": "J1939"}, {"severity": "CRITICAL", "code": "SPN 1814 FMI 2", "description": "VDC Fully Operational", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 127, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 792 FMI 7", "description": "Wheel Sensor ABS Axle 2 Right", "fmi_desc": "Not Responding Properly", "occurrences": 33, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 790 FMI 1", "description": "Wheel Sensor ABS Axle 1 Right", "fmi_desc": "Low\u2014most severe", "occurrences": 107, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 2919 FMI 9", "description": "Foundation Brake Use", "fmi_desc": "Abnormal Update Rate", "occurrences": 127, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 908 FMI 19", "description": "Relative Speed; Rear Axle #1  Right Wheel", "fmi_desc": "Data Error", "occurrences": 127, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 906 FMI 19", "description": "Relative Speed; Front Axle  Right Wheel", "fmi_desc": "Data Error", "occurrences": 127, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 1209 FMI 2", "description": "Engine Exhaust Pressure 1", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 2, "type": "J1939"}, {"severity": "LOW", "code": "SPN 2917 FMI 19", "description": "XBR System State", "fmi_desc": "Data Error", "occurrences": 127, "type": "J1939"}, {"severity": "LOW", "code": "SPN 1807 FMI 9", "description": "Steering Wheel Angle", "fmi_desc": "Abnormal Update Rate", "occurrences": 127, "type": "J1939"}]}, {"unit": "Unit 28 Loa", "year": "2020", "make": "INTERNATIONAL", "model": "LT625", "status": "Active", "tags": "", "odo": 524777, "hrs": 19707, "total_codes": 5, "severity_counts": {"CRITICAL": 2, "LOW": 1, "HIGH": 2}, "faults": [{"severity": "CRITICAL", "code": "SPN 1243 FMI 2", "description": "ABS Fully Operational", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 127, "type": "J1939"}, {"severity": "CRITICAL", "code": "SPN 1814 FMI 2", "description": "VDC Fully Operational", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 127, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 793 FMI 10", "description": "Wheel Sensor ABS Axle 3 Left", "fmi_desc": "Abnormal Rate of Change", "occurrences": 1, "type": "J1939"}, {"severity": "LOW", "code": "SPN 2917 FMI 19", "description": "XBR System State", "fmi_desc": "Data Error", "occurrences": 127, "type": "J1939"}]}, {"unit": "Unit 26 down", "year": "2012", "make": "PETERBILT", "model": "367", "status": "Active", "tags": "", "odo": 180351, "hrs": 15746, "total_codes": 4, "severity_counts": {"MEDIUM": 2, "CRITICAL": 2}, "faults": [{"severity": "CRITICAL", "code": "SPN 190 FMI 2", "description": "Engine Speed", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 1, "type": "J1939"}, {"severity": "CRITICAL", "code": "SPN 111 FMI 18", "description": "Engine Coolant Level 1", "fmi_desc": "Low\u2014moderate severity", "occurrences": 1, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 1347 FMI 3", "description": "Engine Fuel Pump Pressurizing Assembly #1", "fmi_desc": "Voltage Above Normal", "occurrences": 1, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 97 FMI 3", "description": "Water In Fuel Indicator 1", "fmi_desc": "Voltage Above Normal", "occurrences": 1, "type": "J1939"}]}, {"unit": "Unit 48 Mario", "year": "2015", "make": "KENWORTH", "model": "T880", "status": "Active", "tags": "", "odo": 395026, "hrs": 28650, "total_codes": 28, "severity_counts": {"MEDIUM": 14, "CRITICAL": 1, "HIGH": 13}, "faults": [{"severity": "CRITICAL", "code": "SPN 111 FMI 3", "description": "Engine Coolant Level 1", "fmi_desc": "Voltage Above Normal", "occurrences": 9, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 794 FMI 9", "description": "Wheel Sensor ABS Axle 3 Right", "fmi_desc": "Abnormal Update Rate", "occurrences": 1, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 791 FMI 10", "description": "Wheel Sensor ABS Axle 2 Left", "fmi_desc": "Abnormal Rate of Change", "occurrences": 5, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 790 FMI 9", "description": "Wheel Sensor ABS Axle 1 Right", "fmi_desc": "Abnormal Update Rate", "occurrences": 1, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 792 FMI 10", "description": "Wheel Sensor ABS Axle 2 Right", "fmi_desc": "Abnormal Rate of Change", "occurrences": 1, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 157 FMI 18", "description": "Engine Fuel 1 Injector Metering Rail 1 Pressure", "fmi_desc": "Low\u2014moderate severity", "occurrences": 5, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 97 FMI 3", "description": "Water In Fuel Indicator 1", "fmi_desc": "Voltage Above Normal", "occurrences": 19, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 1347 FMI 3", "description": "Engine Fuel Pump Pressurizing Assembly #1", "fmi_desc": "Voltage Above Normal", "occurrences": 1, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 5585 FMI 18", "description": "Engine Fuel 1 Injector Metering Rail 1 Cranking Pressure", "fmi_desc": "Low\u2014moderate severity", "occurrences": 1, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 84 FMI 2", "description": "Wheel-Based Vehicle Speed", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 1, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 78 FMI 3", "description": "Rear Rear Drive Axle Temperature", "fmi_desc": "Voltage Above Normal", "occurrences": 126, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 2579 FMI 3", "description": "SLI Battery 1 Net Current (High Range/Resolution)", "fmi_desc": "Voltage Above Normal", "occurrences": 126, "type": "J1939"}]}, {"unit": "Unit 10 Silvano", "year": "2020", "make": "INTERNATIONAL", "model": "LT625", "status": "Active", "tags": "", "odo": 579462, "hrs": 28417, "total_codes": 14, "severity_counts": {"MEDIUM": 4, "LOW": 2, "HIGH": 7, "CRITICAL": 1}, "faults": [{"severity": "CRITICAL", "code": "SPN 111 FMI 3", "description": "Engine Coolant Level 1", "fmi_desc": "Voltage Above Normal", "occurrences": 1, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 792 FMI 7", "description": "Wheel Sensor ABS Axle 2 Right", "fmi_desc": "Not Responding Properly", "occurrences": 1, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 791 FMI 1", "description": "Wheel Sensor ABS Axle 2 Left", "fmi_desc": "Low\u2014most severe", "occurrences": 6, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 789 FMI 10", "description": "Wheel Sensor ABS Axle 1 Left", "fmi_desc": "Abnormal Rate of Change", "occurrences": 1, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 2042 FMI 9", "description": "Source Address 42 ", "fmi_desc": "Abnormal Update Rate", "occurrences": 6, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 639 FMI 2", "description": "J1939 Network #1  Primary Vehicle Network", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 127, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 630 FMI 2", "description": "Calibration Memory", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 126, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 102 FMI 4", "description": "Engine Intake Manifold #1 Pressure", "fmi_desc": "Voltage Below Normal", "occurrences": 1, "type": "J1939"}, {"severity": "LOW", "code": "SPN 520211 FMI 7", "description": "Manufacturer Assignable SPN", "fmi_desc": "Not Responding Properly", "occurrences": 0, "type": "J1939"}, {"severity": "LOW", "code": "SPN 1705 FMI 31", "description": "Forward View Imager System", "fmi_desc": "", "occurrences": 126, "type": "J1939"}]}, {"unit": "Unit 14 Efrain", "year": "2012", "make": "PETERBILT", "model": "367", "status": "Active", "tags": "", "odo": 209367, "hrs": 27461, "total_codes": 12, "severity_counts": {"MEDIUM": 5, "CRITICAL": 1, "HIGH": 6}, "faults": [{"severity": "CRITICAL", "code": "SPN 111 FMI 3", "description": "Engine Coolant Level 1", "fmi_desc": "Voltage Above Normal", "occurrences": 2, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 791 FMI 2", "description": "Wheel Sensor ABS Axle 2 Left", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 127, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 789 FMI 2", "description": "Wheel Sensor ABS Axle 1 Left", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 127, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 792 FMI 14", "description": "Wheel Sensor ABS Axle 2 Right", "fmi_desc": "Special instruction", "occurrences": 127, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 1068 FMI 2", "description": "Brake Signal Sensor 2", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 127, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 829 FMI 3", "description": "Left Fuel Level Sensor", "fmi_desc": "Voltage Above Normal", "occurrences": 126, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 1209 FMI 2", "description": "Engine Exhaust Pressure 1", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 1, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 3218 FMI 2", "description": "Engine Exhaust 1 Gas Sensor 1 Power In Range", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 1, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 1378 FMI 31", "description": "Engine Oil Change Interval", "fmi_desc": "", "occurrences": 1, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 611 FMI 14", "description": "System Diagnostic Code #1", "fmi_desc": "Special instruction", "occurrences": 127, "type": "J1939"}]}, {"unit": "Unit 27 Carol", "year": "2013", "make": "PETERBILT", "model": "367", "status": "Active", "tags": "", "odo": 106161, "hrs": 14090, "total_codes": 9, "severity_counts": {"CRITICAL": 1, "MEDIUM": 3, "HIGH": 5}, "faults": [{"severity": "CRITICAL", "code": "SPN 111 FMI 3", "description": "Engine Coolant Level 1", "fmi_desc": "Voltage Above Normal", "occurrences": 1, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 791 FMI 7", "description": "Wheel Sensor ABS Axle 2 Left", "fmi_desc": "Not Responding Properly", "occurrences": 127, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 792 FMI 14", "description": "Wheel Sensor ABS Axle 2 Right", "fmi_desc": "Special instruction", "occurrences": 127, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 651 FMI 5", "description": "Engine Fuel 1 Injector Cylinder 1", "fmi_desc": "Current Below Normal", "occurrences": 1, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 806 FMI 5", "description": "Dif 1 - ASR Valve", "fmi_desc": "Current Below Normal", "occurrences": 127, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 611 FMI 14", "description": "System Diagnostic Code #1", "fmi_desc": "Special instruction", "occurrences": 127, "type": "J1939"}]}, {"unit": "unit 40 spare", "year": "2013", "make": "PETERBILT", "model": "367", "status": "Active", "tags": "", "odo": 163292, "hrs": 24563, "total_codes": 10, "severity_counts": {"MEDIUM": 6, "HIGH": 3, "CRITICAL": 1}, "faults": [{"severity": "CRITICAL", "code": "SPN 111 FMI 17", "description": "Engine Coolant Level 1", "fmi_desc": "Low\u2014least severe", "occurrences": 7, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 791 FMI 2", "description": "Wheel Sensor ABS Axle 2 Left", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 127, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 641 FMI 7", "description": "Engine Variable Geometry Turbocharger Actuator #1", "fmi_desc": "Not Responding Properly", "occurrences": 1, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 611 FMI 14", "description": "System Diagnostic Code #1", "fmi_desc": "Special instruction", "occurrences": 127, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 1209 FMI 4", "description": "Engine Exhaust Pressure 1", "fmi_desc": "Voltage Below Normal", "occurrences": 1, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 27 FMI 4", "description": "Engine Exhaust Gas Recirculation 1 Valve Position", "fmi_desc": "Voltage Below Normal", "occurrences": 1, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 102 FMI 18", "description": "Engine Intake Manifold #1 Pressure", "fmi_desc": "Low\u2014moderate severity", "occurrences": 1, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 1075 FMI 3", "description": "Engine Electric Lift Pump", "fmi_desc": "Voltage Above Normal", "occurrences": 1, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 3216 FMI 4", "description": "Engine Exhaust 1 NOx 1", "fmi_desc": "Voltage Below Normal", "occurrences": 1, "type": "J1939"}]}, {"unit": "Unit 3 Cristobal Spare", "year": "2013", "make": "PETERBILT", "model": "367", "status": "Active", "tags": "", "odo": 213050, "hrs": 22475, "total_codes": 9, "severity_counts": {"HIGH": 3, "MEDIUM": 5, "CRITICAL": 1}, "faults": [{"severity": "CRITICAL", "code": "SPN 111 FMI 3", "description": "Engine Coolant Level 1", "fmi_desc": "Voltage Above Normal", "occurrences": 1, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 791 FMI 2", "description": "Wheel Sensor ABS Axle 2 Left", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 127, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 789 FMI 2", "description": "Wheel Sensor ABS Axle 1 Left", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 127, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 1172 FMI 3", "description": "Engine Turbocharger 1 Compressor Intake Temperature", "fmi_desc": "Voltage Above Normal", "occurrences": 1, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 611 FMI 14", "description": "System Diagnostic Code #1", "fmi_desc": "Special instruction", "occurrences": 127, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 862 FMI 3", "description": "Heater Circuit #09", "fmi_desc": "Voltage Above Normal", "occurrences": 1, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 101 FMI 4", "description": "Engine Crankcase Pressure 1", "fmi_desc": "Voltage Below Normal", "occurrences": 2, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 3216 FMI 4", "description": "Engine Exhaust 1 NOx 1", "fmi_desc": "Voltage Below Normal", "occurrences": 1, "type": "J1939"}]}, {"unit": "Unit 50 Jose", "year": "2015", "make": "KENWORTH", "model": "T880", "status": "Active", "tags": "", "odo": 446021, "hrs": 28017, "total_codes": 8, "severity_counts": {"MEDIUM": 5, "HIGH": 2, "CRITICAL": 1}, "faults": [{"severity": "CRITICAL", "code": "SPN 111 FMI 3", "description": "Engine Coolant Level 1", "fmi_desc": "Voltage Above Normal", "occurrences": 3, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 793 FMI 7", "description": "Wheel Sensor ABS Axle 3 Left", "fmi_desc": "Not Responding Properly", "occurrences": 127, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 611 FMI 14", "description": "System Diagnostic Code #1", "fmi_desc": "Special instruction", "occurrences": 127, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 101 FMI 4", "description": "Engine Crankcase Pressure 1", "fmi_desc": "Voltage Below Normal", "occurrences": 46, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 171 FMI 3", "description": "Ambient Air Temperature", "fmi_desc": "Voltage Above Normal", "occurrences": 1, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 3698 FMI 9", "description": "Exhaust System High Temperature Lamp Command", "fmi_desc": "Abnormal Update Rate", "occurrences": 126, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 3697 FMI 9", "description": "Diesel Particulate Filter Lamp Command", "fmi_desc": "Abnormal Update Rate", "occurrences": 126, "type": "J1939"}]}, {"unit": "Unit 49 Fern C.", "year": "2015", "make": "KENWORTH", "model": "T880", "status": "Active", "tags": "", "odo": 521253, "hrs": 29863, "total_codes": 5, "severity_counts": {"MEDIUM": 2, "CRITICAL": 1, "HIGH": 2}, "faults": [{"severity": "CRITICAL", "code": "SPN 111 FMI 3", "description": "Engine Coolant Level 1", "fmi_desc": "Voltage Above Normal", "occurrences": 2, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 800 FMI 5", "description": "Pressure Modulation Valve ABS Axle 3 Right", "fmi_desc": "Current Below Normal", "occurrences": 127, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 792 FMI 14", "description": "Wheel Sensor ABS Axle 2 Right", "fmi_desc": "Special instruction", "occurrences": 127, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 653 FMI 7", "description": "Engine Fuel 1 Injector Cylinder 3", "fmi_desc": "Not Responding Properly", "occurrences": 14, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 611 FMI 14", "description": "System Diagnostic Code #1", "fmi_desc": "Special instruction", "occurrences": 127, "type": "J1939"}]}, {"unit": "UNIT 25 Roy", "year": "2014", "make": "PETERBILT", "model": "386", "status": "Active", "tags": "", "odo": 683037, "hrs": 27959, "total_codes": 4, "severity_counts": {"CRITICAL": 1, "MEDIUM": 1, "HIGH": 2}, "faults": [{"severity": "CRITICAL", "code": "SPN 111 FMI 3", "description": "Engine Coolant Level 1", "fmi_desc": "Voltage Above Normal", "occurrences": 1, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 790 FMI 2", "description": "Wheel Sensor ABS Axle 1 Right", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 127, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 793 FMI 2", "description": "Wheel Sensor ABS Axle 3 Left", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 127, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 51 FMI 3", "description": "Engine Throttle Valve 1 Position 1", "fmi_desc": "Voltage Above Normal", "occurrences": 1, "type": "J1939"}]}, {"unit": "KT03- Leo", "year": "2014", "make": "KENWORTH", "model": "T8 SERIES", "status": "Active", "tags": "", "odo": 106694, "hrs": 14488, "total_codes": 7, "severity_counts": {"MEDIUM": 5, "HIGH": 1, "CRITICAL": 1}, "faults": [{"severity": "CRITICAL", "code": "SPN 111 FMI 3", "description": "Engine Coolant Level 1", "fmi_desc": "Voltage Above Normal", "occurrences": 1, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 1481 FMI 9", "description": "Source Address of Controlling Device for Brake Control", "fmi_desc": "Abnormal Update Rate", "occurrences": 126, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 578 FMI 3", "description": "Drive Axle Temperature", "fmi_desc": "Voltage Above Normal", "occurrences": 126, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 1387 FMI 3", "description": "Auxiliary Pressure #1", "fmi_desc": "Voltage Above Normal", "occurrences": 126, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 3698 FMI 9", "description": "Exhaust System High Temperature Lamp Command", "fmi_desc": "Abnormal Update Rate", "occurrences": 126, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 3697 FMI 9", "description": "Diesel Particulate Filter Lamp Command", "fmi_desc": "Abnormal Update Rate", "occurrences": 126, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 97 FMI 3", "description": "Water In Fuel Indicator 1", "fmi_desc": "Voltage Above Normal", "occurrences": 3, "type": "J1939"}]}, {"unit": "Unit 47 Sammy", "year": "2015", "make": "KENWORTH", "model": "T880", "status": "Active", "tags": "", "odo": 462204, "hrs": 29030, "total_codes": 6, "severity_counts": {"CRITICAL": 1, "MEDIUM": 4, "HIGH": 1}, "faults": [{"severity": "CRITICAL", "code": "SPN 111 FMI 3", "description": "Engine Coolant Level 1", "fmi_desc": "Voltage Above Normal", "occurrences": 1, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 792 FMI 2", "description": "Wheel Sensor ABS Axle 2 Right", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 127, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 97 FMI 3", "description": "Water In Fuel Indicator 1", "fmi_desc": "Voltage Above Normal", "occurrences": 60, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 651 FMI 7", "description": "Engine Fuel 1 Injector Cylinder 1", "fmi_desc": "Not Responding Properly", "occurrences": 126, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 654 FMI 7", "description": "Engine Fuel 1 Injector Cylinder 4", "fmi_desc": "Not Responding Properly", "occurrences": 15, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 611 FMI 14", "description": "System Diagnostic Code #1", "fmi_desc": "Special instruction", "occurrences": 127, "type": "J1939"}]}, {"unit": "Unit 15 Spare", "year": "2012", "make": "KENWORTH", "model": "T8 SERIES", "status": "Active", "tags": "", "odo": 141317, "hrs": 13997, "total_codes": 5, "severity_counts": {"MEDIUM": 3, "HIGH": 1, "CRITICAL": 1}, "faults": [{"severity": "CRITICAL", "code": "SPN 111 FMI 3", "description": "Engine Coolant Level 1", "fmi_desc": "Voltage Above Normal", "occurrences": 1, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 791 FMI 2", "description": "Wheel Sensor ABS Axle 2 Left", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 127, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 177 FMI 3", "description": "Transmission Oil Temperature 1", "fmi_desc": "Voltage Above Normal", "occurrences": 126, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 611 FMI 14", "description": "System Diagnostic Code #1", "fmi_desc": "Special instruction", "occurrences": 127, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 101 FMI 4", "description": "Engine Crankcase Pressure 1", "fmi_desc": "Voltage Below Normal", "occurrences": 1, "type": "J1939"}]}, {"unit": "Unit 19 PT", "year": "2011", "make": "KENWORTH", "model": "T7 SERIES", "status": "Active", "tags": "", "odo": 1139396, "hrs": 32229, "total_codes": 5, "severity_counts": {"MEDIUM": 3, "HIGH": 1, "CRITICAL": 1}, "faults": [{"severity": "CRITICAL", "code": "SPN 111 FMI 18", "description": "Engine Coolant Level 1", "fmi_desc": "Low\u2014moderate severity", "occurrences": 1, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 791 FMI 2", "description": "Wheel Sensor ABS Axle 2 Left", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 127, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 611 FMI 14", "description": "System Diagnostic Code #1", "fmi_desc": "Special instruction", "occurrences": 127, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 3216 FMI 4", "description": "Engine Exhaust 1 NOx 1", "fmi_desc": "Voltage Below Normal", "occurrences": 1, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 157 FMI 0", "description": "Engine Fuel 1 Injector Metering Rail 1 Pressure", "fmi_desc": "High\u2014most severe", "occurrences": 1, "type": "J1939"}]}, {"unit": "Unit 46 opened", "year": "2015", "make": "KENWORTH", "model": "T880", "status": "Active", "tags": "", "odo": 481525, "hrs": 30194, "total_codes": 2, "severity_counts": {"HIGH": 1, "CRITICAL": 1}, "faults": [{"severity": "CRITICAL", "code": "SPN 111 FMI 3", "description": "Engine Coolant Level 1", "fmi_desc": "Voltage Above Normal", "occurrences": 11, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 797 FMI 5", "description": "Pressure Modulation Valve ABS Axle 2 Left", "fmi_desc": "Current Below Normal", "occurrences": 127, "type": "J1939"}]}, {"unit": "Unit 32 Brenda", "year": "2013", "make": "PETERBILT", "model": "367", "status": "Active", "tags": "", "odo": 172460, "hrs": 24947, "total_codes": 9, "severity_counts": {"MEDIUM": 6, "LOW": 2, "CRITICAL": 1}, "faults": [{"severity": "CRITICAL", "code": "SPN 111 FMI 3", "description": "Engine Coolant Level 1", "fmi_desc": "Voltage Above Normal", "occurrences": 1, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 829 FMI 3", "description": "Left Fuel Level Sensor", "fmi_desc": "Voltage Above Normal", "occurrences": 126, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 4824 FMI 5", "description": "Side Bag Ignitor Loop 1 - Left - Resistance", "fmi_desc": "Current Below Normal", "occurrences": 1, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 97 FMI 3", "description": "Water In Fuel Indicator 1", "fmi_desc": "Voltage Above Normal", "occurrences": 1, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 1347 FMI 3", "description": "Engine Fuel Pump Pressurizing Assembly #1", "fmi_desc": "Voltage Above Normal", "occurrences": 1, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 1209 FMI 2", "description": "Engine Exhaust Pressure 1", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 1, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 157 FMI 16", "description": "Engine Fuel 1 Injector Metering Rail 1 Pressure", "fmi_desc": "High\u2014moderate severity", "occurrences": 1, "type": "J1939"}, {"severity": "LOW", "code": "SPN 1807 FMI 2", "description": "Steering Wheel Angle", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 127, "type": "J1939"}]}, {"unit": "Unit 4  Spare", "year": "2013", "make": "PETERBILT", "model": "367", "status": "Active", "tags": "", "odo": 107284, "hrs": 10142, "total_codes": 1, "severity_counts": {"CRITICAL": 1}, "faults": [{"severity": "CRITICAL", "code": "SPN 111 FMI 3", "description": "Engine Coolant Level 1", "fmi_desc": "Voltage Above Normal", "occurrences": 1, "type": "J1939"}]}, {"unit": "Unit 44 Spare", "year": "2013", "make": "KENWORTH", "model": "T6 SERIES", "status": "Active", "tags": "", "odo": 25885, "hrs": 3641, "total_codes": 5, "severity_counts": {"MEDIUM": 2, "HIGH": 3}, "faults": [{"severity": "HIGH", "code": "SPN 792 FMI 14", "description": "Wheel Sensor ABS Axle 2 Right", "fmi_desc": "Special instruction", "occurrences": 127, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 791 FMI 2", "description": "Wheel Sensor ABS Axle 2 Left", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 127, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 177 FMI 3", "description": "Transmission Oil Temperature 1", "fmi_desc": "Voltage Above Normal", "occurrences": 126, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 611 FMI 14", "description": "System Diagnostic Code #1", "fmi_desc": "Special instruction", "occurrences": 127, "type": "J1939"}]}, {"unit": "Unit 38 Cesar", "year": "2013", "make": "KENWORTH", "model": "T6 SERIES", "status": "Active", "tags": "", "odo": 1011175, "hrs": 54122, "total_codes": 5, "severity_counts": {"HIGH": 3, "MEDIUM": 2}, "faults": [{"severity": "HIGH", "code": "SPN 790 FMI 1", "description": "Wheel Sensor ABS Axle 1 Right", "fmi_desc": "Low\u2014most severe", "occurrences": 127, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 791 FMI 2", "description": "Wheel Sensor ABS Axle 2 Left", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 127, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 611 FMI 14", "description": "System Diagnostic Code #1", "fmi_desc": "Special instruction", "occurrences": 127, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 829 FMI 3", "description": "Left Fuel Level Sensor", "fmi_desc": "Voltage Above Normal", "occurrences": 126, "type": "J1939"}]}, {"unit": "Unit 45 Elvis", "year": "2013", "make": "PETERBILT", "model": "367", "status": "Active", "tags": "", "odo": 253051, "hrs": 25490, "total_codes": 6, "severity_counts": {"MEDIUM": 4, "HIGH": 2}, "faults": [{"severity": "HIGH", "code": "SPN 796 FMI 5", "description": "Pressure Modulation Valve ABS Axle 1 Right", "fmi_desc": "Current Below Normal", "occurrences": 127, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 790 FMI 2", "description": "Wheel Sensor ABS Axle 1 Right", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 127, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 611 FMI 14", "description": "System Diagnostic Code #1", "fmi_desc": "Special instruction", "occurrences": 127, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 102 FMI 2", "description": "Engine Intake Manifold #1 Pressure", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 1, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 3216 FMI 4", "description": "Engine Exhaust 1 NOx 1", "fmi_desc": "Voltage Below Normal", "occurrences": 1, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 97 FMI 3", "description": "Water In Fuel Indicator 1", "fmi_desc": "Voltage Above Normal", "occurrences": 1, "type": "J1939"}]}, {"unit": "Unit 08 Angel", "year": "2020", "make": "INTERNATIONAL", "model": "LT625", "status": "Active", "tags": "", "odo": 473874, "hrs": 17247, "total_codes": 3, "severity_counts": {"MEDIUM": 1, "HIGH": 2}, "faults": [{"severity": "HIGH", "code": "SPN 641 FMI 9", "description": "Engine Variable Geometry Turbocharger Actuator #1", "fmi_desc": "Abnormal Update Rate", "occurrences": 1, "type": "J1939"}, {"severity": "HIGH", "code": "SPN 6713 FMI 9", "description": "Engine Variable Geometry Turbocharger Actuator Software Identification", "fmi_desc": "Abnormal Update Rate", "occurrences": 1, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 3979 FMI 5", "description": "Cab Floor Light", "fmi_desc": "Current Below Normal", "occurrences": 1, "type": "J1939"}]}, {"unit": "Unit 05 Juan Z", "year": "2013", "make": "PETERBILT", "model": "367", "status": "Active", "tags": "", "odo": 116169, "hrs": 18110, "total_codes": 6, "severity_counts": {"MEDIUM": 5, "HIGH": 1}, "faults": [{"severity": "HIGH", "code": "SPN 792 FMI 14", "description": "Wheel Sensor ABS Axle 2 Right", "fmi_desc": "Special instruction", "occurrences": 127, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 411 FMI 2", "description": "Engine Exhaust Gas Recirculation 1 Differential Pressure", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 1, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 84 FMI 2", "description": "Wheel-Based Vehicle Speed", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 3, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 177 FMI 3", "description": "Transmission Oil Temperature 1", "fmi_desc": "Voltage Above Normal", "occurrences": 126, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 1808 FMI 2", "description": "Yaw Rate", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 127, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 629 FMI 12", "description": "Controller #1", "fmi_desc": "Failure", "occurrences": 127, "type": "J1939"}]}, {"unit": "Mechanic 2 Jorge sr.", "year": "2023", "make": "FORD", "model": "F-350", "status": "Active", "tags": "", "odo": 31325, "hrs": 2953, "total_codes": 6, "severity_counts": {"LOW": 6}, "faults": [{"severity": "LOW", "code": "P220F", "description": "NOx Sensor Heater Control Circuit Range/Performance Bank 1 Sensor 2", "fmi_desc": "", "occurrences": 1, "type": "OBD-II"}, {"severity": "LOW", "code": "P229E", "description": "NOx Sensor Circuit Bank 1 Sensor 2", "fmi_desc": "", "occurrences": 1, "type": "OBD-II"}, {"severity": "LOW", "code": "P22A7", "description": "NOx Sensor Heater Sense Circuit Range/Performance Bank 1 Sensor 2", "fmi_desc": "", "occurrences": 1, "type": "OBD-II"}]}, {"unit": "Belly dump 54 Miriam", "year": "2020", "make": "INTERNATIONAL", "model": "LT625", "status": "Active", "tags": "", "odo": 360141, "hrs": 8647, "total_codes": 4, "severity_counts": {"MEDIUM": 2, "LOW": 2}, "faults": [{"severity": "MEDIUM", "code": "SPN 3452 FMI 2", "description": "Enable Switch \u2013 Transmission input shaft PTO 1", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 1, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 3456 FMI 5", "description": "Engagement Consent \u2013 Transmission input shaft PTO 1", "fmi_desc": "Current Below Normal", "occurrences": 1, "type": "J1939"}, {"severity": "LOW", "code": "SPN 517530 FMI 13", "description": "Manufacturer Assignable SPN", "fmi_desc": "Out of Calibration", "occurrences": 126, "type": "J1939"}]}, {"unit": "Unit 33 Spare", "year": "2013", "make": "PETERBILT", "model": "367", "status": "Active", "tags": "", "odo": 162917, "hrs": 18676, "total_codes": 4, "severity_counts": {"MEDIUM": 4}, "faults": [{"severity": "MEDIUM", "code": "SPN 97 FMI 3", "description": "Water In Fuel Indicator 1", "fmi_desc": "Voltage Above Normal", "occurrences": 3, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 411 FMI 2", "description": "Engine Exhaust Gas Recirculation 1 Differential Pressure", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 1, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 1487 FMI 3", "description": "Illumination Brightness Percent", "fmi_desc": "Voltage Above Normal", "occurrences": 126, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 578 FMI 3", "description": "Drive Axle Temperature", "fmi_desc": "Voltage Above Normal", "occurrences": 126, "type": "J1939"}]}, {"unit": "Unit 9 Asucena", "year": "2012", "make": "PETERBILT", "model": "367", "status": "Active", "tags": "", "odo": 138313, "hrs": 22045, "total_codes": 4, "severity_counts": {"MEDIUM": 3, "LOW": 1}, "faults": [{"severity": "MEDIUM", "code": "SPN 102 FMI 2", "description": "Engine Intake Manifold #1 Pressure", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 1, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 611 FMI 14", "description": "System Diagnostic Code #1", "fmi_desc": "Special instruction", "occurrences": 127, "type": "J1939"}, {"severity": "LOW", "code": "SPN 1807 FMI 2", "description": "Steering Wheel Angle", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 127, "type": "J1939"}]}, {"unit": "Unit 29 Eduardo", "year": "2019", "make": "INTERNATIONAL", "model": "LT625", "status": "Active", "tags": "", "odo": 604025, "hrs": 38771, "total_codes": 4, "severity_counts": {"LOW": 3, "MEDIUM": 1}, "faults": [{"severity": "MEDIUM", "code": "SPN 1209 FMI 4", "description": "Engine Exhaust Pressure 1", "fmi_desc": "Voltage Below Normal", "occurrences": 4, "type": "J1939"}, {"severity": "LOW", "code": "SPN 520211 FMI 7", "description": "Manufacturer Assignable SPN", "fmi_desc": "Not Responding Properly", "occurrences": 126, "type": "J1939"}, {"severity": "LOW", "code": "SPN 3456 FMI 5", "description": "Engagement Consent \u2013 Transmission input shaft PTO 1", "fmi_desc": "Current Below Normal", "occurrences": 1, "type": "J1939"}, {"severity": "LOW", "code": "SPN 3452 FMI 2", "description": "Enable Switch \u2013 Transmission input shaft PTO 1", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 1, "type": "J1939"}]}, {"unit": "Unit 07 raul B", "year": "2013", "make": "PETERBILT", "model": "386", "status": "Active", "tags": "", "odo": 642665, "hrs": 28813, "total_codes": 3, "severity_counts": {"MEDIUM": 3}, "faults": [{"severity": "MEDIUM", "code": "SPN 77 FMI 3", "description": "Forward Rear Drive Axle Temperature", "fmi_desc": "Voltage Above Normal", "occurrences": 126, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 611 FMI 14", "description": "System Diagnostic Code #1", "fmi_desc": "Special instruction", "occurrences": 127, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 3060 FMI 18", "description": "Engine Cooling System Monitor", "fmi_desc": "Low\u2014moderate severity", "occurrences": 1, "type": "J1939"}]}, {"unit": "Belly dump 53 Baldomero", "year": "2020", "make": "INTERNATIONAL", "model": "LT625", "status": "Active", "tags": "", "odo": 494571, "hrs": 11886, "total_codes": 3, "severity_counts": {"LOW": 3}, "faults": [{"severity": "LOW", "code": "SPN 3456 FMI 5", "description": "Engagement Consent \u2013 Transmission input shaft PTO 1", "fmi_desc": "Current Below Normal", "occurrences": 1, "type": "J1939"}, {"severity": "LOW", "code": "SPN 3452 FMI 2", "description": "Enable Switch \u2013 Transmission input shaft PTO 1", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 1, "type": "J1939"}, {"severity": "LOW", "code": "SPN 520211 FMI 7", "description": "Manufacturer Assignable SPN", "fmi_desc": "Not Responding Properly", "occurrences": 0, "type": "J1939"}]}, {"unit": "Unit 20 Bubba", "year": "2019", "make": "INTERNATIONAL", "model": "LT625", "status": "Active", "tags": "", "odo": 614607, "hrs": 35017, "total_codes": 2, "severity_counts": {"LOW": 2}, "faults": [{"severity": "LOW", "code": "SPN 3456 FMI 5", "description": "Engagement Consent \u2013 Transmission input shaft PTO 1", "fmi_desc": "Current Below Normal", "occurrences": 1, "type": "J1939"}, {"severity": "LOW", "code": "SPN 3452 FMI 2", "description": "Enable Switch \u2013 Transmission input shaft PTO 1", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 1, "type": "J1939"}]}, {"unit": "Unit 24 Juan Quezada", "year": "2019", "make": "INTERNATIONAL", "model": "LT625", "status": "Active", "tags": "", "odo": 549684, "hrs": 19139, "total_codes": 2, "severity_counts": {"MEDIUM": 1, "LOW": 1}, "faults": [{"severity": "MEDIUM", "code": "SPN 560 FMI 11", "description": "Transmission Driveline Engaged", "fmi_desc": "Other Failure Mode", "occurrences": 28, "type": "J1939"}, {"severity": "LOW", "code": "SPN 521601 FMI 31", "description": "Manufacturer Assignable SPN", "fmi_desc": "", "occurrences": 127, "type": "J1939"}]}, {"unit": "Unit 6 Jesus", "year": "2013", "make": "PETERBILT", "model": "367", "status": "Active", "tags": "", "odo": 197572, "hrs": 24037, "total_codes": 2, "severity_counts": {"MEDIUM": 2}, "faults": [{"severity": "MEDIUM", "code": "SPN 829 FMI 3", "description": "Left Fuel Level Sensor", "fmi_desc": "Voltage Above Normal", "occurrences": 126, "type": "J1939"}, {"severity": "MEDIUM", "code": "SPN 177 FMI 3", "description": "Transmission Oil Temperature 1", "fmi_desc": "Voltage Above Normal", "occurrences": 126, "type": "J1939"}]}, {"unit": "Unit 43 Cesar (New)", "year": "2020", "make": "INTERNATIONAL", "model": "LT625", "status": "Active", "tags": "", "odo": 477333, "hrs": 19214, "total_codes": 2, "severity_counts": {"LOW": 2}, "faults": [{"severity": "LOW", "code": "SPN 3452 FMI 2", "description": "Enable Switch \u2013 Transmission input shaft PTO 1", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 1, "type": "J1939"}, {"severity": "LOW", "code": "SPN 3456 FMI 5", "description": "Engagement Consent \u2013 Transmission input shaft PTO 1", "fmi_desc": "Current Below Normal", "occurrences": 1, "type": "J1939"}]}, {"unit": "Unit 23 Raul G", "year": "2019", "make": "INTERNATIONAL", "model": "LT625", "status": "Active", "tags": "", "odo": 621016, "hrs": 37748, "total_codes": 2, "severity_counts": {"LOW": 2}, "faults": [{"severity": "LOW", "code": "SPN 3452 FMI 2", "description": "Enable Switch \u2013 Transmission input shaft PTO 1", "fmi_desc": "Erratic, Intermittent, or Incorrect", "occurrences": 1, "type": "J1939"}, {"severity": "LOW", "code": "SPN 3456 FMI 5", "description": "Engagement Consent \u2013 Transmission input shaft PTO 1", "fmi_desc": "Current Below Normal", "occurrences": 1, "type": "J1939"}]}, {"unit": "Unit 17 Ivan (was 27)", "year": "2019", "make": "INTERNATIONAL", "model": "LT625", "status": "Active", "tags": "", "odo": 621676, "hrs": 33142, "total_codes": 1, "severity_counts": {"MEDIUM": 1}, "faults": [{"severity": "MEDIUM", "code": "SPN 560 FMI 11", "description": "Transmission Driveline Engaged", "fmi_desc": "Other Failure Mode", "occurrences": 127, "type": "J1939"}]}, {"unit": "Unit 51 rene hotshot.", "year": "2020", "make": "KENWORTH", "model": "T880", "status": "Active", "tags": "", "odo": 585949, "hrs": 19483, "total_codes": 1, "severity_counts": {"LOW": 1}, "faults": [{"severity": "LOW", "code": "SPN 97 FMI 3", "description": "Water In Fuel Indicator 1", "fmi_desc": "Voltage Above Normal", "occurrences": 4, "type": "J1939"}]}, {"unit": "Belly dump 52 Kari", "year": "2020", "make": "INTERNATIONAL", "model": "LT625", "status": "Active", "tags": "", "odo": 538936, "hrs": 17687, "total_codes": 1, "severity_counts": {"LOW": 1}, "faults": [{"severity": "LOW", "code": "SPN 830 FMI 0", "description": "Right Fuel Level Sensor", "fmi_desc": "High\u2014most severe", "occurrences": 1, "type": "J1939"}]}];
+
+function sevBadge(s) {
+  const m = {CRITICAL:'b-critical',HIGH:'b-high',MEDIUM:'b-medium',LOW:'b-low'};
+  return `<span class="badge ${m[s]||'b-low'}">${s}</span>`;
+}
+
+function fmtNum(n) { return n ? n.toLocaleString() : '—'; }
+
+function renderVehicleCard(v) {
+  const sevCounts = v.severity_counts;
+  const badges = ['CRITICAL','HIGH','MEDIUM','LOW']
+    .filter(s => sevCounts[s])
+    .map(s => `${sevBadge(s)} <span style="font-size:13px;color:var(--text-2);font-weight:600;">${sevCounts[s]}</span>`)
+    .join('&nbsp;&nbsp;');
+  const statusBadge = v.status === 'In Shop' ? '<span class="badge b-shop">IN SHOP</span>' : '';
+  const faultRows = v.faults.map(f => {
+    const occ = f.occurrences > 1 ? `<span class="fault-occ">x${f.occurrences}</span>` : '';
+    const fmi = f.fmi_desc ? `<span class="fault-fmi"> — ${f.fmi_desc}</span>` : '';
+    return `<tr><td style="width:36px;">${sevBadge(f.severity)}</td><td style="width:180px;"><span class="fault-code">${f.code}</span></td><td><span class="fault-desc">${f.description || f.code}</span>${fmi} ${occ}</td></tr>`;
+  }).join('');
+  return `<div class="vehicle-card"><div class="vc-header" aria-expanded="true" onclick="this.setAttribute('aria-expanded', this.getAttribute('aria-expanded')==='true'?'false':'true')"><div class="vc-identity"><div class="vc-unit">${v.unit}</div><div class="vc-vehicle">${v.year} ${v.make} ${v.model} ${statusBadge}</div><div class="vc-meta">${v.odo ? `<span class="vc-meta-item"><strong>${fmtNum(v.odo)}</strong> miles</span>` : ''}${v.hrs ? `<span class="vc-meta-item"><strong>${fmtNum(v.hrs)}</strong> engine hrs</span>` : ''}${v.tags ? `<span class="vc-meta-item">${v.tags}</span>` : ''}</div></div><div class="vc-badges">${badges}</div><span class="vc-chevron">&#9662;</span></div><div class="vc-body"><table class="fault-table">${faultRows}</table></div></div>`;
+}
+
+function renderList(id, filter) {
+  document.getElementById(id).innerHTML = VEHICLES.filter(filter).map(renderVehicleCard).join('');
+}
+
+renderList('critical-list', v => (v.severity_counts.CRITICAL || 0) > 0);
+renderList('high-list', v => (v.severity_counts.HIGH || 0) > 0 && !(v.severity_counts.CRITICAL || 0));
+renderList('monitor-list', v => !(v.severity_counts.CRITICAL || 0) && !(v.severity_counts.HIGH || 0));
+
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+  });
+});
+
+function toggleAll(id, expand) {
+  document.getElementById(id).querySelectorAll('.vc-header').forEach(h => {
+    h.setAttribute('aria-expanded', expand ? 'true' : 'false');
+  });
+}
+
+function toggleTheme() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  document.documentElement.setAttribute('data-theme', isDark ? '' : 'dark');
+  document.getElementById('themeIcon').textContent = isDark ? '☀️' : '🌙';
+  document.getElementById('themeLabel').textContent = isDark ? 'Light' : 'Dark';
+  localStorage.setItem('theme', isDark ? 'light' : 'dark');
+}
+
+if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+  document.documentElement.setAttribute('data-theme', 'dark');
+  document.getElementById('themeIcon').textContent = '🌙';
+  document.getElementById('themeLabel').textContent = 'Dark';
+}
+</script>
+</body>
+</html>

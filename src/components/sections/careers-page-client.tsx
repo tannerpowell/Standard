@@ -59,18 +59,20 @@ export function CareersPageClient({
   >({});
   const [loadingJobId, setLoadingJobId] = useState<number | null>(null);
 
-  // Ref mirror of detailsCache lets handleSelect read the latest cache without
-  // re-creating the callback on every fetch (which would re-render every card).
-  const detailsCacheRef = useRef(detailsCache);
-  detailsCacheRef.current = detailsCache;
-
+  // Tracks jobIds we've issued a fetch for in this session. Keeps handleSelect
+  // stable (empty deps) without needing to mirror detailsCache state into a
+  // ref — which would either violate React rules (mutating in render) or open
+  // a stale-ref window (mutating in useEffect, which runs after commit).
+  // Mutated only in event handlers and fetch callbacks.
+  const fetchedJobIdsRef = useRef<Set<number>>(new Set());
   const abortRef = useRef<AbortController | null>(null);
 
   useEffect(() => () => abortRef.current?.abort(), []);
 
   const handleSelect = useCallback((job: JobWithUrls) => {
     setSelectedJob(job);
-    if (detailsCacheRef.current[job.JobId]) return;
+    if (fetchedJobIdsRef.current.has(job.JobId)) return;
+    fetchedJobIdsRef.current.add(job.JobId);
 
     abortRef.current?.abort();
     const controller = new AbortController();
@@ -88,12 +90,17 @@ export function CareersPageClient({
         return null;
       })
       .then((data) => {
-        if (controller.signal.aborted || !data) return;
+        // Any path that doesn't cache data must drop the jobId from the
+        // fetched set so the user can retry by clicking the card again.
+        if (controller.signal.aborted || !data) {
+          fetchedJobIdsRef.current.delete(job.JobId);
+          return;
+        }
         setDetailsCache((prev) => ({ ...prev, [job.JobId]: data }));
       })
       .catch(() => {
-        // Swallow abort + network errors. Network errors stay uncached so
-        // reopening the modal retries.
+        // Abort + network errors. Drop from fetched set so reopening retries.
+        fetchedJobIdsRef.current.delete(job.JobId);
       })
       .finally(() => {
         if (abortRef.current === controller) {

@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Templeton Title Report | Gregg County, Texas</title>
+<style>
+  :root {
+    --bg: #FAF8F3;
+    --bg-card: #FFFFFF;
+    --bg-card-alt: #F5F2EB;
+    --bg-code: #EDE9E0;
+    --text: #1C1917;
+    --text-secondary: #57534E;
+    --text-tertiary: #A8A29E;
+    --border: #D6D3D1;
+    --border-light: #E7E5E4;
+    --accent: #92400E;
+    --accent-bg: #FEF3C7;
+    --accent-border: #F59E0B;
+    --critical: #991B1B;
+    --critical-bg: #FEE2E2;
+    --critical-border: #EF4444;
+    --high: #9A3412;
+    --high-bg: #FFEDD5;
+    --high-border: #F97316;
+    --medium: #854D0E;
+    --medium-bg: #FEF9C3;
+    --medium-border: #EAB308;
+    --low: #166534;
+    --low-bg: #DCFCE7;
+    --low-border: #22C55E;
+    --info: #1E40AF;
+    --info-bg: #DBEAFE;
+    --info-border: #3B82F6;
+    --shadow: 0 1px 3px rgba(28,25,23,0.06), 0 1px 2px rgba(28,25,23,0.04);
+    --shadow-lg: 0 4px 12px rgba(28,25,23,0.08), 0 2px 4px rgba(28,25,23,0.04);
+    --radius: 8px;
+    --font-serif: 'Georgia', 'Times New Roman', 'Palatino', serif;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', 'Helvetica Neue', sans-serif;
+    --font-mono: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  }
+
+  html.dark {
+      --bg: #1C1F26;
+      --bg-card: #242830;
+      --bg-card-alt: #2A2E37;
+      --bg-code: #31363F;
+      --text: #E8E6E3;
+      --text-secondary: #B0B5BD;
+      --text-tertiary: #7B8291;
+      --border: #374151;
+      --border-light: #2D3340;
+      --accent: #FCD34D;
+      --accent-bg: rgba(252,211,77,0.12);
+      --accent-border: #B45309;
+      --critical: #FCA5A5;
+      --critical-bg: rgba(239,68,68,0.12);
+      --critical-border: #7F1D1D;
+      --high: #FDBA74;
+      --high-bg: rgba(249,115,22,0.12);
+      --high-border: #7C2D12;
+      --medium: #FDE68A;
+      --medium-bg: rgba(234,179,8,0.12);
+      --medium-border: #713F12;
+      --low: #86EFAC;
+      --low-bg: rgba(34,197,94,0.12);
+      --low-border: #14532D;
+      --info: #93C5FD;
+      --info-bg: rgba(59,130,246,0.12);
+      --info-border: #1E3A5F;
+      --shadow: 0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2);
+      --shadow-lg: 0 4px 12px rgba(0,0,0,0.4), 0 2px 4px rgba(0,0,0,0.2);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { font-size: 18px; scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Header */
+  .report-header {
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    padding: 3rem 2rem 2.5rem;
+  }
+  .report-header-inner {
+    max-width: 860px;
+    margin: 0 auto;
+  }
+  .report-header .kicker {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 0.75rem;
+  }
+  .report-header h1 {
+    font-family: var(--font-serif);
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+  .report-header .subtitle {
+    font-size: 1.15rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+  }
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+  }
+  .meta-item { display: flex; align-items: center; gap: 0.4rem; }
+  .meta-label { font-weight: 600; color: var(--text); }
+
+  /* Main */
+  .main { max-width: 860px; margin: 0 auto; padding: 2rem; }
+
+  /* Section */
+  .section { margin-bottom: 3rem; }
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 0.4rem;
+  }
+  .section h2 {
+    font-family: var(--font-serif);
+    font-size: 1.65rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 1rem;
+    letter-spacing: -0.01em;
+  }
+  .section h3 {
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 0.6rem;
+  }
+  .section p, .section li {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+  .section p + p { margin-top: 0.75rem; }
+  .section ul { padding-left: 1.25rem; margin-top: 0.5rem; }
+  .section li { margin-bottom: 0.35rem; }
+  .section li strong { color: var(--text); }
+
+  /* Stats strip */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+  .stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius);
+    padding: 1.25rem 1rem;
+    box-shadow: var(--shadow);
+  }
+  .stat-card .stat-value {
+    font-family: var(--font-serif);
+    font-size: 1.85rem;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 0.25rem;
+  }
+  .stat-card .stat-label {
+    font-size: 0.82rem;
+    color: var(--text-tertiary);
+    letter-spacing: 0.02em;
+  }
+
+  /* Alert box */
+  .alert {
+    border-radius: var(--radius);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+  .alert-critical {
+    background: var(--critical-bg);
+    border: 1px solid var(--critical-border);
+    color: var(--critical);
+  }
+  .alert-high {
+    background: var(--high-bg);
+    border: 1px solid var(--high-border);
+    color: var(--high);
+  }
+  .alert strong { display: block; margin-bottom: 0.25rem; font-size: 0.88rem; letter-spacing: 0.04em; text-transform: uppercase; }
+
+  /* Priority badge */
+  .badge {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    vertical-align: middle;
+  }
+  .badge-critical { background: var(--critical-bg); color: var(--critical); border: 1px solid var(--critical-border); }
+  .badge-high { background: var(--high-bg); color: var(--high); border: 1px solid var(--high-border); }
+  .badge-medium { background: var(--medium-bg); color: var(--medium); border: 1px solid var(--medium-border); }
+  .badge-low { background: var(--low-bg); color: var(--low); border: 1px solid var(--low-border); }
+
+  /* Table */
+  .table-wrap {
+    overflow-x: auto;
+    margin: 1rem 0;
+    border-radius: var(--radius);
+    border: 1px solid var(--border-light);
+    box-shadow: var(--shadow);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+  }
+  thead { background: var(--bg-card-alt); }
+  th {
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--border-light);
+    color: var(--text-secondary);
+    vertical-align: top;
+  }
+  tr:last-child td { border-bottom: none; }
+  tbody tr { background: var(--bg-card); }
+  tbody tr:hover { background: var(--bg-card-alt); }
+
+  /* Accordion documents */
+  .doc-group { margin-bottom: 1rem; }
+  .doc-group summary {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: background 0.15s;
+  }
+  .doc-group summary:hover { background: var(--bg-card-alt); }
+  .doc-group summary::-webkit-details-marker { display: none; }
+  .doc-group summary::before {
+    content: '\25B6';
+    font-size: 0.65rem;
+    color: var(--text-tertiary);
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+  .doc-group[open] summary::before { transform: rotate(90deg); }
+  .doc-group[open] summary {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  .doc-body {
+    border: 1px solid var(--border-light);
+    border-top: none;
+    border-radius: 0 0 var(--radius) var(--radius);
+    padding: 1.25rem 1.5rem;
+    background: var(--bg-card);
+    font-size: 0.95rem;
+    line-height: 1.75;
+    color: var(--text-secondary);
+  }
+  .doc-body h4 {
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-top: 1.25rem;
+    margin-bottom: 0.4rem;
+  }
+  .doc-body h4:first-child { margin-top: 0; }
+  .doc-body p { margin-bottom: 0.5rem; }
+  .doc-body .legal-desc {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    line-height: 1.65;
+    background: var(--bg-code);
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    margin: 0.5rem 0;
+    word-break: break-word;
+  }
+  .doc-meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem 2rem;
+    margin-bottom: 0.75rem;
+  }
+  .doc-meta-grid dt {
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-tertiary);
+  }
+  .doc-meta-grid dd { color: var(--text); font-size: 0.95rem; margin-bottom: 0.5rem; }
+  .doc-tag {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--accent-bg);
+    border: 1px solid var(--accent-border);
+    padding: 0.1rem 0.5rem;
+    border-radius: 4px;
+  }
+
+  /* Timeline */
+  .timeline { position: relative; padding-left: 2rem; margin: 1.5rem 0; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 4px;
+    bottom: 4px;
+    width: 2px;
+    background: var(--border);
+  }
+  .tl-item { position: relative; margin-bottom: 1.25rem; }
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -1.65rem;
+    top: 0.55rem;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--bg-card);
+    border: 2px solid var(--text-tertiary);
+  }
+  .tl-item.tl-critical::before { border-color: var(--critical); background: var(--critical-bg); }
+  .tl-item .tl-date {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-tertiary);
+  }
+  .tl-item .tl-title { font-weight: 600; font-size: 0.95rem; color: var(--text); }
+  .tl-item .tl-desc { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7; }
+
+  /* Divider */
+  hr {
+    border: none;
+    border-top: 1px solid var(--border-light);
+    margin: 2rem 0;
+  }
+
+  /* Footer */
+  .report-footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem;
+    text-align: center;
+    font-size: 0.82rem;
+    color: var(--text-tertiary);
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  /* Nav TOC */
+  .toc {
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2.5rem;
+    box-shadow: var(--shadow);
+  }
+  .toc-title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 0.6rem;
+  }
+  .toc ol {
+    list-style: none;
+    counter-reset: toc-counter;
+    padding: 0;
+  }
+  .toc li {
+    counter-increment: toc-counter;
+    margin-bottom: 0.3rem;
+  }
+  .toc li::before {
+    content: counter(toc-counter, decimal-leading-zero);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-tertiary);
+    margin-right: 0.6rem;
+  }
+  .toc a {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.15s;
+  }
+  .toc a:hover { border-bottom-color: var(--text-tertiary); }
+
+  /* Theme toggle */
+  .theme-toggle {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  .theme-toggle input { display: none; }
+  .toggle-track {
+    width: 48px;
+    height: 26px;
+    background: var(--border);
+    border-radius: 999px;
+    position: relative;
+    transition: background 0.25s;
+    flex-shrink: 0;
+  }
+  .toggle-track::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--bg-card);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    transition: transform 0.25s, background 0.25s;
+  }
+  .theme-toggle input:checked + .toggle-track {
+    background: #475569;
+  }
+  .theme-toggle input:checked + .toggle-track::after {
+    transform: translateX(22px);
+  }
+  .toggle-label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+  }
+  .toggle-icon {
+    font-size: 1rem;
+    line-height: 1;
+  }
+  .header-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+  }
+
+  @media (max-width: 640px) {
+    .report-header { padding: 2rem 1.25rem 1.75rem; }
+    .report-header h1 { font-size: 1.75rem; }
+    .main { padding: 1.5rem 1.25rem; }
+    .doc-meta-grid { grid-template-columns: 1fr; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .meta-row { flex-direction: column; gap: 0.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<header class="report-header">
+  <div class="report-header-inner">
+    <div class="header-top-row">
+      <div class="kicker">Privileged &amp; Confidential</div>
+      <label class="theme-toggle" title="Toggle light/dark mode">
+        <span class="toggle-icon" id="theme-icon">&#9788;</span>
+        <input type="checkbox" id="theme-switch">
+        <span class="toggle-track"></span>
+      </label>
+    </div>
+    <h1>Templeton Family Title Report</h1>
+    <p class="subtitle">Mineral and Surface Interest Examination, Gregg County, Texas</p>
+    <div class="meta-row">
+      <div class="meta-item"><span class="meta-label">County:</span> Gregg County, TX</div>
+      <div class="meta-item"><span class="meta-label">Primary Survey:</span> Haden Edwards, A-64</div>
+      <div class="meta-item"><span class="meta-label">Prepared:</span> March 30, 2026</div>
+      <div class="meta-item"><span class="meta-label">Documents Reviewed:</span> 4 PDFs / 100+ pages</div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-value">~173 ac</div>
+      <div class="stat-label">Primary Tract (Edwards Survey)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">1900s</div>
+      <div class="stat-label">Earliest Record in Chain</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">3+</div>
+      <div class="stat-label">Mineral Severances</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">1999</div>
+      <div class="stat-label">Sheriff's Tax Sale</div>
+    </div>
+  </div>
+
+  <!-- TOC -->
+  <nav class="toc">
+    <div class="toc-title">Contents</div>
+    <ol>
+      <li><a href="#executive-summary">Executive Summary</a></li>
+      <li><a href="#critical-findings">Critical Findings</a></li>
+      <li><a href="#chain-of-title">Chain of Title Timeline</a></li>
+      <li><a href="#mineral-interests">Mineral Interest Inventory</a></li>
+      <li><a href="#leases">Oil &amp; Gas Leases</a></li>
+      <li><a href="#current-operations">Current Operations</a></li>
+      <li><a href="#heirship">Heirship &amp; Probate</a></li>
+      <li><a href="#action-items">Priority Action Items</a></li>
+      <li><a href="#document-detail">Full Document Detail</a></li>
+    </ol>
+  </nav>
+
+  <!-- 1. Executive Summary -->
+  <section class="section" id="executive-summary">
+    <div class="section-label">Section 01</div>
+    <h2>Executive Summary</h2>
+    <p>This package contains title documents tracing the Templeton family's mineral and surface interests across multiple tracts in Gregg County, Texas, principally on the <strong>Haden Edwards Survey, Abstract No. 64</strong>. The records span from approximately 1900 through 2023 and include warranty deeds, mineral deeds, oil and gas leases, probate proceedings, heirship affidavits, OPR index searches, and current operator correspondence.</p>
+    <p>The core tract is roughly <strong>173 acres</strong> (reduced to ~119 acres net of exceptions) that passed through the Templeton family via a <strong>1932 Harrison County partition</strong>, was later conveyed by Everett L. Culver back to Templeton heirs in 1942, and was ultimately struck at a <strong>Sheriff's tax sale in October 1999</strong> for $9,272.83.</p>
+    <p>The current mineral interest holder on record is <strong>Mary Lou Templeton Sanders</strong>, who has received royalty payments from operators GEO-VEST Incorporated, Titan Rock Exploration &amp; Production, and most recently <strong>Sydri Operating, LLC</strong> (effective April 17, 2023) for wells in the Danville Field.</p>
+  </section>
+
+  <!-- 2. Critical Findings -->
+  <section class="section" id="critical-findings">
+    <div class="section-label">Section 02</div>
+    <h2>Critical Findings</h2>
+
+    <div class="alert alert-critical">
+      <strong>Critical: 1999 Sheriff's Tax Sale</strong>
+      Bobby Weaver, Sheriff of Gregg County, conveyed ~173 acres (net ~119 acres) from Templeton et al to <strong>M M Investments</strong> via tax deed (Judgment: July 13, 1999; Sale: October 6, 1999) for $9,272.83. The deed conveys "all of the estate, right, title, and interest which the Defendants in such suit had" in the property, which includes mineral rights unless previously severed. The deed is subject to the owner's right of redemption under Section 34.21 of the Texas Property Tax Code. <strong>Whether the Templetons redeemed is the single most important unanswered question in this title.</strong>
+    </div>
+
+    <div class="alert alert-high">
+      <strong>High: Guardianship Deeds May Be Voidable</strong>
+      The 1985-87 Warranty Deed (Vol. 1874, Pg. 551) was executed by Spiavia Templeton as Guardian of James Templeton (incompetent) and Vee McCalister as Guardian of Odie Templeton (NCM). No court orders authorizing these guardians to convey real property were found in this package. Without them, the conveyance is potentially voidable.
+    </div>
+  </section>
+
+  <!-- 3. Chain of Title -->
+  <section class="section" id="chain-of-title">
+    <div class="section-label">Section 03</div>
+    <h2>Chain of Title Timeline</h2>
+    <p>Reconstructed from the documents reviewed. Not exhaustive; gaps should be filled from the full Gregg County records.</p>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-date">~1900</div>
+        <div class="tl-title">Thomas Angel to L.T. Templeton</div>
+        <div class="tl-desc">28 acres, referenced in later leases as the "101 1/4 acre tract" on the Haden Edwards Survey.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">1905</div>
+        <div class="tl-title">C.J. Luckett to I.D. Templeton &amp; J.H. Templeton</div>
+        <div class="tl-desc">83.6 acres, Block 1, Haden Edwards 4,428-acre grant. Recorded Vol. U, Pg. 556, Deed Records, Gregg County.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">Oct 4, 1932</div>
+        <div class="tl-title">Partition Deed: T.W. Templeton et al</div>
+        <div class="tl-desc">72.18 acres divided into five tracts. Cause No. 7095, Vol. Q, Pg. 35, District Court Records of Harrison County. <em>Foundational document; only partially included in package.</em></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">Mar 19, 1937</div>
+        <div class="tl-title">O&amp;G Lease: Annie Templeton to J.M. Hudson</div>
+        <div class="tl-desc">200 acres (three tracts less 38.5-acre exception), 1/8 royalty, 3-year primary term. Vol. 215, Pg. 165.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">~1937</div>
+        <div class="tl-title">Mineral Deed: Annie Templeton to J.N. Hudson</div>
+        <div class="tl-desc">Undivided 875/3500ths (~25%) mineral interest. Vol. 215, Pg. 167.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">1940</div>
+        <div class="tl-title">Probate: Estate of T.D. Templeton</div>
+        <div class="tl-desc">T.L. Lockhart appointed Independent Executor. Will probated July 1, 1940.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">Jun 7, 1941</div>
+        <div class="tl-title">O&amp;G Lease: Louise Templeton / Lockhart to G.P. Birdwell</div>
+        <div class="tl-desc">83.6 acres on Haden Edwards Survey, 1/8 royalty, 10-year primary term. Vol. 259, Pg. 440.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">Jun 12, 1941</div>
+        <div class="tl-title">Mineral Deed: Louise Templeton / Lockhart to G.P. Birdwell</div>
+        <div class="tl-desc">Undivided 10/83.6 interest in 83.6-acre tract. Vol. 256, Pg. 460.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">Jun 29, 1942</div>
+        <div class="tl-title">Everett L. Culver to Templeton et al</div>
+        <div class="tl-desc">173 acres on Hayden Edwards Survey. Vol. 349, Pg. 426. This deed becomes the root call in the 1999 tax sale legal description.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">1951-1968</div>
+        <div class="tl-title">Templeton family out-conveyances</div>
+        <div class="tl-desc">Several small tracts sold off: 1.8 ac to Ras &amp; Minnie Lee Hall (1951); 1.8 ac to Johnny Woods (1955); 4.0 ac to Ruthie Lee Jackson (1968); and others, totaling ~54 acres of exceptions.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">Nov-Dec 1985-87</div>
+        <div class="tl-title">Warranty Deed: Templeton Heirs to Lewis Templeton</div>
+        <div class="tl-desc">1.392 acres, Haden Edwards Survey, Tract No. 3 of 1932 Partition. Vol. 1874, Pg. 551. <em>Guardianship issue flagged.</em></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">Apr 13, 1987</div>
+        <div class="tl-title">Royalty Deed: Lewis Templeton et al to Rio Grande Royalties</div>
+        <div class="tl-desc">Book 1798, Pg. 589. Edwards Survey. Details of interest fraction not available from index alone.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">Nov 29, 1994</div>
+        <div class="tl-title">Heirship Affidavit: Dessy Rea Woods re: Luther Templeton</div>
+        <div class="tl-desc">Affiant claims sole surviving child status. Book 2765, Pg. 63.</div>
+      </div>
+      <div class="tl-item tl-critical">
+        <div class="tl-date">Oct 6, 1999</div>
+        <div class="tl-title">Sheriff's Tax Deed: Templeton et al to M M Investments</div>
+        <div class="tl-desc">~173 acres (net ~119 ac) for $9,272.83. Judgment July 13, 1999. <strong>Potential title-breaking event.</strong></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">Jan 9, 2002</div>
+        <div class="tl-title">O&amp;G Lease: Lola Templeton to Tyler Oil &amp; Gas, Inc.</div>
+        <div class="tl-desc">43.18 acres, Dinsmore Simpson Survey, A-238. 1/8 royalty, 3-year primary term, pooling up to 640 ac for gas.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">Dec 28, 2005</div>
+        <div class="tl-title">Succession Affidavit: Dorothy J. Templeton Lewis re: Charlie Templeton, Sr.</div>
+        <div class="tl-desc">Lists heirs of Charlie Templeton, Sr. Multiple pages.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">2006-2023</div>
+        <div class="tl-title">Operator Succession: GEO-VEST, Titan Rock, Sydri Operating</div>
+        <div class="tl-desc">Royalty payments to Mary Lou Templeton Sanders from GRGU wells (Danville Field). Sydri took over April 17, 2023.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Mineral Interests -->
+  <section class="section" id="mineral-interests">
+    <div class="section-label">Section 04</div>
+    <h2>Mineral Interest Inventory</h2>
+    <p>Known mineral severances from the Templeton tracts. These may have survived the 1999 tax sale if recorded before the tax lien attached.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Instrument</th>
+            <th>Grantor</th>
+            <th>Grantee</th>
+            <th>Interest</th>
+            <th>Tract / Acreage</th>
+            <th>Recording</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Mineral Deed</td>
+            <td>Annie Templeton</td>
+            <td>J.N. Hudson</td>
+            <td>875/3500ths (~25%)</td>
+            <td>~200 ac, Edwards Survey</td>
+            <td>Vol. 215, Pg. 167</td>
+          </tr>
+          <tr>
+            <td>Mineral Deed</td>
+            <td>Louise Templeton / T.L. Lockhart</td>
+            <td>G.P. Birdwell</td>
+            <td>10/83.6 interest</td>
+            <td>83.6 ac, Edwards Survey</td>
+            <td>Vol. 256, Pg. 460</td>
+          </tr>
+          <tr>
+            <td>Mineral Deed</td>
+            <td>Louise Templeton / T.L. Lockhart</td>
+            <td>(Grantee not visible)</td>
+            <td>10/63.6 interest</td>
+            <td>83.6 ac, Edwards Survey</td>
+            <td>Vol. 259, Pg. 442</td>
+          </tr>
+          <tr>
+            <td>Royalty Deed</td>
+            <td>Lewis Templeton et al</td>
+            <td>Rio Grande Royalties</td>
+            <td>Unknown fraction</td>
+            <td>Edwards Survey</td>
+            <td>Bk. 1798, Pg. 589</td>
+          </tr>
+          <tr>
+            <td>Royalty Deed</td>
+            <td>Will Davis &amp; Margie Davis</td>
+            <td>J &amp; Pipsaire</td>
+            <td>1/16 ORRI</td>
+            <td>151 ac, RF Foote / John Anderson Surveys</td>
+            <td>(Recording not visible)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 5. Leases -->
+  <section class="section" id="leases">
+    <div class="section-label">Section 05</div>
+    <h2>Oil &amp; Gas Leases</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Lessor</th>
+            <th>Lessee</th>
+            <th>Acreage</th>
+            <th>Royalty</th>
+            <th>Primary Term</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Mar 19, 1937</td>
+            <td>Annie Templeton</td>
+            <td>J.M. Hudson</td>
+            <td>200 ac</td>
+            <td>1/8</td>
+            <td>3 years</td>
+            <td>Expired (unless HBP)</td>
+          </tr>
+          <tr>
+            <td>Jun 7, 1941</td>
+            <td>Louise Templeton / Lockhart</td>
+            <td>G.P. Birdwell</td>
+            <td>83.6 ac</td>
+            <td>1/8</td>
+            <td>10 years</td>
+            <td>Expired (unless HBP)</td>
+          </tr>
+          <tr>
+            <td>Jun 9, 1941</td>
+            <td>Wayne Ross, Jesse Owens, et al</td>
+            <td>(Not visible)</td>
+            <td>(Not visible)</td>
+            <td>N/A</td>
+            <td>N/A</td>
+            <td>Unknown</td>
+          </tr>
+          <tr>
+            <td>Jan 9, 2002</td>
+            <td>Lola Templeton</td>
+            <td>Tyler Oil &amp; Gas, Inc.</td>
+            <td>43.18 ac</td>
+            <td>1/8</td>
+            <td>3 years</td>
+            <td>Pooling / 640 ac gas unit</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 6. Current Operations -->
+  <section class="section" id="current-operations">
+    <div class="section-label">Section 06</div>
+    <h2>Current Operations</h2>
+    <p>DOC177 contains recent correspondence and royalty checks establishing the current operational picture for Mary Lou Templeton Sanders' mineral interest.</p>
+
+    <h3>Operator History</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Operator</th><th>Period</th><th>Field</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>GEO-VEST Incorporated</td>
+            <td>Through ~2006</td>
+            <td>GRGU Wells, Gregg County</td>
+            <td>Operating statements show royalty income to Mary Lou Templeton Sanders. Also made a 2007 offer to acquire mineral interests.</td>
+          </tr>
+          <tr>
+            <td>Titan Rock Exploration &amp; Production, LLC</td>
+            <td>Through Apr 16, 2023</td>
+            <td>Danville Field (Gregg &amp; Rusk Counties)</td>
+            <td>Wells shut-in due to pipeline issue. Shut-in royalty checks of $5.00 each issued Mar 20, 2023. Final revenue check $2.04 on Apr 24, 2023.</td>
+          </tr>
+          <tr>
+            <td><strong>Sydri Operating, LLC</strong></td>
+            <td><strong>Apr 17, 2023 to present</strong></td>
+            <td>Gregg, Harrison, Panola Counties</td>
+            <td>Current operator. Minimum royalty threshold $200. Owner info form sent to Mary Sanders. Petro-Ledger handles statements.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Legal Activity</h3>
+    <p><strong>Flowers Davis, P.L.L.C.</strong> issued attorney statements to Mary L. Sanders in March, April, and May 2008 regarding a "Gregg County Property Issue." The nature and resolution of this dispute are unknown from the documents provided, but it should be investigated as it may relate to the 1999 tax sale or an ownership challenge.</p>
+  </section>
+
+  <!-- 7. Heirship -->
+  <section class="section" id="heirship">
+    <div class="section-label">Section 07</div>
+    <h2>Heirship &amp; Probate</h2>
+    <p>Multiple generations of Templeton decedents are referenced. The probate and heirship picture is incomplete.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Decedent</th><th>Instrument</th><th>Date</th><th>Key Detail</th><th>Status / Concern</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>T.D. Templeton</td>
+            <td>Probate Proceedings</td>
+            <td>Jun 20, 1940</td>
+            <td>T.L. Lockhart appointed Independent Executor. Will probated Jul 1, 1940.</td>
+            <td>Appears complete for this package.</td>
+          </tr>
+          <tr>
+            <td>Luther Templeton</td>
+            <td>Heirship Affidavit</td>
+            <td>Nov 29, 1994</td>
+            <td>Dessy Rea Woods claims sole surviving child.</td>
+            <td><span class="badge badge-medium">Verify</span> No probate found. Sole heir claim should be corroborated.</td>
+          </tr>
+          <tr>
+            <td>Charlie Templeton, Sr.</td>
+            <td>Succession Information Affidavit</td>
+            <td>Dec 28, 2005</td>
+            <td>Filed by Dorothy J. Templeton Lewis listing heirs.</td>
+            <td><span class="badge badge-medium">Verify</span> No probate found. Completeness of heir list unconfirmed.</td>
+          </tr>
+          <tr>
+            <td>James Templeton</td>
+            <td>Referenced in 1985-87 Deed</td>
+            <td>N/A</td>
+            <td>Listed as "incompetent" under guardianship of Spiavia Templeton.</td>
+            <td><span class="badge badge-high">High</span> No guardianship court order in package.</td>
+          </tr>
+          <tr>
+            <td>Odie Templeton</td>
+            <td>Referenced in 1985-87 Deed</td>
+            <td>N/A</td>
+            <td>Listed as "NCM" under guardianship of Vee McCalister.</td>
+            <td><span class="badge badge-high">High</span> No guardianship court order in package.</td>
+          </tr>
+          <tr>
+            <td>Orman Eric Harris</td>
+            <td>Last Will and Testament</td>
+            <td>Sep 18, 1985</td>
+            <td>Included in DOC174 package. Relationship to Templeton title unclear.</td>
+            <td><span class="badge badge-low">Low</span> Investigate connection.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 8. Action Items -->
+  <section class="section" id="action-items">
+    <div class="section-label">Section 08</div>
+    <h2>Priority Action Items</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th style="width: 90px">Priority</th><th>Action Item</th><th>Why It Matters</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge badge-critical">Critical</span></td>
+            <td><strong>Determine redemption status of 1999 tax sale.</strong> Pull Gregg County records for any redemption deed filed by Templeton heirs within the statutory period.</td>
+            <td>If unredeemed, M M Investments (or successors) may own the surface and all unsevered minerals on ~119 net acres. This is the linchpin of the entire title.</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-high">High</span></td>
+            <td><strong>Pull the 1932 Harrison County Partition Deed in full.</strong> Cause No. 7095, Vol. Q, Pg. 35, District Court Records of Harrison County.</td>
+            <td>This is the root partition that created the family's individual tracts. Only partially included. Needed to understand which Templetons received which tracts.</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-high">High</span></td>
+            <td><strong>Verify mineral severances predate the tax lien.</strong> Compare recording dates of the Hudson, Birdwell, and Rio Grande Royalties deeds against the tax lien date.</td>
+            <td>If these mineral conveyances were recorded before the tax lien attached, they survived the sale. If not, M M Investments may have acquired them too.</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-high">High</span></td>
+            <td><strong>Obtain guardianship court orders for James Templeton and Odie Templeton.</strong></td>
+            <td>Without authorization, the 1985-87 deed (Vol. 1874, Pg. 551) conveying 1.392 acres to Lewis Templeton may be voidable.</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-medium">Medium</span></td>
+            <td><strong>Investigate the Flowers Davis "Gregg County Property Issue" (2008).</strong> Contact Mary Sanders or obtain case records.</td>
+            <td>Legal work on a property issue may indicate a title challenge, boundary dispute, or response to the tax sale. Resolution could clarify current ownership.</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-medium">Medium</span></td>
+            <td><strong>Verify Mary Lou Templeton Sanders' current net mineral interest.</strong> Reconstruct from deed records which surveys and tracts she holds under.</td>
+            <td>Multiple conveyances out, a tax sale, and operator changes make the current fractional interest unclear from this package alone.</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-medium">Medium</span></td>
+            <td><strong>Check current status of Danville Field wells.</strong> Contact Sydri Operating re: production resumption post-shut-in.</td>
+            <td>Wells were shut-in as of March 2023 due to pipeline issue. Production status determines near-term royalty income.</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-low">Low</span></td>
+            <td><strong>Reconcile name variations across documents.</strong> Mary Sanders / Mary Lou Templeton Sanders / Mary Lou Templeton; Dessy Woods / Dessy Rea Woods; etc.</td>
+            <td>Standard cleanup. May need additional affidavits of identity if any lease or deed is challenged.</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-low">Low</span></td>
+            <td><strong>Investigate New Mexico property documents in DOC174.</strong> Mortgages referencing South Eunice Addition (Eunice, NM) and Fairview Addition (Lovington, NM).</td>
+            <td>Inclusion in a Texas title package is unusual. May indicate cross-collateralization or a broader family estate inventory.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- 9. Document Detail -->
+  <section class="section" id="document-detail">
+    <div class="section-label">Section 09</div>
+    <h2>Full Document Detail</h2>
+    <p>Per-document analysis for each PDF in the package. Expand any item for the complete extraction.</p>
+
+    <!-- DOC174 -->
+    <details class="doc-group">
+      <summary>
+        <span class="doc-tag">DOC174.pdf</span>
+        Warranty Deed, Partition Deed, Will, Mortgages, Mineral Deeds, O&amp;G Leases (77 pages)
+      </summary>
+      <div class="doc-body">
+        <h4>Primary Document: Warranty Deed</h4>
+        <dl class="doc-meta-grid">
+          <dt>Grantors</dt>
+          <dd>Marvin Templeton, Boyd Templeton, Eunice Templeton, Dorothy Templeton, Warnett Allen, Vee McCalister, Tom Templeton, Fleda Templeton, James Templeton, Spiavia Templeton, Odie Templeton, Fleda Morrell</dd>
+          <dt>Grantee</dt>
+          <dd>Lewis Templeton</dd>
+          <dt>Execution</dt>
+          <dd>Various dates, Nov 1985 to Dec 1986</dd>
+          <dt>Recorded</dt>
+          <dd>December 7, 1987</dd>
+          <dt>Recording</dt>
+          <dd>Vol. 1874, Pg. 551, Gregg County, TX</dd>
+          <dt>Acreage</dt>
+          <dd>1.392 acres</dd>
+        </dl>
+        <h4>Legal Description</h4>
+        <div class="legal-desc">All that certain lot, tract or parcel of land being 1.392 acres, more or less situated in the Haden Edwards Survey, Abstract No. 64, Gregg County, Texas and being a part of that certain 16.39 acre tract described as "TRACT NO. 3" in Partition Deed by and between T. W. Templeton, et al, dated October 4, 1932, of record as Cause no. 7095 in Vol.Q, Pg. 35 of the District Court Records of Harrison County, Texas...</div>
+        <h4>Notable Clauses</h4>
+        <p>Executed by Spiavia Templeton individually and as Guardian of James Templeton (Incompetent); and by Vee McCalister individually and as Guardian of Odie Templeton (NCM). 30-ft road easement along SBL reserved for egress/ingress.</p>
+        <h4>Red Flags</h4>
+        <ul>
+          <li>Consideration amount not specified.</li>
+          <li>Guardianship validity: no court orders authorizing conveyance found in package.</li>
+          <li>Harrison County Partition Deed (Cause No. 7095) should be pulled.</li>
+        </ul>
+        <h4>Additional Documents in this PDF</h4>
+        <ul>
+          <li><strong>Pgs 7-12:</strong> Partition Deed (72.18 ac into five tracts, with plat)</li>
+          <li><strong>Pgs 13-15:</strong> Substitute Trustee's Deed (1983 Deed of Trust, 1.0 ac)</li>
+          <li><strong>Pgs 16-20:</strong> Last Will &amp; Testament of Orman Eric Harris (Sep 18, 1985)</li>
+          <li><strong>Pgs 21-29:</strong> Mortgages (South Eunice Addition, Eunice, NM)</li>
+          <li><strong>Pgs 30-33:</strong> Warranty Deed (Hayden Edwards H.R. Survey)</li>
+          <li><strong>Pgs 34-35:</strong> Warranty Deed (South Highlands, Longview, TX)</li>
+          <li><strong>Pgs 36-37:</strong> Warranty Deed (Fairview Addition, Lovington, NM)</li>
+          <li><strong>Pgs 38-42:</strong> Warranty Deed (L.B. Outlaw Survey)</li>
+          <li><strong>Pgs 43-48:</strong> Warranty Deed (H. Edwards Survey)</li>
+          <li><strong>Pgs 49-50:</strong> Mineral Deed (Isaiah Baty Survey)</li>
+          <li><strong>Pgs 51-52:</strong> Mineral Deed (L.B. Outlaw Survey)</li>
+          <li><strong>Pgs 53-56:</strong> Right of Way Deed (Phillip Walker Survey)</li>
+          <li><strong>Pgs 57-60:</strong> Warranty Deeds (H. Edwards Survey)</li>
+          <li><strong>Pgs 61-65:</strong> Oil and Gas Lease (H. Edwards Survey)</li>
+          <li><strong>Pgs 66-67:</strong> Mechanic's Lien</li>
+          <li><strong>Pgs 68-70:</strong> Mineral Deed (H. Edwards Survey)</li>
+          <li><strong>Pgs 71-73:</strong> Oil and Gas Lease (H. Edwards Survey)</li>
+          <li><strong>Pgs 74-77:</strong> Warranty Deed (H. Edwards Survey)</li>
+        </ul>
+      </div>
+    </details>
+
+    <!-- DOC175 -->
+    <details class="doc-group">
+      <summary>
+        <span class="doc-tag">DOC175.pdf</span>
+        Warranty Deeds, O&amp;G Leases, Mineral Deeds, Probate, Assignments (18+ pages)
+      </summary>
+      <div class="doc-body">
+        <h4>Key Documents</h4>
+
+        <p><strong>Warranty Deed: Rogers Boyd &amp; Bonniegene Boyd to Emmett Cobb</strong> (Feb 15, 1941). City of Longview lot, 50x140 ft, Harrison Street. $10 + assumption of $1,800 Deed of Trust note. Vendor's Lien retained.</p>
+
+        <p><strong>Warranty Deed: C.H. Hughes to Fronie Sowels</strong> (Oct 25, 1940). 1 acre out of 38-acre tract, F. Castro H.R. Survey, SW corner. $20. Legal description is vague.</p>
+
+        <p><strong>Agreement &amp; Partial Release</strong> (Sep 1, 1938 / May 1940). Mrs. V.R. Crim Trustee, Julian &amp; Tom Potter, Potter Brothers Production Co., City National Bank of Houston. Oil and gas leases on Lots 2 &amp; 4, Block 121, V.R. Crim's Addition to Kilgore.</p>
+
+        <h4>Templeton O&amp;G Lease (Annie Templeton to J.M. Hudson)</h4>
+        <dl class="doc-meta-grid">
+          <dt>Date</dt><dd>March 19, 1937</dd>
+          <dt>Acreage</dt><dd>200 acres (three tracts less 38.5-ac exception)</dd>
+          <dt>Royalty</dt><dd>1/8th</dd>
+          <dt>Primary Term</dt><dd>3 years</dd>
+          <dt>Recording</dt><dd>Vol. 215, Pg. 165, Gregg County</dd>
+        </dl>
+        <h4>Legal Description (Three Tracts)</h4>
+        <div class="legal-desc">First Tract: 24 acres, NE corner of Sydney Templeton's 100-ac tract. Second Tract: 6 acres, SE corner of Ocie Templeton tract. Third Tract: 28 acres, SW corner of 101.25-ac tract (L.T. Templeton from Thomas Angel, 1900). Save and except 38.5 acres.</div>
+
+        <h4>Mineral Deed: Annie Templeton to J.N. Hudson</h4>
+        <p>Undivided 875/3500ths interest (~25%) in all oil, gas, and other minerals. Vol. 215, Pg. 167. Subject to existing O&amp;G lease. $10 consideration.</p>
+
+        <h4>O&amp;G Lease: Louise Templeton / T.L. Lockhart to G.P. Birdwell</h4>
+        <dl class="doc-meta-grid">
+          <dt>Date</dt><dd>June 7, 1941</dd>
+          <dt>Tract</dt><dd>83.6 acres, Block 1, Haden Edwards 4,428-acre grant</dd>
+          <dt>Royalty</dt><dd>1/8th</dd>
+          <dt>Primary Term</dt><dd>10 years</dd>
+          <dt>Recording</dt><dd>Vol. 259, Pg. 440</dd>
+        </dl>
+
+        <h4>Mineral Deeds to G.P. Birdwell</h4>
+        <p>Two mineral deeds conveying undivided 10/83.6 interests in 83.6 acres. Vol. 256, Pg. 460 (Jun 12, 1941) and Vol. 259, Pg. 442 (Jun 7, 1941). $10 consideration each.</p>
+
+        <h4>Probate: Estate of T.D. Templeton</h4>
+        <p>Application to probate will filed June 20, 1940. Order of Court probating will issued July 1, 1940. T.L. Lockhart appointed Independent Executor.</p>
+
+        <h4>Other Documents</h4>
+        <ul>
+          <li><strong>Transfer / Quitclaim:</strong> First National Bank in Dallas / Adams Bros. Drilling Co. (1936/1938). 16.38 ac, Dolores Sanchez Survey.</li>
+          <li><strong>Judgment:</strong> Removal of disabilities of minority for S. Hilbura (Jun 13, 1941).</li>
+          <li><strong>Warranty Deed:</strong> Annie Templeton et al to Everett L. Culver. 17 acres, two tracts. $10.</li>
+          <li><strong>Royalty Deed:</strong> Will Davis &amp; Margie Davis to J &amp; Pipsaire. 1/16 ORRI on 151 ac, RF Foote / John Anderson Surveys.</li>
+          <li><strong>Assignment:</strong> J.H. Smith, V.L. Fuller, et al to Fred Birdsong, Tom Potter, et al (Nov 22, 1938). Multiple tracts on Dolores Sanchez Survey.</li>
+        </ul>
+      </div>
+    </details>
+
+    <!-- DOC176 -->
+    <details class="doc-group">
+      <summary>
+        <span class="doc-tag">DOC176.pdf</span>
+        Sheriff's Tax Deed, Heirship Affidavits, OPR Index, O&amp;G Lease, Succession Affidavit (37 docs)
+      </summary>
+      <div class="doc-body">
+        <h4>Sheriff's Tax Deed (CRITICAL)</h4>
+        <dl class="doc-meta-grid">
+          <dt>Grantor</dt><dd>Bobby Weaver, Sheriff of Gregg County</dd>
+          <dt>Grantee</dt><dd>M M Investments</dd>
+          <dt>Judgment</dt><dd>July 13, 1999</dd>
+          <dt>Sale Date</dt><dd>October 6, 1999</dd>
+          <dt>Consideration</dt><dd>$9,272.83</dd>
+          <dt>Net Acreage</dt><dd>~119 acres (173 less exceptions)</dd>
+        </dl>
+        <h4>Legal Description</h4>
+        <div class="legal-desc">ALL THAT CERTAIN TRACT OR PARCEL SITUATED IN THE HAYDEN EDWARDS SURVEY, GREGG COUNTY, TEXAS, DESCRIBED AS 173-ACRES MORE OR LESS IN DEED DATED JUNE 29, 1942, FROM EVERETT L. CULVER TO AND/OR TEMPLETON ET AL RECORDED IN VOLUME 349, PAGE 426, DEED RECORDS OF GREGG COUNTY, TEXAS; SAVE & EXCEPT: A. 1.8 ac to Ras Hall (1951, Vol. 368, Pg. 643); B. 1.8 ac to Johnny Woods (1955, Vol. 448, Pg. 99); C. 4.0 ac to Ruthie Lee Jackson (1968, Vol. 572, Pg. 382); [and others, netting 119 ac]</div>
+        <p>Conveys "all of the estate, right, title, and interest" of the Defendants. Subject to statutory right of redemption (Sec. 34.21, TX Property Tax Code).</p>
+
+        <h4>Heirship Affidavit: Dessy Rea Woods</h4>
+        <p>Filed November 29, 1994. Declares herself the sole surviving child of Luther Templeton. Book 2765, Pg. 63. No probate found for Luther Templeton.</p>
+
+        <h4>O&amp;G Lease: Lola Templeton to Tyler Oil &amp; Gas, Inc.</h4>
+        <dl class="doc-meta-grid">
+          <dt>Date</dt><dd>January 9, 2002</dd>
+          <dt>Survey</dt><dd>Dinsmore Simpson Survey, A-238</dd>
+          <dt>Acreage</dt><dd>43.18 acres (45.5 ac less exceptions)</dd>
+          <dt>Royalty</dt><dd>1/8th oil and gas</dd>
+          <dt>Primary Term</dt><dd>3 years</dd>
+          <dt>Pooling</dt><dd>80 ac (oil), 640 ac (gas)</dd>
+        </dl>
+        <p>90-day continuous operations clause. Shut-in royalty clause included.</p>
+
+        <h4>Succession Information Affidavit: Charlie Templeton, Sr.</h4>
+        <p>Filed December 28, 2005 by Dorothy J. Templeton Lewis. Multi-page document listing heirs. No corresponding probate found in package.</p>
+
+        <h4>Royalty Deed: Lewis Templeton et al to Rio Grande Royalties</h4>
+        <p>Bk. 1798, Pg. 589 (Apr 13, 1987). Edwards Survey. Interest fraction not available from OPR index entry alone.</p>
+
+        <h4>OPR Index Searches</h4>
+        <p>Approximately 20 pages of Gregg County OPR index results for grantor "TEMPLETON" dated December 1, 2005. These provide a comprehensive grantor index but require pulling the underlying documents for analysis.</p>
+
+        <h4>Other</h4>
+        <ul>
+          <li>Warranty Deed: S.S. Laird to Mrs. A.B. Duncan (partial, date Sep 30)</li>
+          <li>Proxy: Eduardo Ochoa / Ma. Julieta Andaya-Mondragon (Feb 6, 2014). Appears unrelated.</li>
+          <li>Receipts: Freddye O'Quinn / Cabero, Feb 2014, $7 each. Likely copy fees.</li>
+          <li>Handwritten notes, GEO-VEST letterhead. Working papers.</li>
+        </ul>
+      </div>
+    </details>
+
+    <!-- DOC177 -->
+    <details class="doc-group">
+      <summary>
+        <span class="doc-tag">DOC177.pdf</span>
+        Current Operator Correspondence, Royalty Checks, Attorney Statements (2006-2023)
+      </summary>
+      <div class="doc-body">
+        <h4>Sydri Operating, LLC Letter (May 4, 2023)</h4>
+        <p>From Marlaina Ward, Accountant, Sydri Energy Group. Encloses owner information form for Mary Sanders. Contact for Titan Rock statements: Lynn Rogers at Petro-Ledger.</p>
+
+        <h4>Titan Rock: Shut-In Royalty (March 20, 2023)</h4>
+        <p>From Richard W. Henson, Director of Land. Wells in Danville Field (Gregg &amp; Rusk Counties) temporarily shut-in due to pipeline issue. Shut-in royalty payments enclosed.</p>
+        <dl class="doc-meta-grid">
+          <dt>Checks (Mar 20, 2023)</dt><dd>$5.00 each to Mary Lou Templeton Sanders (Danville Shut-In Payment)</dd>
+          <dt>Final Revenue Check</dt><dd>$2.04 on Apr 24, 2023</dd>
+        </dl>
+
+        <h4>Notice of Change of Operator</h4>
+        <p>Sydri Operating, LLC assumed operations from Titan Rock effective April 17, 2023 in Gregg, Harrison, and Panola Counties. Minimum royalty payment threshold: $200.</p>
+
+        <h4>GEO-VEST Operating Statement (June 19, 2006)</h4>
+        <p>Operating statement to Mary Lou Templeton Sanders showing royalty income from GRGU wells in Gregg County.</p>
+
+        <h4>GEO-VEST Offer Letter (January 24, 2007)</h4>
+        <p>GEO-VEST of Texas, LTD offered to acquire mineral interests from Mary Lou Templeton. No indication in the package that this offer was accepted.</p>
+
+        <h4>Attorney Statements: Flowers Davis, P.L.L.C.</h4>
+        <p>Three statements to Mary L. Sanders dated March 10, April 10, and May 13, 2008. All reference "Gregg County Property Issue." Nature and resolution unknown.</p>
+      </div>
+    </details>
+
+  </section>
+
+  <hr>
+
+  <footer class="report-footer">
+    <p>Prepared for internal use. This report is based on OCR extraction from scanned documents and should be verified against original county records before reliance. All legal descriptions, recording references, and party names are reproduced as extracted and may contain OCR artifacts.</p>
+    <p style="margin-top: 0.75rem;">Standard Land Services &middot; March 2026</p>
+  </footer>
+
+</main>
+
+<script>
+(function() {
+  var toggle = document.getElementById('theme-switch');
+  var icon = document.getElementById('theme-icon');
+  var html = document.documentElement;
+
+  function setDark(dark) {
+    if (dark) {
+      html.classList.add('dark');
+      icon.innerHTML = '&#9790;';
+      toggle.checked = true;
+    } else {
+      html.classList.remove('dark');
+      icon.innerHTML = '&#9788;';
+      toggle.checked = false;
+    }
+    try { localStorage.setItem('templeton-theme', dark ? 'dark' : 'light'); } catch(e) {}
+  }
+
+  // Init from saved preference, then system preference
+  var saved = null;
+  try { saved = localStorage.getItem('templeton-theme'); } catch(e) {}
+  if (saved === 'dark') {
+    setDark(true);
+  } else if (saved === 'light') {
+    setDark(false);
+  } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    setDark(true);
+  }
+
+  toggle.addEventListener('change', function() {
+    setDark(toggle.checked);
+  });
+})();
+</script>
+</body>
+</html>
